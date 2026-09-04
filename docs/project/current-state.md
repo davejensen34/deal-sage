@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 1 — Evidence and Analyst Foundation is implemented and undergoing final reconciliation in GitHub Issue #1. It originally entered `main` as commit `d9fa99d` before the Issue/PR operating model existed; no retroactive process was invented.
+Milestone 1 — Evidence and Analyst Foundation is validated and reconciled. It originally entered `main` as commit `d9fa99d` before the Issue/PR operating model existed; no retroactive process was invented. GitHub Issue #1 and Pull Request #2 established the durable operating model and closed bounded gaps.
 
 ## What works and has been validated
 
@@ -47,7 +47,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #1 through CI and PR. Then, only with user direction, open Milestone 2 with one narrow owner-discovery research experiment described in `backlog/milestones/milestone-2.md`.
+Wait for user direction before opening Milestone 2. The next bounded work is the owner-discovery experiment described in `backlog/milestones/milestone-2.md`; no acquisition implementation has begun.
 
 ## Latest validation
 
