@@ -1,6 +1,6 @@
 # Milestone 3.1 — Evidence Convergence and Dynamic Discovery
 
-Status: in progress in GitHub Milestone 3.1. Milestone 3 remains paused—not closed—while its authorized Utah BEL delivery is pending in Issue #32.
+Status: complete as a validated foundation (September 4, 2026). Milestone 3 remains paused—not closed—while its authorized Utah BEL delivery is pending in Issue #32.
 
 ## Goal
 
@@ -62,3 +62,11 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 ## Explicitly excluded
 
 Nationwide unrestricted crawling, dozens of bespoke obituary scrapers, full AI usage-policy governance, CRM/outreach automation, autonomous contact workflows, distributed enterprise infrastructure, sophisticated trained entity-resolution models, and multi-agent architecture for its own sake.
+
+## Closeout result
+
+Milestone 3.1 delivered the common case/evidence/claim/inference spine; safe case-specific research boundaries; provider-neutral search and model seams; obituary clue extraction; bounded planning and stopping; bidirectional identity resolution; evidence-independence handling; deterministic five-axis confidence; and an authenticated analyst narrative with observed funnel metrics.
+
+The approved seven-case public-evidence cohort validated live provider connectivity and bounded structured-output integration, but it did not validate comparative model quality. Its version-one outcome taxonomy conflated independent facts, two OpenAI paths were incomplete, and only 3/14 paths matched the pre-label. Issue #55 replaced that rubric with seven independent dimensions, deterministic consistency and disposition rules, typed provider outcomes, split usage, and per-provider metrics validated against fictional fixtures. No new live calls were made.
+
+Closeout therefore means the evidence-convergence and evaluation foundation is implemented and validated in proportion to this milestone. It does not mean live model quality passed, a live search provider exists, obituary coverage is adequate, or autonomous research is authorized. Those limits remain explicit inputs to any future Milestone 4 approval.

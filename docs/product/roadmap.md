@@ -8,7 +8,7 @@ Complete. The persisted fictional-data MVP and its validation record are tracked
 
 Complete with a change decision. The Colorado experiment proved that its official bulk source supports entity anchoring but does not expose owner/controller roles. The durable result is recorded in `backlog/milestones/milestone-2.md`. Milestones 2.1 and 2.2 subsequently established research trails, pilot identity, and validated local Google authentication.
 
-## Active product increments
+## Current product increments
 
 ### Milestone 3 — Multi-State Data Acquisition and Curation
 
@@ -20,11 +20,11 @@ Milestone 3 is paused—not closed—while the authorized Utah BEL sample delive
 
 ### Milestone 3.1 — Evidence Convergence and Dynamic Discovery
 
-Milestone 3.1 is active by explicit approval. It evolves signal-first, business-first, and hybrid origins into one case-resolution framework spanning business sources, transition evidence, and bounded public-web research. It introduces traceable claims and inferences, provider-neutral search, dynamic source candidates, obituary business-clue extraction, bounded research frontiers and planning, bidirectional resolution, explainable confidence convergence, and analyst-visible research narratives and metrics.
+Complete as a validated foundation. Milestone 3.1 evolves signal-first, business-first, and hybrid origins into one case-resolution framework spanning business sources, transition evidence, and bounded public-web research. It introduces traceable claims and inferences, provider-neutral search, dynamic source candidates, obituary business-clue extraction, bounded research frontiers and planning, bidirectional resolution, explainable confidence convergence, and analyst-visible research narratives and metrics.
 
 Milestone 3.1 may use OpenAI or Anthropic where contextual reasoning materially helps, while search remains a separate capability and deterministic code retains authority over persistence, exact lookup, validation, scoring, budgets, and state transitions.
 
-The approved seven-case provider exercise validated bounded integration behavior but exposed a conflated outcome taxonomy and incomplete-output handling. Issue #55 replaces it with a fixture-tested multidimensional version-two evaluation contract. Any new live run remains a separate protocol decision, not an automatic next step.
+The approved seven-case provider exercise validated bounded integration behavior but did not pass the version-one quality evaluation. Issue #55 replaces the defective rubric with a fixture-tested multidimensional version-two contract. This negative result is part of the completed milestone rather than erased or rerun. Any new live run remains a separate Milestone 4 protocol decision, not an automatic next step.
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 
