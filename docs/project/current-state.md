@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
+Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issue #33 established the common research-case and evidence/claim/inference foundation; Issue #35 adds external-response sanitation. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
 
 ## What works and has been validated
 
@@ -51,7 +51,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Implement Issue #33's research-case/evidence/claim/inference foundation before adding search or model-driven research. Resume Issue #32 immediately when the Utah BEL archive arrives.
+Complete Issue #35's external-response sanitation before adding provider-neutral search and dynamic source candidates. Resume Issue #32 immediately when the Utah BEL archive arrives.
 
 ## Latest validation
 

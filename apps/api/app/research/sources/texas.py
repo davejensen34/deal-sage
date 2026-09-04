@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 import httpx
 
 from app.research.landing import CuratedSubject
+from app.research.sanitization import sanitize_external_mapping
 from .base import SourceAdapter, SourceDefinition, SourceRecord
 
 
@@ -88,7 +89,8 @@ class TexasActiveFranchiseTaxpayersAdapter(SourceAdapter):
             or not raw.get("taxpayer_name")
         ):
             raise ValueError("Texas taxpayer record is missing required identity fields")
-        selected = {field: raw.get(field) for field in SELECT_FIELDS.split(",")}
+        policy = {field: True for field in SELECT_FIELDS.split(",")}
+        selected = sanitize_external_mapping(raw, policy).data
         taxpayer_number = str(selected["taxpayer_number"])
         return SourceRecord(
             source_record_id=taxpayer_number,

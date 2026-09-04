@@ -28,6 +28,11 @@ Enable DealSage to enter research from a transition signal, business, or both; d
 
 Issue boundaries may change as implementation evidence emerges; GitHub Issues remain the actionable work record.
 
+## Progress
+
+- Issue #33 established the shared unresolved research case and evidence→claim→inference traceability spine.
+- Issue #35 implements reusable nested allowlisting, recursive capability-field removal, and defense-in-depth persistence rejection while keeping source safety distinct from usefulness.
+
 ## Definition of done
 
 - Business, transition, and public-web evidence converge through one common case-resolution model.

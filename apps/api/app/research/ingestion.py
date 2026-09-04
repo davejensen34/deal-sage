@@ -4,23 +4,8 @@ from time import perf_counter
 from typing import Any
 
 from app.research.landing import EvidenceLanding, LandingEnvelope, Parser
+from app.research.sanitization import is_sensitive_field
 from app.research.sources.base import SourceAdapter, SourceRecord
-
-
-# These fields have appeared in otherwise public discovery responses and can
-# behave like credentials. Reject the whole record before raw evidence storage;
-# silently redacting it would make the retained artifact an ambiguous source.
-FORBIDDEN_SOURCE_FIELDS = frozenset(
-    {
-        "access_token",
-        "api_key",
-        "client_secret",
-        "creation_session_id",
-        "edit_token",
-        "password",
-        "refresh_token",
-    }
-)
 
 
 @dataclass(frozen=True)
@@ -71,8 +56,7 @@ def assert_safe_source_content(value: Any, path: str = "$") -> None:
     """Reject credential-like keys recursively before evidence is persisted."""
     if isinstance(value, dict):
         for key, child in value.items():
-            normalized_key = str(key).lower()
-            if normalized_key in FORBIDDEN_SOURCE_FIELDS:
+            if is_sensitive_field(str(key)):
                 raise ValueError(f"Forbidden source field at {path}.{key}")
             assert_safe_source_content(child, f"{path}.{key}")
     elif isinstance(value, list):
