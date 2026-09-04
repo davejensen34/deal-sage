@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ResearchStage, ResearchTrail, ReviewCase, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CuratedRecord, Evidence, Person, RawArtifact, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -32,6 +32,17 @@ def health(): return {"status":"ok"}
 def research_sources():
     """Expose source contracts without initiating network acquisition."""
     return [asdict(ColoradoBusinessEntitiesAdapter.definition)]
+
+
+@router.get("/research/acquisition-runs")
+def acquisition_runs(db: Session = Depends(get_db)):
+    """Expose operational outcomes without leaking raw content or request secrets."""
+    runs = db.scalars(select(AcquisitionRun).order_by(AcquisitionRun.started_at.desc())).all()
+    result=[]
+    for run in runs:
+        artifact_ids=select(RunArtifact.artifact_id).where(RunArtifact.run_id==run.id)
+        result.append({"id":run.id,"source_key":run.source_key,"jurisdiction":run.jurisdiction,"discovery_strategy":run.discovery_strategy,"status":run.status,"started_at":run.started_at,"finished_at":run.finished_at,"metrics":run.metrics,"artifact_count":db.scalar(select(func.count(RawArtifact.id)).where(RawArtifact.id.in_(artifact_ids))) or 0,"curated_count":db.scalar(select(func.count(CuratedRecord.id)).where(CuratedRecord.artifact_id.in_(artifact_ids),CuratedRecord.status=="curated")) or 0,"quarantined_count":db.scalar(select(func.count(CuratedRecord.id)).where(CuratedRecord.artifact_id.in_(artifact_ids),CuratedRecord.status=="quarantined")) or 0})
+    return result
 
 
 @router.get("/research/experiments/colorado-owner-discovery")

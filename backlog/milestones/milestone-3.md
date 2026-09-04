@@ -2,6 +2,11 @@
 
 Status: in progress in GitHub Milestone 3; source-registry research begins in Issue #20.
 
+## Progress
+
+- Issue #20 established the primary-source registry and access decisions for Colorado, Utah, and Texas.
+- Issue #22 implements the source-neutral raw-to-curated landing, signal-first unresolved subjects, replay, lineage, quarantine, and acquisition-run summaries.
+
 ## Goal
 
 Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Texas that gives later deterministic and model-assisted research a curated foundation.
@@ -9,10 +14,12 @@ Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Te
 ## Required scope
 
 - Maintain a source registry with multiple candidate or validated sources for each state, including authority, role, access method, terms or automation constraints, refresh expectations, cost, fields, and known limitations.
+- Support signal-first, business-first, and hybrid acquisition. Curated records may represent an unresolved person or transition signal before any business is known.
 - Acquire bounded representative data from permitted sources without bypassing access controls, publisher rules, or reasonable rate limits.
 - Separate immutable raw artifacts, normalized source records, validated evidence, and quarantined failures.
 - Preserve source identity, retrieval timestamp, canonical URL or record identifier, content hash, parser/schema version, lineage, and transformation outcome.
 - Normalize businesses, people, roles, addresses, and source assertions without treating registered agents or executives as owners.
+- Treat entity search as downstream corroboration when a person or business clue is discovered, not as a discovery prerequisite.
 - Support idempotent ingestion, deterministic deduplication, replay after parser changes, and visible source-change or parsing failures.
 - Measure per-source and per-state retrieval success, field completeness, freshness, duplication, conflict, role coverage, latency, and marginal cost.
 - Expose enough evidence and aggregate measures for an analyst to inspect what landed, what was rejected, and why.
@@ -23,6 +30,7 @@ Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Te
 - The raw-to-curated contract and retention boundary are documented and implemented behind source-neutral interfaces.
 - Re-running the same acquisition is idempotent, and a stored raw artifact can be replayed through a newer parser without refetching it.
 - Normalized facts retain field-level lineage to immutable source evidence; unsupported ownership remains unknown.
+- A signal-first artifact can progress through person and business resolution or terminate honestly with no business found, without manufacturing a business record.
 - Quarantine, source-contract drift, and partial failure are observable and do not silently publish facts.
 - Automated tests, migration validation, and a local end-to-end demonstration pass without requiring an AI provider.
 - Findings determine whether Milestone 4 has enough curated evidence to begin bounded model-assisted discovery.

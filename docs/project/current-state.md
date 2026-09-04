@@ -19,12 +19,13 @@ Milestone 3 — Multi-State Data Acquisition and Curation is active. GitHub Issu
 ## Implemented but not fully validated
 
 - OpenAI and Anthropic summary adapters exist behind a provider interface; neither provider has received a live request.
-- Local evidence storage implements save/read/delete but is not exercised through an API workflow.
 - Alembic has an initial schema revision validated against an empty SQLite database.
 - Responsive styles exist; desktop rendered workflows are the primary validation target.
 
 ## Partial
 
+- The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. They are automated-test validated but not yet exercised with the live Utah or Texas sources.
+- Acquisition-run summaries are available through the authenticated API; detailed raw evidence review and quarantine resolution UI remain deferred.
 - Seed case scores are curated persisted fixtures; deterministic scoring functions are tested but feature observations are not yet persisted/recalculated from evidence.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
 - Job execution has an in-process interface but no persistent `ResearchJob` model or scheduler.
@@ -54,4 +55,6 @@ Complete Issue #20's primary-source registry and access decisions, then open imp
 
 ## Latest validation
 
-Milestone 2.2 validation exercised 24 backend/API/auth tests, 2 frontend tests, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack in OIDC mode. A real Google browser flow validated discovery, authorization-code exchange with PKCE, verified-email enforcement, JIT provisioning, signed-session recovery, protected dashboard and candidate access, and user-linked audit attribution. Allowlist rejection, logout, subsequent sign-in, and non-secret configuration disclosure are integration-tested. Credentials remained in the ignored root `.env`; provider tokens were not persisted. Broader breakpoint coverage remains partial.
+The current Milestone 3 landing slice exercises 29 backend/API tests, 2 frontend tests, the production frontend build, and upgrade/downgrade/upgrade through all four migrations on an empty SQLite database. The rebuilt Nginx/FastAPI/PostgreSQL Compose stack exposes the authenticated acquisition-run endpoint and contains all five landing tables. Tests prove signal-first subjects without a business, content idempotency, parser replay, field lineage, source-contract quarantine, immutable local storage, non-sensitive API summaries, and the Colorado registered-agent boundary. Live Utah and Texas acquisition has not yet been exercised.
+
+Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.
