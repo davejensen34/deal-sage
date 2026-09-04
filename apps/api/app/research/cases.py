@@ -35,6 +35,8 @@ DEFAULT_RESEARCH_BUDGET = {
     "max_documents": 10,
     "max_model_calls": 0,
     "max_steps": 20,
+    "max_elapsed_seconds": 900,
+    "max_cost_cents": 0,
 }
 
 
@@ -49,6 +51,9 @@ class ResearchCaseService:
     ) -> ResearchCase:
         if origin_strategy not in ORIGIN_STRATEGIES:
             raise ValueError("Unsupported research-case origin strategy")
+        unknown_limits = set(research_budget or {}) - set(DEFAULT_RESEARCH_BUDGET)
+        if unknown_limits:
+            raise ValueError("Research budget contains unsupported limits")
         budget = {**DEFAULT_RESEARCH_BUDGET, **(research_budget or {})}
         if any(not isinstance(value, int) or value < 0 for value in budget.values()):
             raise ValueError("Research budget values must be non-negative integers")

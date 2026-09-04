@@ -265,6 +265,47 @@ class SourceCandidateDiscovery(Base):
     )
 
 
+class ResearchFrontierItem(TimestampMixin, Base):
+    """One unresolved case question eligible for bounded research."""
+    __tablename__ = "research_frontier_items"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    question_type: Mapped[str] = mapped_column(String(80), index=True)
+    question: Mapped[str] = mapped_column(Text)
+    rationale: Mapped[str] = mapped_column(Text)
+    priority: Mapped[int] = mapped_column(Integer, index=True)
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    status: Mapped[str] = mapped_column(String(30), default="pending", index=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=2)
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class ResearchStep(TimestampMixin, Base):
+    """Auditable execution of one deterministic planner decision."""
+    __tablename__ = "research_steps"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    frontier_item_id: Mapped[int] = mapped_column(
+        ForeignKey("research_frontier_items.id"), index=True
+    )
+    step_number: Mapped[int] = mapped_column(Integer)
+    action_type: Mapped[str] = mapped_column(String(40), index=True)
+    provider: Mapped[str | None] = mapped_column(String(80))
+    model: Mapped[str | None] = mapped_column(String(120))
+    prompt_version: Mapped[str | None] = mapped_column(String(80))
+    status: Mapped[str] = mapped_column(String(30), default="running", index=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    cost_cents: Mapped[int] = mapped_column(Integer, default=0)
+    result_summary: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    error_class: Mapped[str | None] = mapped_column(String(120))
+    __table_args__ = (
+        UniqueConstraint("case_id", "step_number", name="uq_research_step_case_number"),
+    )
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)
