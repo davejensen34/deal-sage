@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -79,6 +79,24 @@ def research_case_metrics(db: Session = Depends(get_db)):
             ResearchCase.origin_strategy
         )
     ).all()
+    origin_metrics = {}
+    for strategy, count in strategy_rows:
+        case_ids = select(ResearchCase.id).where(ResearchCase.origin_strategy == strategy)
+        origin_metrics[strategy] = {
+            "cases": count,
+            "evidence_items": db.scalar(
+                select(func.count(CaseEvidence.id)).where(CaseEvidence.case_id.in_(case_ids))
+            ) or 0,
+            "claims": db.scalar(
+                select(func.count(EvidenceClaim.id)).where(EvidenceClaim.case_id.in_(case_ids))
+            ) or 0,
+            "search_queries": db.scalar(
+                select(func.count(ResearchQuery.id)).where(ResearchQuery.case_id.in_(case_ids))
+            ) or 0,
+            "research_steps": db.scalar(
+                select(func.count(ResearchStep.id)).where(ResearchStep.case_id.in_(case_ids))
+            ) or 0,
+        }
     return {
         "cases": db.scalar(select(func.count(ResearchCase.id))) or 0,
         "evidence_items": db.scalar(select(func.count(CaseEvidence.id))) or 0,
@@ -99,7 +117,88 @@ def research_case_metrics(db: Session = Depends(get_db)):
         "by_origin_strategy": {
             strategy: count for strategy, count in strategy_rows
         },
+        "origin_metrics": origin_metrics,
     }
+
+
+@router.get("/research/case-narratives")
+def research_case_narratives(db: Session = Depends(get_db)):
+    """Expose analyst-readable case history without raw pages or agent logs."""
+    cases = db.scalars(select(ResearchCase).order_by(ResearchCase.updated_at.desc()).limit(20)).all()
+    narratives = []
+    for case in cases:
+        queries = db.scalars(
+            select(ResearchQuery).where(ResearchQuery.case_id == case.id).order_by(ResearchQuery.id)
+        ).all()
+        evidence = db.scalars(
+            select(CaseEvidence).where(CaseEvidence.case_id == case.id).order_by(CaseEvidence.id)
+        ).all()
+        conflicts = db.scalars(
+            select(ClaimContradiction).where(ClaimContradiction.case_id == case.id)
+        ).all()
+        frontier = db.scalars(
+            select(ResearchFrontierItem).where(ResearchFrontierItem.case_id == case.id).order_by(ResearchFrontierItem.priority.desc())
+        ).all()
+        steps = db.scalars(
+            select(ResearchStep).where(ResearchStep.case_id == case.id).order_by(ResearchStep.step_number)
+        ).all()
+        resolution = db.scalar(
+            select(IdentityResolution).where(IdentityResolution.case_id == case.id).order_by(IdentityResolution.id.desc())
+        )
+        assessment = db.scalar(
+            select(ConfidenceAssessment).where(ConfidenceAssessment.case_id == case.id).order_by(ConfidenceAssessment.id.desc())
+        )
+        conclusion = db.scalar(
+            select(AnalystConclusion).where(AnalystConclusion.case_id == case.id).order_by(AnalystConclusion.id.desc())
+        )
+        narratives.append({
+            "id": case.id,
+            "origin_strategy": case.origin_strategy,
+            "status": case.status,
+            "stop_reason": case.stop_reason,
+            "hypothesis": {
+                "direction": resolution.direction,
+                "subject": resolution.subject_value,
+                "candidate": resolution.candidate_value,
+                "status": resolution.status,
+            } if resolution else None,
+            "confidence": {
+                "business_identity": assessment.business_identity,
+                "owner_relationship": assessment.owner_relationship,
+                "transition_identity": assessment.transition_identity,
+                "operating_status": assessment.operating_status,
+                "overall_opportunity": assessment.overall_opportunity,
+                "method_version": assessment.method_version,
+                "factors": assessment.factors,
+            } if assessment else None,
+            "searches": [{
+                "query": query.query_text, "provider": query.provider,
+                "status": query.status, "result_count": query.result_count,
+            } for query in queries],
+            "evidence": [{
+                "publisher": item.publisher, "source_type": item.source_type,
+                "canonical_url": item.canonical_url, "classification": item.classification,
+                "relevant_excerpt": item.relevant_excerpt,
+            } for item in evidence],
+            "conflicts": [{
+                "type": conflict.contradiction_type, "rationale": conflict.rationale,
+                "status": conflict.status,
+            } for conflict in conflicts],
+            "frontier": [{
+                "question": item.question, "rationale": item.rationale,
+                "priority": item.priority, "status": item.status,
+            } for item in frontier],
+            "steps": [{
+                "number": step.step_number, "action": step.action_type,
+                "provider": step.provider, "model": step.model, "status": step.status,
+                "cost_cents": step.cost_cents,
+            } for step in steps],
+            "conclusion": {
+                "analyst": conclusion.analyst_name, "outcome": conclusion.outcome,
+                "statement": conclusion.statement, "status": conclusion.status,
+            } if conclusion else None,
+        })
+    return {"cases": narratives}
 
 
 @router.get("/research/experiments/colorado-owner-discovery")

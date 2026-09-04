@@ -50,15 +50,15 @@
       "curated": 3,
       "quarantined": 0,
       "marginal_cost_usd": 0,
-      "next_action": "Obtain explicit approval before purchasing the $5 live sample."
+      "next_action": "Await delivery of the authorized $5 live sample in Issue #32."
     }
   ],
   "decisions": [
     {
       "source_key": "official_obituary_public_browse",
       "coverage": "Colorado, Utah, Texas",
-      "status": "rejected",
-      "reason": "Public responses exposed edit/session capability fields; ingestion is blocked pending a safe minimal provider contract."
+      "status": "supplemental_candidate",
+      "reason": "Allowlist sanitation is proven, but observed coverage is poor and the source has not been promoted to a persistent connector."
     }
   ]
 }
