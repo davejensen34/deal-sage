@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 and #35 established the common research-case traceability spine and external-response sanitation; Issue #37 adds bounded provider-neutral search and dynamic source candidates. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
+Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33, #35, and #37 established the common research-case traceability spine, external-response sanitation, bounded provider-neutral search, and dynamic source candidates. Issue #39 adds precise obituary business-clue extraction. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
 
 ## What works and has been validated
 
@@ -51,10 +51,10 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #37's provider-neutral search and source-candidate boundary before obituary business-clue extraction. Resume Issue #32 immediately when the Utah BEL archive arrives.
+Complete Issue #39's obituary business-clue extraction, then add the bounded research frontier and planner. Resume Issue #32 immediately when the Utah BEL archive arrives.
 
 ## Latest validation
 
-The current Milestone 3.1 foundation exercises 44 backend/API tests and upgrade/downgrade/upgrade through all six migrations on an empty SQLite database. Tests prove unresolved signal-first cases, source-use mode boundaries, minimal evidence retention, evidence-to-claim lineage, precise relationship semantics, cross-case isolation, model provenance requirements, and aggregate-only metrics. Earlier Milestone 3 validation exercised 10/10 bounded Colorado and Texas records at zero marginal API cost, the production frontend build and tests, and the rebuilt Nginx/FastAPI/PostgreSQL Compose stack. Live Utah validation remains pending delivery.
+The current Milestone 3.1 implementation exercises 60 backend/API tests and upgrade/downgrade/upgrade through all seven migrations on an empty SQLite database. Tests prove unresolved signal-first cases, source-use mode boundaries, minimal evidence retention, evidence-to-claim lineage, bounded search provenance, dynamic source staging, precise obituary relationship semantics, former-owner/sale/retirement preservation, sensitive-field rejection, cross-case isolation, model provenance requirements, and aggregate-only metrics. Earlier Milestone 3 validation exercised 10/10 bounded Colorado and Texas records at zero marginal API cost, the production frontend build and tests, and the rebuilt Nginx/FastAPI/PostgreSQL Compose stack. Live Utah validation remains pending delivery.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.
