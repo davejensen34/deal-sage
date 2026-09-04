@@ -1,5 +1,7 @@
 # ADR-006: Provider-neutral pilot identity
 
+Status: accepted. The real Google flow was subsequently validated on localhost in Milestone 2.2; current setup and validation status are in `docs/deployment/pilot-authentication.md`.
+
 ## Context
 
 DealSage needs real pilot-user identity and attributable actions without managing passwords or building enterprise organizations and RBAC. Credential-free local development must remain simple.

@@ -13,8 +13,10 @@ DealSage is an open-source, evidence-backed business ownership intelligence and 
 - Validate, reject, watchlist, needs-more-research, notes, and audit history
 - 18 deliberately varied fictional cases, including collisions and false positives
 - SQLite locally; PostgreSQL in Docker Compose
-- Optional OpenAI or Anthropic evidence summary behind a provider abstraction
+- Optional OpenAI or Anthropic evidence summaries plus schema-constrained extraction behind a provider abstraction
 - Evidence-backed business → entity → web → person → owner-ready research trails and measured funnel stages
+- Signal-first, business-first, and hybrid research cases with traceable evidence, claims, inferences, contradictions, frontier questions, budgets, and stop reasons
+- Replayable raw-to-curated acquisition with field lineage, quarantine, and bounded Colorado and Texas source adapters
 - Credential-free demo identity plus provider-neutral pilot OIDC with Google as the initial provider
 - OpenAPI at `http://localhost:8000/docs`
 
@@ -52,11 +54,11 @@ Open `http://localhost:3000`. Everything runs on one host; no managed service is
 
 ## Optional AI summary
 
-Set either `MODEL_PROVIDER=openai` with `OPENAI_API_KEY`, or `MODEL_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`. Models are configurable in `.env`. DealSage works fully with `MODEL_PROVIDER=disabled`, and AI never determines the score.
+Set either `MODEL_PROVIDER=openai` with `OPENAI_API_KEY`, or `MODEL_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`. Models and strict request, output, call, and cost ceilings are configurable in the root `.env`. DealSage works with `MODEL_PROVIDER=disabled`, and AI never determines authoritative scores or workflow state. Live calls are explicit and are never part of the automated test suite; see the [AI strategy](docs/architecture/ai-strategy.md).
 
 ## Pilot authentication
 
-Local development defaults to `AUTH_MODE=demo`. For Google pilot login, configure OIDC credentials, a unique session secret, HTTPS cookies, and an email/domain allowlist as described in the [pilot authentication guide](docs/deployment/pilot-authentication.md).
+Local development defaults to `AUTH_MODE=demo`. Google OIDC has been validated locally. To use it, configure OIDC credentials, a unique session secret, and an email/domain allowlist as described in the [pilot authentication guide](docs/deployment/pilot-authentication.md). Local HTTP validation uses an explicitly documented insecure-cookie exception; deployed environments require HTTPS and secure cookies.
 
 ## Tests
 
@@ -67,11 +69,11 @@ cd apps/web && npm test
 
 ## Architecture
 
-The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keeps SQLite and PostgreSQL interchangeable. Domain entities separate people, businesses, relationships, sources, evidence, signals, candidate conclusions, reviews, and audits. Start with the [product vision](docs/product/vision.md) and [current state](docs/project/current-state.md), then see the [architecture](docs/architecture/architecture.md), [confidence model](docs/architecture/confidence-model.md), [deployment](docs/architecture/deployment.md), and [responsible research](docs/governance/responsible-research.md).
+The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keeps SQLite and PostgreSQL interchangeable. Domain entities separate people, businesses, relationships, sources, evidence, claims, inferences, signals, candidate conclusions, reviews, and audits. Start with the [documentation map](docs/README.md), [product vision](docs/product/vision.md), and [current state](docs/project/current-state.md).
 
 ## Current limitations
 
-The application uses fictional seeded trails and does not yet discover owners or transition signals from the web. Google OIDC is implemented and mock-tested but awaits live validation with deployment credentials. Search uses portable database filtering rather than FTS5/pg_trgm optimization. Scheduled acquisition, organizations, enterprise RBAC, and multi-tenancy are intentionally deferred.
+The analyst UI is still driven primarily by fictional seeded candidates and research trails. Provider-neutral search is implemented only with a fixture provider; no live web-search provider or persistent owner-capable source connector is configured. Colorado and Texas adapters corroborate entities rather than ownership, and the authorized Utah BEL sample is still pending delivery. The approved seven-case model exercise exposed evaluation-contract and incomplete-output failures, so it is evidence of integration behavior—not validated analysis quality. Search uses portable database filtering rather than FTS5/pg_trgm optimization. Scheduled acquisition, organizations, enterprise RBAC, and multi-tenancy remain deferred.
 
 ## Responsible use
 

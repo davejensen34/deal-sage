@@ -8,8 +8,8 @@ Milestone 3 separates transport evidence from interpretation so source changes a
 2. **Immutable raw artifact** — content-addressed bytes plus source record ID, canonical URL, retrieval time, media type, byte size, safe request metadata, and the observed contract fingerprint. Credentials and session material are excluded.
 3. **Curated record** — a versioned parser outcome for a `person`, `transition_signal`, `business`, `relationship_assertion`, or `unresolved` subject. It may exist without a business.
 4. **Signal resolution** — a deterministic lifecycle record beginning from a curated person or transition signal. It may link to an existing curated business, terminate with `no_business_found`, or retain `relationship_unknown`; negative outcomes never fabricate a business identifier.
-4. **Field lineage** — maps every published normalized field to a raw path and a value hash, allowing later verification without placing raw personal data in operational listings.
-5. **Quarantine** — a durable non-publishing outcome for invalid content, empty extraction, or source-contract drift. The raw artifact remains available for replay.
+5. **Field lineage** — maps every published normalized field to a raw path and a value hash, allowing later verification without placing raw personal data in operational listings.
+6. **Quarantine** — a durable non-publishing outcome for invalid content, empty extraction, or source-contract drift. The raw artifact remains available for replay.
 
 ## Invariants
 

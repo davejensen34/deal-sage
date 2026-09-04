@@ -1,5 +1,7 @@
 # ADR-004: Generalized transition signals
 
+Status: accepted.
+
 ## Context
 
 Possible owner death is the initial differentiator, not the entire product category.

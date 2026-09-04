@@ -1,5 +1,7 @@
 # ADR-001: Local-first dual database
 
+Status: accepted.
+
 ## Context
 
 Development and demos need minimal cost while shared testing needs realistic multi-user database behavior.

@@ -1,5 +1,7 @@
 # ADR-003: Deterministic scoring and provider-neutral AI
 
+Status: accepted. Live-provider follow-up is recorded in `docs/architecture/ai-strategy.md`; the provider interface has since been exercised, while output quality remains only partially supported.
+
 ## Context
 
 Models can interpret unstructured evidence but are unsuitable as an opaque authority for candidate ranking.

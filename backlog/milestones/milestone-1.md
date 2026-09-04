@@ -2,6 +2,8 @@
 
 Status: validated
 
+Historical closeout record. Capability status below reflects the Milestone 1 checkpoint; use `docs/project/current-state.md` for current implementation and validation truth.
+
 Outcome: a locally runnable fictional-data product that demonstrates evidence-centered candidate review and preserves human decisions.
 
 | Capability | Status | Evidence |

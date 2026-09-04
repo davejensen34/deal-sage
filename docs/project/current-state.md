@@ -53,6 +53,8 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 Replace the conflated live-validation outcome enum with separate origin, identity, relationship/timeline, and operating-status dimensions; add explicit incomplete/refusal handling and split token accounting. Validate that contract against saved synthetic fixtures before deciding whether another live cohort is justified. Resume Issue #32 immediately when the Utah BEL archive arrives; its currently forecast documentation conflicts are recorded on that issue.
 
+Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
+
 ## Latest validation
 
 The current Milestone 3.1 implementation exercises 94 backend/API tests and upgrade/downgrade/upgrade through all eleven migrations on an empty SQLite database, plus four frontend tests, a production build, and rendered desktop review. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. Results are recorded without claiming validation. Earlier Milestone 3 validation exercised bounded Colorado and Texas sources; live Utah validation remains pending delivery, with the branch conflict forecast currently limited to two documentation files.

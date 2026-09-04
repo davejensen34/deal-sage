@@ -2,6 +2,8 @@
 
 Status: implemented and validated in Issues #8–#10 and Pull Requests #11–#13.
 
+Historical closeout record. Milestone 2.2 subsequently validated the real local Google flow; use `docs/project/current-state.md` for current authentication status.
+
 ## Goal
 
 Make the evidence breadcrumb from target profile to transition-research-ready owner explicit and measurable, while supporting real pilot identities through standards-based OIDC without replacing local demo mode.
