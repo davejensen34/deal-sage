@@ -24,6 +24,8 @@ Use two explicit source modes:
 
 This is an engineering and responsible-research policy, not a legal conclusion. Public visibility does not imply unrestricted crawling or republication, and bounded public research does not require a bespoke adapter or written agreement for every page.
 
+All external response shapes require explicit allowlists. Unknown fields and capability-, session-, edit-, authentication-, or management-like fields are dropped in memory before any persistence or observability boundary. A defense-in-depth persistence guard rejects normalized spelling variants if unsafe fields reach it. Response-contract safety and source usefulness are evaluated separately; successful sanitation does not automatically promote a dynamic or case-specific source into a persistent connector.
+
 ## Consequences
 
 - Research may begin before a person or business has been resolved.

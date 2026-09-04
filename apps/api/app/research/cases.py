@@ -6,6 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.domain.models import CaseEvidence, EvidenceClaim, ResearchCase, ResearchInference, Source
+from app.research.ingestion import assert_safe_source_content
 
 
 ORIGIN_STRATEGIES = frozenset({"signal_first", "business_first", "hybrid"})
@@ -88,6 +89,10 @@ class ResearchCaseService:
             known_source_id is None or self.db.get(Source, known_source_id) is None
         ):
             raise ValueError("Persistent connector evidence requires a known source")
+        # Callers sanitize external responses before selecting facts. This final
+        # guard prevents a future caller from persisting capability-like fields.
+        assert_safe_source_content(extracted_facts)
+        assert_safe_source_content(provenance)
         evidence = CaseEvidence(
             case_id=case_id,
             known_source_id=known_source_id,

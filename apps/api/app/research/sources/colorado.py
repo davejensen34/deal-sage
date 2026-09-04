@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 import httpx
 from .base import SourceAdapter, SourceDefinition, SourceRecord
 from app.research.landing import CuratedSubject
+from app.research.sanitization import sanitize_external_mapping
 
 
 DATASET_ID = "4ykn-tg5h"
@@ -72,7 +73,8 @@ class ColoradoBusinessEntitiesAdapter(SourceAdapter):
         # expand the storage or instruction surface of a research run.
         if not isinstance(raw, dict) or not raw.get("entityid"):
             raise ValueError("Colorado source record is missing its entity identifier")
-        selected = {field: raw.get(field) for field in SELECT_FIELDS.split(",")}
+        policy = {field: True for field in SELECT_FIELDS.split(",")}
+        selected = sanitize_external_mapping(raw, policy).data
         entity_id = str(selected["entityid"])
         return SourceRecord(
             source_record_id=entity_id,
