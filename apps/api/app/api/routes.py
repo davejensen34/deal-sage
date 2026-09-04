@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchInference, ResearchQuery, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -90,6 +90,11 @@ def research_case_metrics(db: Session = Depends(get_db)):
             select(func.count(SourceCandidate.id)).where(
                 SourceCandidate.status == "promoted"
             )
+        ) or 0,
+        "frontier_items": db.scalar(select(func.count(ResearchFrontierItem.id))) or 0,
+        "research_steps": db.scalar(select(func.count(ResearchStep.id))) or 0,
+        "stopped_cases": db.scalar(
+            select(func.count(ResearchCase.id)).where(ResearchCase.status == "stopped")
         ) or 0,
         "by_origin_strategy": {
             strategy: count for strategy, count in strategy_rows

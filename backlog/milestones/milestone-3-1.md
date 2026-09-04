@@ -34,6 +34,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Issue #35 implements reusable nested allowlisting, recursive capability-field removal, and defense-in-depth persistence rejection while keeping source safety distinct from usefulness.
 - Issue #37 adds provider-neutral bounded search provenance and dynamic source candidates that never become evidence or persistent connectors automatically.
 - Issue #39 adds a provider-neutral obituary business-clue contract and deterministic baseline that preserves explicit relationship, former-owner, sale, and retirement language as source-backed claims without inferring current ownership.
+- Issue #41 adds durable frontier questions and deterministic bounded planning with reconstructable action/model provenance, attempt limits, research budgets, and explicit stopping reasons.
 
 ## Definition of done
 
