@@ -26,6 +26,14 @@ DealSage is an evidence-backed business ownership and transition intelligence pl
 - Avoid speculative infrastructure. Prefer existing processes, SQLite/PostgreSQL, and mature open-source libraries.
 - Validate behavior before declaring completion. UI changes require rendered inspection when tooling is available.
 
+## Code comments and discoverable context
+
+Write comments for future maintainers when the code alone cannot preserve the important context. Prefer explaining **why** a choice exists, the domain rule or invariant it protects, a non-obvious tradeoff, an external constraint, provenance expectations, or a security/responsible-research boundary. Document public APIs and complex interfaces when their contract, failure modes, units, side effects, or lifecycle are not obvious from names and types.
+
+Keep comments close to the behavior they explain and update or remove them when that behavior changes. Favor clear names, small functions, types, and tests over comments that translate each line into prose. Do not leave commented-out code, speculative essays, hidden reasoning transcripts, or comments that merely restate syntax. Use examples sparingly when they clarify a subtle contract.
+
+Make `TODO` and `FIXME` comments specific and actionable: state the remaining problem and relevant constraint, and link material follow-up work to its GitHub Issue. Do not use them to conceal correctness, security, provenance, or data-integrity gaps that must be resolved in the current change.
+
 ## Current workflow
 
 Use concise GitHub Issues for implementation-ready work, short-lived branches named by type and Issue, coherent action-oriented commits, and squash-merge PRs. Do not manufacture retroactive history. Ordinary validated changes may be merged autonomously; stop for material product direction, cost, security, legal, irreversible data, or unresolved architecture decisions.
