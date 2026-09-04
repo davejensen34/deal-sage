@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
+from hashlib import sha256
+import json
 from typing import Any
 
 
@@ -19,6 +21,13 @@ class SourceDefinition:
     role_value: str
     limitations: tuple[str, ...]
     last_tested: str | None = None
+
+    @property
+    def contract_fingerprint(self) -> str:
+        """Hash semantic access/schema expectations, excluding the observation date."""
+        payload = asdict(self)
+        payload.pop("last_tested", None)
+        return sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
 @dataclass(frozen=True)

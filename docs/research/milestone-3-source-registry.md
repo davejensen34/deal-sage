@@ -38,7 +38,7 @@ Official references:
 ## Texas
 
 1. **Comptroller Franchise Tax Account Status / Taxable Entity Search** — the official search advertises API access and accepts taxpayer number, entity name, or Secretary of State file number. The Comptroller states that public officer/director information comes from the latest processed Public Information Report (PIR). Treat those roles as relationship evidence, not ownership, and record possible annual-report staleness.
-2. **Comptroller open-data datasets** — the official open-records page lists Active Franchise Taxpayers and Active Sales Tax Permits as downloadable open data. Use them for entity/status/address corroboration and refresh candidates after validating dataset identifiers, schema, update cadence, and API limits. Tax or permit status does not establish ownership.
+2. **Comptroller open-data datasets** — the official open-records page lists Active Franchise Taxpayers and Active Sales Tax Permits as downloadable open data. Dataset `9cir-efmm` was exercised with a bounded ten-record Texas request through the public Socrata API. All ten records landed without quarantine at zero marginal cost, with 85.6% contracted-field completeness. Tax or permit status does not establish ownership; the adapter explicitly records zero ownership-supported assertions.
 3. **Secretary of State SOSDirect** — the official service charges $1 per search and additional document or certificate fees. Defer automation and purchases until its access terms, cost ceiling, and unique evidence value are approved.
 
 Texas explicitly states that Ownership Information Report data is confidential and not displayed online. DealSage must not represent that unavailable data as discoverable through the Comptroller source.
@@ -54,7 +54,7 @@ Official references:
 
 - Colorado: preserve the validated Socrata adapter as the first raw-to-curated implementation fixture; separately review a small set of filing-detail records without assuming an automated route.
 - Utah: request approval for the minimum $5 BEL sample only after the landing contract can retain and replay all three joined files.
-- Texas: validate the Comptroller API documentation and one open-data dataset contract before fetching a bounded sample; keep SOSDirect deferred.
+- Texas: retain the now-validated Active Franchise Taxpayers adapter for entity/tax corroboration, monitor its contract fingerprint, and keep SOSDirect deferred.
 
 These experiments must report retrieval success, latency, field completeness, role yield, stale/ambiguous rate, duplicate/conflict rate, and marginal cost. A source moves from ready to implemented or validated only with stored, reproducible evidence.
 
@@ -64,7 +64,7 @@ Recent state vital records are not a practical discovery feed. Utah keeps death 
 
 Probate/public-notice repositories can discover names by date, county, and notice category without a business name. Colorado law provides for a statewide newspaper notice repository, Utah law requires probate notices under a common heading, and Texas press/court portals expose estate or probate categories. Their public search interfaces do not by themselves establish an automation or reuse contract. The next step is publisher or court-operator permission plus a bounded manual coverage study, not scraping.
 
-OfficialObituary documents a no-auth, state-filtered public browse API and labels responses with `public-browse` and `obituary-browse` contracts. A bounded aggregate check on September 4, 2026 succeeded for all target states but found only six total records (CO 1, UT 3, TX 2); the newest reported dates ranged from January to May 2026. Its terms allow searching and reading but say submissions are not fact-checked. Decision: useful technical fixture and supplemental source, rejected as primary coverage.
+OfficialObituary documents a no-auth, state-filtered public browse API and labels responses with `public-browse` and `obituary-browse` contracts. A bounded aggregate check on September 4, 2026 succeeded for all target states but found only six total records (CO 1, UT 3, TX 2); the newest reported dates ranged from January to May 2026. More importantly, the public response exposed `edit_token` and `creation_session_id` fields. DealSage must not retain those capability-like values as evidence. Decision: reject ingestion until the publisher offers a safe minimal response contract. The generic ingestion boundary now denies credential- and session-like fields before storage.
 
 Official signal references:
 

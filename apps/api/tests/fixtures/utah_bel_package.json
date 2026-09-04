@@ -1,0 +1,12 @@
+{
+  "BUSENTITY": [
+    {"Entity Number":"9999999-0160","Entity ID":"9999999","Entity Type":"Domestic Limited Liability Company","Business Name":"Fictional Wasatch Tool LLC","City":"Provo","State":"UT","License Status":"Active","NAICS Code":"332710"}
+  ],
+  "BUSINFO": [
+    {"Entity ID":"9999999","Information Type":"DBA","Information":"Wasatch Tool"}
+  ],
+  "PRINCIPAL": [
+    {"Entity ID":"9999999","Member Position":"Member","Full name":"Jordan Example","City":"Provo","State":"UT"},
+    {"Entity ID":"9999999","Member Position":"Registered Agent","Full name":"Sample Agent Services","City":"Salt Lake City","State":"UT"}
+  ]
+}

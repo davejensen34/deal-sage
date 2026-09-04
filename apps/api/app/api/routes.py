@@ -15,6 +15,8 @@ from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business,
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
+from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter
+from app.research.sources.utah import UTAH_BEL_DEFINITION
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -31,7 +33,8 @@ def health(): return {"status":"ok"}
 @router.get("/research/sources")
 def research_sources():
     """Expose source contracts without initiating network acquisition."""
-    return [asdict(ColoradoBusinessEntitiesAdapter.definition)]
+    definitions=(ColoradoBusinessEntitiesAdapter.definition,TexasActiveFranchiseTaxpayersAdapter.definition,UTAH_BEL_DEFINITION)
+    return [{**asdict(definition),"contract_fingerprint":definition.contract_fingerprint} for definition in definitions]
 
 
 @router.get("/research/acquisition-runs")
@@ -50,6 +53,18 @@ def colorado_owner_discovery_result():
     result_path = Path(__file__).parents[1] / "research/results/colorado_owner_discovery_summary.json"
     if not result_path.exists():
         raise HTTPException(503, "The Colorado experiment result has not been recorded yet")
+    return json.loads(result_path.read_text())
+
+
+@router.get("/research/experiments/milestone3-source-samples")
+def milestone3_source_samples_result():
+    """Serve committed aggregate results without exposing raw source records."""
+    result_path = (
+        Path(__file__).parents[1]
+        / "research/results/milestone3_source_samples_summary.json"
+    )
+    if not result_path.exists():
+        raise HTTPException(503, "The Milestone 3 sample result has not been recorded yet")
     return json.loads(result_path.read_text())
 
 

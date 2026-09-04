@@ -6,7 +6,10 @@ import httpx
 import pytest
 
 from app.research.experiment import classify_record, summarize
+from app.research.ingestion import assert_safe_source_content, canonical_record_bytes
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
+from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, parse_curated_record as parse_texas
+from app.research.sources.utah import UTAH_BEL_DEFINITION, parse_bel_package
 
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures/colorado_records.json"
@@ -63,3 +66,50 @@ def test_research_api_exposes_source_and_aggregate_result(client):
     result = client.get("/api/research/experiments/colorado-owner-discovery")
     assert result.status_code == 200
     assert "observations" not in result.json()
+    samples = client.get("/api/research/experiments/milestone3-source-samples")
+    assert samples.status_code == 200
+    assert samples.json()["contains_record_level_data"] is False
+    assert "taxpayer_name" not in str(samples.json())
+
+
+@pytest.mark.asyncio
+async def test_texas_adapter_is_bounded_and_ignores_uncontracted_fields():
+    payload=json.loads((Path(__file__).parent/"fixtures/texas_taxpayer.json").read_text())
+    async with httpx.AsyncClient(transport=httpx.MockTransport(lambda request:httpx.Response(200,json=[{**payload,"untrusted_extra":"ignore"}]))) as client:
+        records=await TexasActiveFranchiseTaxpayersAdapter(client).fetch_sample(1)
+    assert records[0].source_record_id == "32099999999"
+    assert "untrusted_extra" not in records[0].raw
+    assert TexasActiveFranchiseTaxpayersAdapter.query(1)["$where"] == "taxpayer_state='TX'"
+    with pytest.raises(ValueError): TexasActiveFranchiseTaxpayersAdapter.query(101)
+    assert len(TexasActiveFranchiseTaxpayersAdapter.definition.contract_fingerprint) == 64
+
+
+def test_texas_tax_status_never_claims_ownership():
+    content=(Path(__file__).parent/"fixtures/texas_taxpayer.json").read_bytes()
+    subject=parse_texas(content)[0]
+    assert subject.subject_type == "business"
+    assert subject.data["right_to_transact_code"] == "A"
+    assert subject.data["ownership_supported"] is False
+
+
+def test_utah_bel_join_preserves_role_without_validating_ownership():
+    content=(Path(__file__).parent/"fixtures/utah_bel_package.json").read_bytes()
+    subjects=parse_bel_package(content)
+    member=next(item for item in subjects if item.data.get("reported_role")=="Member")
+    agent=next(item for item in subjects if item.data.get("reported_role")=="Registered Agent")
+    assert member.data["control_role_candidate"] is True
+    assert member.data["ownership_validated"] is False
+    assert agent.data["control_role_candidate"] is False
+    assert len(UTAH_BEL_DEFINITION.contract_fingerprint) == 64
+
+
+def test_canonical_evidence_is_stable_and_rejects_sensitive_source_fields():
+    retrieved_at = datetime.now(timezone.utc)
+    first = ColoradoBusinessEntitiesAdapter._normalize_transport(fixture_records()[0], retrieved_at)
+    reordered = ColoradoBusinessEntitiesAdapter._normalize_transport(
+        dict(reversed(list(fixture_records()[0].items()))), retrieved_at
+    )
+    assert canonical_record_bytes(first) == canonical_record_bytes(reordered)
+
+    with pytest.raises(ValueError, match="Forbidden source field"):
+        assert_safe_source_content({"public": {"edit_token": "must-not-land"}})
