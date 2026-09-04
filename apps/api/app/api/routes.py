@@ -10,7 +10,8 @@ from app.ai.providers.anthropic import AnthropicProvider
 from app.ai.providers.openai import OpenAIProvider
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ReviewCase, TransitionSignal
+from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ResearchStage, ResearchTrail, ReviewCase, TransitionSignal
+from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 
@@ -38,6 +39,18 @@ def colorado_owner_discovery_result():
     if not result_path.exists():
         raise HTTPException(503, "The Colorado experiment result has not been recorded yet")
     return json.loads(result_path.read_text())
+
+
+@router.get("/research/funnel")
+def research_funnel(db: Session = Depends(get_db)):
+    return funnel_counts(db.scalars(select(ResearchStage)).all())
+
+
+@router.get("/research/trails/{business_id}")
+def research_trail(business_id: int, db: Session = Depends(get_db)):
+    trail = db.scalar(select(ResearchTrail).where(ResearchTrail.business_id == business_id).options(selectinload(ResearchTrail.business), selectinload(ResearchTrail.target_profile), selectinload(ResearchTrail.stages).selectinload(ResearchStage.source)))
+    if not trail: raise HTTPException(404, "Research trail not found")
+    return {"id":trail.id,"business":{"id":trail.business.id,"name":trail.business.legal_name},"target_profile":{"name":trail.target_profile.name,"criteria":trail.target_profile.criteria,"provenance":trail.target_profile.provenance} if trail.target_profile else None,"owner_research_ready":trail.owner_research_ready,"readiness_explanation":trail.readiness_explanation,"stages":[{"id":s.id,"type":s.stage_type,"sequence":s.sequence,"status":s.status,"confidence":s.confidence,"detail":s.detail,"supporting_evidence":s.supporting_evidence,"contradictions":s.contradictions,"missing_evidence":s.missing_evidence,"evidence_refs":s.evidence_refs,"person_id":s.person_id,"relationship_id":s.relationship_id,"source":{"publisher":s.source.publisher,"canonical_url":s.source.canonical_url,"retrieved_at":s.source.retrieved_at,"classification":"source_fact"} if s.source else None} for s in trail.stages]}
 
 
 @router.get("/dashboard")
