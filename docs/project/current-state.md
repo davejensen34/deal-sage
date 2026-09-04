@@ -1,8 +1,10 @@
 # Current state
 
-## Active milestone
+## Milestone status
 
-Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 through #51 established the common case spine, bounded discovery/planning, explainable confidence, analyst narrative, provider integration, and approved public-case protocol. Issue #53 executed the seven-case comparison and exposed the required version-two evaluation contract; Issue #55 implements and validates that replacement offline without another provider call. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
+No execution milestone is active. Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. Issues #33 through #51 established the common case spine, bounded discovery/planning, explainable confidence, analyst narrative, provider integration, and approved public-case protocol. Issue #53 executed the seven-case comparison and exposed the required version-two evaluation contract; Issue #55 implements and validates that replacement offline without another provider call.
+
+Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`. Milestone 4 remains proposed and is not active.
 
 ## What works and has been validated
 
@@ -52,7 +54,7 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Decide explicitly whether the negative version-one live result plus the offline-validated version-two replacement is sufficient to close Milestone 3.1, or whether a newly bounded live protocol is justified. Do not rerun the exhausted cohort by default. Resume Issue #32 immediately when the Utah BEL archive arrives; its currently forecast documentation conflicts are recorded on that issue.
+Resume Issue #32 when the Utah BEL archive arrives. Separately, decide whether and when to approve Milestone 4; its first live evaluation must use a newly approved version-two protocol and must not reuse the exhausted Milestone 3.1 authorization. Until either event, no implementation milestone is active.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 

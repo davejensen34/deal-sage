@@ -10,16 +10,16 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is paused, not closed. Its only open work is Issue #32, awaiting the authorized Utah BEL delivery on a prepared branch.
-- Milestone 3.1 — Evidence Convergence and Dynamic Discovery remains active. Issues #33 through #51 established the convergence architecture, analyst workflow, bounded model setup, and approved public-case protocol. Issue #53 executed the cohort and exposed a conflated evaluation taxonomy and incomplete outputs; Issue #55 replaces that contract with offline-validated independent dimensions, typed provider outcomes, split usage, and per-dimension metrics without making another live call.
-- Issue #56 reconciled repository documentation before Issue #55; neither issue advances or closes the paused Milestone 3 work.
+- Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
+- No execution milestone is active. Milestone 3 remains paused at Issue #32 for the authorized Utah BEL delivery; Milestone 4 is proposed but has not been approved or started.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence
 
 1. Finish Milestone 3 when the pending Utah BEL delivery arrives.
-2. Milestone 3.1 builds evidence convergence, bounded public research, and provider-neutral search/model assistance over traceable evidence.
-3. Milestone 4 retains deeper intelligent discovery work not proven or completed in Milestone 3.1.
-4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows.
+2. Milestone 3.1 has completed evidence convergence, bounded public research, and the provider-neutral search/model foundation over traceable evidence.
+3. If explicitly approved, Milestone 4 productizes deeper intelligent discovery and performs a newly governed live quality evaluation.
+4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
 
 This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 

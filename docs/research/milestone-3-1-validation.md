@@ -23,4 +23,6 @@ This assessment records observed support as of September 4, 2026. It distinguish
 
 ## Closeout decision
 
-Milestone 3.1 remains active. Issue #53 executed the approved protocol and recorded the failures without changing pre-labels after seeing output; Issue #55 resolves the resulting contract defect offline. The next product decision is whether this negative live result plus the fixture-validated replacement is sufficient for Milestone 3.1 closeout, or whether a newly bounded live protocol is justified. Utah BEL delivery remains a separate Milestone 3 dependency in Issue #32.
+Milestone 3.1 is complete as a validated foundation. Issue #53 executed the approved protocol and recorded the failures without changing pre-labels after seeing output; Issue #55 resolves the resulting contract defect offline. The live quality rows remain only partially supported, and closeout does not convert them into passing results. A newly bounded live protocol belongs to a future explicitly approved Milestone 4 evaluation rather than being required to repeat this milestone.
+
+No later milestone is active automatically. Utah BEL delivery remains a separate paused Milestone 3 dependency in Issue #32.
