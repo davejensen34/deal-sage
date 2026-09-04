@@ -61,7 +61,7 @@ cd apps/web && npm test
 
 ## Architecture
 
-The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keeps SQLite and PostgreSQL interchangeable. Domain entities separate people, businesses, relationships, sources, evidence, signals, candidate conclusions, reviews, and audits. See [architecture](docs/architecture.md), [confidence model](docs/confidence-model.md), [deployment](docs/deployment.md), and [responsible research](docs/responsible-research.md).
+The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keeps SQLite and PostgreSQL interchangeable. Domain entities separate people, businesses, relationships, sources, evidence, signals, candidate conclusions, reviews, and audits. Start with the [product vision](docs/product/vision.md) and [current state](docs/project/current-state.md), then see the [architecture](docs/architecture/architecture.md), [confidence model](docs/architecture/confidence-model.md), [deployment](docs/architecture/deployment.md), and [responsible research](docs/governance/responsible-research.md).
 
 ## Current limitations
 

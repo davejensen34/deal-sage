@@ -10,6 +10,11 @@ def test_candidate_search_and_filter(client):
     assert response.json()["total"]==1
     assert response.json()["items"][0]["business"]=="Alder Ridge Toolworks"
 
+def test_candidate_sorting(client):
+    response=client.get("/api/candidates",params={"sort":"confidence","order":"asc","page_size":100})
+    scores=[item["overall_candidate_confidence"] for item in response.json()["items"]]
+    assert scores==sorted(scores)
+
 def test_status_update_persists_and_audits(client):
     response=client.patch("/api/candidates/2/status",json={"status":"watchlist","reason":"Ambiguous identity","note":"Monitor for a second source."})
     assert response.status_code==200
