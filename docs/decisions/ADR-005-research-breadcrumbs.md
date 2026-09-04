@@ -1,5 +1,7 @@
 # ADR-005: Evidence-backed research breadcrumbs
 
+Status: accepted. ADR-007 and ADR-008 generalize this original business-first breadcrumb into signal-first, business-first, and hybrid research cases; the original owner-readiness gate remains valid for its trail.
+
 ## Context
 
 Milestone 2 demonstrated that an authoritative registry can identify an entity while exposing no owner/controller truth. DealSage needs to build confidence progressively without silently merging businesses, websites, and people.

@@ -12,7 +12,7 @@ Complete with a change decision. The Colorado experiment proved that its officia
 
 ### Milestone 3 — Multi-State Data Acquisition and Curation
 
-Establish a replayable evidence supply chain for Colorado, Utah, and Texas before adding model-driven discovery. Define multiple permitted sources for each state, their authority and limitations, acquisition contracts, refresh expectations, and measurable coverage. Land immutable source artifacts separately from normalized records, validated evidence, and quarantined failures. Preserve retrieval time, source identity, content hash, parser version, lineage, and terms or access notes throughout processing.
+Establish a replayable evidence supply chain for Colorado, Utah, and Texas as the durable foundation for productized model-driven discovery. Define multiple permitted sources for each state, their authority and limitations, acquisition contracts, refresh expectations, and measurable coverage. Land immutable source artifacts separately from normalized records, validated evidence, and quarantined failures. Preserve retrieval time, source identity, content hash, parser version, lineage, and terms or access notes throughout processing.
 
 Milestone 3 proves deterministic acquisition, normalization, deduplication, provenance, replay, and source-change handling. It does not claim AI-derived business facts, comprehensive owner coverage, or transition-signal intelligence.
 
@@ -23,6 +23,8 @@ Milestone 3 is paused—not closed—while the authorized Utah BEL sample delive
 Milestone 3.1 is active by explicit approval. It evolves signal-first, business-first, and hybrid origins into one case-resolution framework spanning business sources, transition evidence, and bounded public-web research. It introduces traceable claims and inferences, provider-neutral search, dynamic source candidates, obituary business-clue extraction, bounded research frontiers and planning, bidirectional resolution, explainable confidence convergence, and analyst-visible research narratives and metrics.
 
 Milestone 3.1 may use OpenAI or Anthropic where contextual reasoning materially helps, while search remains a separate capability and deterministic code retains authority over persistence, exact lookup, validation, scoring, budgets, and state transitions.
+
+The approved seven-case provider exercise validated bounded integration behavior but exposed a conflated outcome taxonomy and incomplete-output handling. Issue #55 is the next implementation slice: define and fixture-test a multidimensional version-two evaluation contract before considering another live run.
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 

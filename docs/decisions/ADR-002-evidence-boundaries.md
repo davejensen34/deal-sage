@@ -1,5 +1,7 @@
 # ADR-002: Evidence and decision boundaries
 
+Status: accepted.
+
 ## Context
 
 The central risk is falsely joining a transition signal to a business-associated person.

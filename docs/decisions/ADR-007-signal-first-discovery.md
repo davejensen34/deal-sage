@@ -1,5 +1,7 @@
 # ADR-007: Signal-first discovery and unresolved research subjects
 
+Status: accepted. ADR-008 and Milestone 3.1 subsequently brought bounded model-assisted extraction and planning forward under the same deterministic controls; current behavior is in `docs/architecture/architecture.md`.
+
 ## Context
 
 DealSage cannot depend on knowing a business name before discovery. State business registries are often lookup-oriented, incomplete for ownership, or too expensive to acquire comprehensively. The initial differentiating signal is a possible owner death, so a credible path may begin with a public death notice, memorial, or other transition event and only later discover whether the person controlled a business.

@@ -1,6 +1,6 @@
 # Milestone 3 — Multi-State Data Acquisition and Curation
 
-Status: in progress in GitHub Milestone 3; source-registry research begins in Issue #20.
+Status: paused, not closed. Issues #20–#30 are complete; Issue #32 is waiting for the authorized Utah BEL delivery on the preserved `feature/32-utah-live-sample` branch.
 
 ## Progress
 

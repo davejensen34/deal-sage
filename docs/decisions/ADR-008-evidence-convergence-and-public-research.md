@@ -1,5 +1,7 @@
 # ADR-008: Evidence convergence and bounded public research
 
+Status: accepted and implemented incrementally in Milestone 3.1. Current capability and validation boundaries are in `docs/project/current-state.md`.
+
 ## Context
 
 Milestone 3 proved that state business sources can provide authoritative entity facts while signal-first public research can discover people and business clues without a predetermined company list. `CandidateMatch` is too late in the lifecycle to represent that work because it requires a resolved person, business, relationship, and transition signal.
