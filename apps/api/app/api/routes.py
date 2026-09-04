@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchInference, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchInference, ResearchQuery, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -84,6 +84,13 @@ def research_case_metrics(db: Session = Depends(get_db)):
         "evidence_items": db.scalar(select(func.count(CaseEvidence.id))) or 0,
         "claims": db.scalar(select(func.count(EvidenceClaim.id))) or 0,
         "inferences": db.scalar(select(func.count(ResearchInference.id))) or 0,
+        "search_queries": db.scalar(select(func.count(ResearchQuery.id))) or 0,
+        "source_candidates": db.scalar(select(func.count(SourceCandidate.id))) or 0,
+        "promoted_sources": db.scalar(
+            select(func.count(SourceCandidate.id)).where(
+                SourceCandidate.status == "promoted"
+            )
+        ) or 0,
         "by_origin_strategy": {
             strategy: count for strategy, count in strategy_rows
         },
