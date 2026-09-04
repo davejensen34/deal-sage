@@ -1,3 +1,6 @@
 const API=import.meta.env.VITE_API_URL||'';
-export async function api<T>(path:string, options?:RequestInit):Promise<T>{const response=await fetch(`${API}/api${path}`,{...options,headers:{'Content-Type':'application/json',...options?.headers}});if(!response.ok){const body=await response.json().catch(()=>({detail:'Request failed'}));throw new Error(body.detail||'Request failed')}return response.json()}
+// Deployments may point VITE_API_URL at either an origin or an already-prefixed
+// reverse-proxy path; normalize once so requests never become `/api/api/...`.
+const API_ROOT=API.endsWith('/api')?API:`${API}/api`;
+export async function api<T>(path:string, options?:RequestInit):Promise<T>{const response=await fetch(`${API_ROOT}${path}`,{...options,headers:{'Content-Type':'application/json',...options?.headers}});if(!response.ok){const body=await response.json().catch(()=>({detail:'Request failed'}));throw new Error(body.detail||'Request failed')}return response.json()}
 export type Candidate={id:number;business:string;owner:string;city:string;state:string;signal_type:string;transition_date:string;owner_business_confidence:number;signal_identity_confidence:number;overall_candidate_confidence:number;status:string;updated_at:string};

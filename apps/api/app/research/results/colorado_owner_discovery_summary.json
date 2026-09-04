@@ -1,0 +1,33 @@
+{
+  "experiment": "Colorado owner-discovery falsification experiment",
+  "status": "validated",
+  "sample_size": 50,
+  "query_url": "https://data.colorado.gov/resource/4ykn-tg5h.json?%24limit=50&%24select=entityid%2Centityname%2Centitytype%2Centitystatus%2Cprincipalcity%2Cprincipalstate%2Cagentfirstname%2Cagentmiddlename%2Cagentlastname%2Cagentsuffix%2Cagentorganizationname%2Centityformdate&%24where=entitystatus%3D%27Good+Standing%27+AND+principalstate%3D%27CO%27+AND+entitytype+in%28%27DLLC%27%2C%27DPC%27%2C%27DNC%27%29&%24order=entityid+ASC",
+  "selection": "First 50 entity IDs in ascending order among Colorado-principal domestic LLCs, professional corporations, and nonprofit corporations in Good Standing.",
+  "review_method": "Conservative deterministic classification reviewed against the official dataset schema and Business Master File description. Agent fields are labeled registered_agent; ownership remains unknown.",
+  "metrics": {
+    "retrieval_success_percent": 100,
+    "entity_name_coverage_percent": 100.0,
+    "formation_date_coverage_percent": 100.0,
+    "registered_agent_evidence_percent": 100.0,
+    "individual_agent_percent": 80.0,
+    "organization_agent_percent": 20.0,
+    "owner_controller_evidence_yield_percent": 0,
+    "ownership_unknown_percent": 100,
+    "retrieval_latency_ms": 496,
+    "marginal_api_cost_usd": 0
+  },
+  "role_counts": {
+    "registered_agent": 50,
+    "owner": 0,
+    "member": 0,
+    "manager": 0,
+    "officer": 0,
+    "unknown_owner": 50
+  },
+  "recommendation": {
+    "decision": "change",
+    "summary": "Do not use Colorado's bulk business-entity dataset as an owner-discovery source.",
+    "next_step": "Retain it for entity, address, status, and registered-agent evidence; evaluate a source or jurisdiction that explicitly exposes member, manager, officer, or owner roles."
+  }
+}

@@ -1,4 +1,6 @@
+from dataclasses import asdict
 from datetime import datetime, timezone
+import json
 from pathlib import Path
 from time import perf_counter
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -10,6 +12,7 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ReviewCase, TransitionSignal
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
+from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 
 router = APIRouter(prefix="/api")
 settings = get_settings()
@@ -21,6 +24,20 @@ def item(c: CandidateMatch) -> dict:
 
 @router.get("/health")
 def health(): return {"status":"ok"}
+
+
+@router.get("/research/sources")
+def research_sources():
+    """Expose source contracts without initiating network acquisition."""
+    return [asdict(ColoradoBusinessEntitiesAdapter.definition)]
+
+
+@router.get("/research/experiments/colorado-owner-discovery")
+def colorado_owner_discovery_result():
+    result_path = Path(__file__).parents[1] / "research/results/colorado_owner_discovery_summary.json"
+    if not result_path.exists():
+        raise HTTPException(503, "The Colorado experiment result has not been recorded yet")
+    return json.loads(result_path.read_text())
 
 
 @router.get("/dashboard")

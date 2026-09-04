@@ -1,6 +1,6 @@
 # Milestone 2 — Business and Owner Discovery Proof
 
-Status: proposed; do not implement without user direction.
+Status: completed and validated on September 4, 2026.
 
 ## Experiment
 
@@ -21,3 +21,9 @@ Recommended first comparison: Colorado and Utah, pending current primary-source 
 ## Demonstration proof
 
 Given the sample, an analyst can inspect the source record, normalized relationship assertion, provenance, uncertainty, and aggregate experiment measures. No national-coverage claim is made.
+
+## Outcome
+
+The Colorado official bulk dataset passed access and entity-evidence checks but failed the owner-discovery question by design: its official contract omits owners, officers, and directors. The 50-record run retrieved successfully at zero marginal API cost, exposed registered-agent evidence for all records, and produced 0% owner/controller yield with 100% ownership unknown.
+
+The source adapter, fictional fixtures, deterministic taxonomy tests, aggregate API result, and rendered Research experience preserve this negative evidence. Decision: **change**. Retain Colorado for entity and registered-agent corroboration, and require explicit owner/controller role fields from the next source experiment.

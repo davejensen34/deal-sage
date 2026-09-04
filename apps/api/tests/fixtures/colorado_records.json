@@ -1,0 +1,32 @@
+[
+  {
+    "entityid": "20240000001",
+    "entityname": "Example Mountain Works LLC",
+    "entitytype": "DLLC",
+    "entitystatus": "Good Standing",
+    "principalcity": "Denver",
+    "principalstate": "CO",
+    "agentfirstname": "Alex",
+    "agentlastname": "Example",
+    "entityformdate": "2024-01-02"
+  },
+  {
+    "entityid": "20240000002",
+    "entityname": "Example Front Range PC",
+    "entitytype": "DPC",
+    "entitystatus": "Good Standing",
+    "principalcity": "Boulder",
+    "principalstate": "CO",
+    "agentorganizationname": "Example Registered Agents LLC",
+    "entityformdate": "2024-01-03"
+  },
+  {
+    "entityid": "20240000003",
+    "entityname": "Example Community Group",
+    "entitytype": "DNC",
+    "entitystatus": "Good Standing",
+    "principalcity": "Pueblo",
+    "principalstate": "CO",
+    "entityformdate": "2024-01-04"
+  }
+]

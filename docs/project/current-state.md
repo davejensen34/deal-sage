@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 1 — Evidence and Analyst Foundation is validated and reconciled. It originally entered `main` as commit `d9fa99d` before the Issue/PR operating model existed; no retroactive process was invented. GitHub Issue #1 and Pull Request #2 established the durable operating model and closed bounded gaps.
+Milestone 2 — Business and Owner Discovery Proof is complete and validated in Pull Request #7. The Colorado experiment produced a deliberate negative result: the official bulk source is suitable for entity and registered-agent evidence, but not owner discovery. Do not open Milestone 3 without user direction.
 
 ## What works and has been validated
 
@@ -31,7 +31,7 @@ Milestone 1 — Evidence and Analyst Foundation is validated and reconciled. It 
 
 ## Missing or intentionally deferred
 
-Live sources, source registry/adapters, autonomous acquisition, real transition signals, distributed work, enterprise authentication, multi-user authorization, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
+Owner-capable live sources, autonomous acquisition, real transition signals, distributed work, enterprise authentication, multi-user authorization, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
 
 ## AI state
 
@@ -39,7 +39,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Highest risks
 
-1. Whether public sources expose actual SMB owners/controllers with sufficient quality and permitted programmatic access.
+1. Whether another permitted public source exposes actual SMB owners/controllers with sufficient quality; Colorado's bulk dataset does not.
 2. Identity-resolution precision and false-positive harm.
 3. Distinguishing legal roles from control across jurisdictions and stale filings.
 4. Research acquisition reliability and sustainable source maintenance.
@@ -47,8 +47,8 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Wait for user direction before opening Milestone 2. The next bounded work is the owner-discovery experiment described in `backlog/milestones/milestone-2.md`; no acquisition implementation has begun.
+Wait for user direction before opening Milestone 3. The next source experiment should reject schemas without explicit owner/controller roles before adapter implementation.
 
 ## Latest validation
 
-Reconciliation exercised 9 backend/API tests, the initial migration from an empty database, 1 frontend component test, the production frontend build, Compose configuration, and the full Nginx/FastAPI/PostgreSQL stack. Rendered inspection covered the dashboard, sortable/searchable candidate list, registered-agent false-positive detail, evidence and uncertainty hierarchy, decision modal, persisted watchlist decision/note, and updated audit history. No material clipping or hierarchy defect was observed at the desktop validation viewport; broader breakpoint coverage remains partial.
+Milestone 2 validation exercised 14 backend/API tests, 1 frontend component test, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack. A live bounded Colorado request retrieved 50 records successfully in 496 ms at zero marginal API cost. Rendered inspection covered the Research decision, metrics, role taxonomy, source contract, and limitations; reverse-proxy API requests were verified after correcting base-path normalization. Broader breakpoint coverage remains partial.
