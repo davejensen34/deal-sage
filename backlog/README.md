@@ -9,14 +9,16 @@ Priority order is research correctness and provenance; owner-discovery and ident
 ## Current product position
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
-- Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, #26, and #28 are complete; Issue #30 tracks durable signal-first resolution outcomes. Live Utah acquisition remains purchase-gated. Later implementation remains tied to scoped Issues.
+- Milestone 3 — Multi-State Data Acquisition and Curation is paused, not closed. Its only open work is Issue #32, awaiting the authorized Utah BEL delivery on a prepared branch.
+- Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active by explicit approval. GitHub Milestone 3.1 and Issue #33 begin the shared research-case/evidence/claim foundation.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence
 
-1. Milestone 3 builds curated, replayable, multi-source data acquisition for Colorado, Utah, and Texas.
-2. Milestone 4 adds provider-neutral OpenAI/Anthropic discovery and analysis over that curated evidence.
-3. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows.
+1. Finish Milestone 3 when the pending Utah BEL delivery arrives.
+2. Milestone 3.1 builds evidence convergence, bounded public research, and provider-neutral search/model assistance over traceable evidence.
+3. Milestone 4 retains deeper intelligent discovery work not proven or completed in Milestone 3.1.
+4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows.
 
 This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 
