@@ -279,6 +279,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
     { name = "itsdangerous" },
+    { name = "jsonschema" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
@@ -289,7 +290,6 @@ dependencies = [
 [package.optional-dependencies]
 ai = [
     { name = "anthropic" },
-    { name = "jsonschema" },
     { name = "openai" },
 ]
 dev = [
@@ -305,7 +305,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.115,<1" },
     { name = "httpx", specifier = ">=0.27,<1" },
     { name = "itsdangerous", specifier = ">=2.2,<3" },
-    { name = "jsonschema", marker = "extra == 'ai'", specifier = ">=4.23,<5" },
+    { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "openai", marker = "extra == 'ai'", specifier = ">=1.50,<2" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2,<4" },
     { name = "pydantic-settings", specifier = ">=2.4,<3" },
