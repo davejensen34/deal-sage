@@ -1,0 +1,75 @@
+{
+  "schema_version": "milestone-3-1-comparison-v2",
+  "cases": [
+    {
+      "case_id": "FIX-01",
+      "state": "CO",
+      "origin": "signal_first",
+      "subject": {"name": "Avery Morgan", "signal_date": "2025-01-10"},
+      "business": {"name": "Aspen Fixture Works", "status": "active"},
+      "sources": [{"source_id": "F01-S1", "excerpt": "Avery owned the company until their death; the company continues operating."}],
+      "expected_dimensions": {"case_origin": "signal_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "needs_more_research"},
+      "expected_output": {"case_origin": "signal_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "needs_more_research", "supported_source_ids": ["F01-S1"], "contradictions": [], "unresolved_questions": ["Who now controls the business?"], "summary": "The identified former owner's relationship ended at the signal while the business remained active."}
+    },
+    {
+      "case_id": "FIX-02",
+      "state": "UT",
+      "origin": "business_first",
+      "subject": {"name": "Jordan Lee", "signal_date": "2025-02-12"},
+      "business": {"name": "Wasatch Fixture Supply", "status": "active"},
+      "sources": [{"source_id": "F02-S1", "excerpt": "Founder Jordan Lee died; the store remains open. No successor was named."}],
+      "expected_dimensions": {"case_origin": "business_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "needs_more_research"},
+      "expected_output": {"case_origin": "business_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "needs_more_research", "supported_source_ids": ["F02-S1"], "contradictions": [], "unresolved_questions": ["The successor is unknown."], "summary": "The business-first case resolves the former owner and active business but not the successor."}
+    },
+    {
+      "case_id": "FIX-03",
+      "state": "TX",
+      "origin": "hybrid",
+      "subject": {"name": "Casey Rivera", "signal_date": "2025-03-05"},
+      "business": {"name": "Lone Star Fixture Lab", "status": "active"},
+      "sources": [{"source_id": "F03-S1", "excerpt": "Casey Rivera remains the sole member and the company is active."}],
+      "expected_dimensions": {"case_origin": "hybrid", "identity_resolution": "resolved", "relationship": "current_owner", "relationship_time": "current_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "candidate_supported"},
+      "expected_output": {"case_origin": "hybrid", "identity_resolution": "resolved", "relationship": "current_owner", "relationship_time": "current_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "candidate_supported", "supported_source_ids": ["F03-S1"], "contradictions": [], "unresolved_questions": [], "summary": "The evidence supports the resolved current owner and active business for analyst review."}
+    },
+    {
+      "case_id": "FIX-04",
+      "state": "CO",
+      "origin": "signal_first",
+      "subject": {"name": "Taylor Kim", "signal_date": "2025-04-08"},
+      "business": null,
+      "sources": [{"source_id": "F04-S1", "excerpt": "The notice names Taylor Kim but contains no business clue."}],
+      "expected_dimensions": {"case_origin": "signal_first", "identity_resolution": "ambiguous", "relationship": "none", "relationship_time": "not_applicable", "operating_status": "unknown", "contradiction_state": "none", "research_disposition": "no_business_found"},
+      "expected_output": {"case_origin": "signal_first", "identity_resolution": "ambiguous", "relationship": "none", "relationship_time": "not_applicable", "operating_status": "unknown", "contradiction_state": "none", "research_disposition": "no_business_found", "supported_source_ids": ["F04-S1"], "contradictions": [], "unresolved_questions": ["Which Taylor Kim is described?"], "summary": "No business can be supported and the common-name identity remains ambiguous."}
+    },
+    {
+      "case_id": "FIX-05",
+      "state": "UT",
+      "origin": "hybrid",
+      "subject": {"name": "Riley Chen", "signal_date": "2025-05-14"},
+      "business": {"name": "Canyon Fixture Studio", "status": "active"},
+      "sources": [{"source_id": "F05-S1", "excerpt": "One source calls Riley the owner; another identifies an unrelated current owner."}],
+      "expected_dimensions": {"case_origin": "hybrid", "identity_resolution": "contradicted", "relationship": "unclear", "relationship_time": "unclear", "operating_status": "active", "contradiction_state": "unresolved", "research_disposition": "conflict_review"},
+      "expected_output": {"case_origin": "hybrid", "identity_resolution": "contradicted", "relationship": "unclear", "relationship_time": "unclear", "operating_status": "active", "contradiction_state": "unresolved", "research_disposition": "conflict_review", "supported_source_ids": ["F05-S1"], "contradictions": ["The sources identify different current owners."], "unresolved_questions": ["Which ownership record is authoritative and current?"], "summary": "Conflicting ownership evidence requires analyst review."}
+    },
+    {
+      "case_id": "FIX-06",
+      "state": "TX",
+      "origin": "business_first",
+      "subject": {"name": "Morgan Patel", "signal_date": "2025-06-20"},
+      "business": {"name": "Prairie Fixture Company", "status": "inactive"},
+      "sources": [{"source_id": "F06-S1", "excerpt": "Morgan sold the business in 2021; the entity forfeited in 2024."}],
+      "expected_dimensions": {"case_origin": "business_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_before_signal", "operating_status": "inactive", "contradiction_state": "resolved_by_timeline", "research_disposition": "no_qualifying_relationship"},
+      "expected_output": {"case_origin": "business_first", "identity_resolution": "resolved", "relationship": "former_owner", "relationship_time": "ended_before_signal", "operating_status": "inactive", "contradiction_state": "resolved_by_timeline", "research_disposition": "no_qualifying_relationship", "supported_source_ids": ["F06-S1"], "contradictions": ["Historic ownership and later inactive status describe different effective dates."], "unresolved_questions": [], "summary": "The timeline resolves the apparent conflict: ownership ended before the signal and the business is inactive."}
+    },
+    {
+      "case_id": "FIX-07",
+      "state": "TX",
+      "origin": "signal_first",
+      "subject": {"name": "Quinn Brooks", "signal_date": "2025-07-11"},
+      "business": {"name": "Gulf Fixture Services", "status": "active"},
+      "sources": [{"source_id": "F07-S1", "excerpt": "Quinn served as registered agent but no ownership role is stated."}],
+      "expected_dimensions": {"case_origin": "signal_first", "identity_resolution": "resolved", "relationship": "non_owner_role", "relationship_time": "current_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "no_qualifying_relationship"},
+      "expected_output": {"case_origin": "signal_first", "identity_resolution": "resolved", "relationship": "non_owner_role", "relationship_time": "current_at_signal", "operating_status": "active", "contradiction_state": "none", "research_disposition": "no_qualifying_relationship", "supported_source_ids": ["F07-S1"], "contradictions": [], "unresolved_questions": ["Is there independent ownership evidence?"], "summary": "Registered-agent evidence resolves a non-owner role and cannot support ownership."}
+    }
+  ]
+}

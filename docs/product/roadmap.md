@@ -24,7 +24,7 @@ Milestone 3.1 is active by explicit approval. It evolves signal-first, business-
 
 Milestone 3.1 may use OpenAI or Anthropic where contextual reasoning materially helps, while search remains a separate capability and deterministic code retains authority over persistence, exact lookup, validation, scoring, budgets, and state transitions.
 
-The approved seven-case provider exercise validated bounded integration behavior but exposed a conflated outcome taxonomy and incomplete-output handling. Issue #55 is the next implementation slice: define and fixture-test a multidimensional version-two evaluation contract before considering another live run.
+The approved seven-case provider exercise validated bounded integration behavior but exposed a conflated outcome taxonomy and incomplete-output handling. Issue #55 replaces it with a fixture-tested multidimensional version-two evaluation contract. Any new live run remains a separate protocol decision, not an automatic next step.
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 

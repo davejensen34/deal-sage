@@ -13,7 +13,7 @@ This directory contains living product and engineering specifications plus histo
 ## By purpose
 
 - `product/` defines the vision, users, principles, and roadmap.
-- `architecture/` defines current technical contracts for data, confidence, AI, evidence landing, and deployment.
+- `architecture/` defines current technical contracts for data, confidence, AI, model evaluation, evidence landing, and deployment. The version-two provider comparison contract is in [`architecture/model-evaluation.md`](architecture/model-evaluation.md).
 - `deployment/` contains operator setup that supplements the root README.
 - `governance/` contains rules that apply to every source, model, and analyst workflow.
 - `research/` records source assessments, experiments, protocols, and observed results. These are dated evidence records, not blanket permission to collect from a source.

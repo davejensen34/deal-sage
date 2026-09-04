@@ -1,6 +1,6 @@
 # Milestone 3.1 bounded public-case validation plan
 
-Status: seven-slot protocol approved and executed September 4, 2026. Results and the required version-two follow-up are recorded in `milestone-3-1-live-validation-results.md`.
+Status: seven-slot protocol approved and executed September 4, 2026. Results are recorded in `milestone-3-1-live-validation-results.md`; the version-two follow-up is implemented and offline-validated in `../architecture/model-evaluation.md` without reopening this protocol.
 
 ## Purpose
 

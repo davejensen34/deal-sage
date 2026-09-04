@@ -11,7 +11,7 @@
 - `CandidateMatch`: joins the person, business, relationship, signal, independent scores, conflicts, gaps, and recommendation.
 - `ReviewCase`: assignment, status, decision, reason codes, and currently embedded analyst-note records.
 - `AuditEvent`: append-oriented record of meaningful system and analyst actions.
-- `AIExecution`: provider/model/prompt version, timing, usage where available, outcome, and error.
+- `AIExecution`: provider/model/prompt version, timing, separate input/output and compatible total token usage where available, outcome, and safe error class.
 - `AcquisitionRun`, `RawArtifact`, `CuratedRecord`, and `FieldLineage`: replayable source acquisition, content-addressed raw evidence, parser/schema versions, quarantine state, and field-level provenance.
 - `ResearchCase`, `CaseEvidence`, `EvidenceClaim`, and `ResearchInference`: the shared signal-first, business-first, or hybrid case spine, with source-supported claims kept distinct from DealSage reasoning.
 - `SourceCandidate` and `ResearchQuery`: bounded search provenance and discovered links that are not promoted to evidence or reusable connectors automatically.
