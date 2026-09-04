@@ -1,6 +1,6 @@
 # Milestone 3.1 bounded public-case validation plan
 
-Status: proposed execution protocol; cohort approval and live execution remain pending.
+Status: seven-slot protocol approved September 4, 2026; provider smoke validation complete and exact case-manifest qualification pending.
 
 ## Purpose
 
@@ -69,3 +69,7 @@ This cohort is too small to establish market conversion rates or statistical sup
 5. Pre-label expected outcomes from explicit public evidence.
 6. Run both providers within the same limits and compare structured outputs.
 7. Perform analyst review, publish aggregate-safe results, and reconcile Milestone 3.1 truth claims.
+
+## Provider smoke-validation record
+
+Synthetic connectivity checks contained no personal or public-case data. OpenAI received two calls: the first reached the provider but exposed an overly exact local response assertion; after that assertion was limited to cosmetic punctuation/whitespace normalization, the repeat passed with 105 total tokens and 2,705 ms latency. Anthropic then passed on its first call with 33 total tokens and 2,323 ms latency. The exercised models were `gpt-5-mini` and `claude-sonnet-4-5`. These results prove local connectivity only, not extraction quality or public-case performance.
