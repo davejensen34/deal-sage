@@ -1,6 +1,8 @@
 import json
 from datetime import datetime, timezone
+from io import BytesIO
 from pathlib import Path
+from zipfile import ZipFile
 
 import httpx
 import pytest
@@ -9,7 +11,12 @@ from app.research.experiment import classify_record, summarize
 from app.research.ingestion import assert_safe_source_content, canonical_record_bytes
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, parse_curated_record as parse_texas
-from app.research.sources.utah import UTAH_BEL_DEFINITION, parse_bel_package
+from app.research.sources.utah import (
+    UTAH_BEL_DEFINITION,
+    canonical_bel_package_from_csv,
+    parse_bel_csv_archive,
+    parse_bel_package,
+)
 
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures/colorado_records.json"
@@ -101,6 +108,48 @@ def test_utah_bel_join_preserves_role_without_validating_ownership():
     assert member.data["ownership_validated"] is False
     assert agent.data["control_role_candidate"] is False
     assert len(UTAH_BEL_DEFINITION.contract_fingerprint) == 64
+
+
+def test_utah_delivery_csvs_join_from_the_actual_three_file_contract():
+    files = {
+        "order_BUSENTITY.csv": (
+            b"Entity Number,Entity ID,Entity Type,Business Name,City,State,License Status,NAICS Code\n"
+            b"9999999-0160,9999999,Domestic Limited Liability Company,Fictional Wasatch Tool LLC,Provo,UT,Active,332710\n"
+        ),
+        "order_BUSINFO.csv": (
+            b"Entity ID,Entity Type,Business Name,Information Type,Information\n"
+            b"9999999,LLC,Fictional Wasatch Tool LLC,DBA,Wasatch Tool\n"
+        ),
+        "order_PRINCIPAL.csv": (
+            b"Entity ID,Entity Type,Business Name,Member Position,Full name,City,State\n"
+            b"9999999,LLC,Fictional Wasatch Tool LLC,Member,Jordan Example,Provo,UT\n"
+        ),
+    }
+    package = canonical_bel_package_from_csv(files)
+    subjects = parse_bel_package(package)
+    assert [subject.subject_type for subject in subjects] == [
+        "business",
+        "relationship_assertion",
+    ]
+    assert subjects[1].data["ownership_validated"] is False
+
+    archive_bytes = BytesIO()
+    with ZipFile(archive_bytes, "w") as archive:
+        for filename, content in files.items():
+            archive.writestr(filename, content)
+    assert len(parse_bel_csv_archive(archive_bytes.getvalue())) == 2
+
+
+def test_utah_delivery_rejects_missing_or_duplicate_contract_files():
+    with pytest.raises(ValueError, match="missing"):
+        canonical_bel_package_from_csv({"BUSENTITY.csv": b"Entity ID,Business Name\n1,Example\n"})
+    with pytest.raises(ValueError, match="multiple BUSENTITY"):
+        canonical_bel_package_from_csv(
+            {
+                "one_BUSENTITY.csv": b"Entity ID,Business Name\n1,Example\n",
+                "two_BUSENTITY.csv": b"Entity ID,Business Name\n2,Example 2\n",
+            }
+        )
 
 
 def test_canonical_evidence_is_stable_and_rejects_sensitive_source_fields():
