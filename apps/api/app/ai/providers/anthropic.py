@@ -31,10 +31,13 @@ class AnthropicProvider(AIProvider):
             model=self.model,
             max_tokens=self.max_output_tokens,
             system=(
-                "Return only one JSON object that conforms exactly to this JSON Schema. "
-                "Do not add markdown or facts absent from the supplied evidence.\n" + json.dumps(schema, sort_keys=True)
+                "Return only the requested structured result. "
+                "Do not add facts absent from the supplied evidence."
             ),
             messages=[{"role": "user", "content": text}],
+            # Prompt-only JSON instructions proved insufficient in the bounded
+            # cohort; native constrained decoding is the enforceable contract.
+            output_config={"format": {"type": "json_schema", "schema": schema}},
         )
         self._capture_usage(response)
         raw = "".join(block.text for block in response.content if block.type == "text")

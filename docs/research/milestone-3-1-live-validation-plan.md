@@ -1,6 +1,6 @@
 # Milestone 3.1 bounded public-case validation plan
 
-Status: seven-slot protocol approved September 4, 2026; provider smoke validation complete and exact case-manifest qualification pending.
+Status: seven-slot protocol approved and executed September 4, 2026. Results and the required version-two follow-up are recorded in `milestone-3-1-live-validation-results.md`.
 
 ## Purpose
 

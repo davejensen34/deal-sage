@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 through #46 established the common case spine, bounded discovery/planning, precise clues, bidirectional resolution, explainable confidence, and analyst narrative. Issue #49 prepares bounded local OpenAI/Anthropic execution and a pre-declared public-case validation protocol. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
+Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 through #51 established the common case spine, bounded discovery/planning, explainable confidence, analyst narrative, provider integration, and approved public-case protocol. Issue #53 executed the seven-case comparison and exposed the required version-two evaluation contract. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
 
 ## What works and has been validated
 
@@ -18,7 +18,7 @@ Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #
 
 ## Implemented but not fully validated
 
-- OpenAI and Anthropic adapters support bounded summaries and schema-validated extraction behind a provider interface. Synthetic local connectivity was observed for both configured providers; public-evidence extraction remains untested.
+- OpenAI and Anthropic adapters support bounded summaries and schema-validated extraction behind a provider interface. Both processed the approved public-evidence cohort; the resulting evaluation failures are recorded rather than represented as validation.
 - Alembic has an initial schema revision validated against an empty SQLite database.
 - Responsive styles exist; desktop rendered workflows are the primary validation target.
 
@@ -39,7 +39,7 @@ Owner-capable live sources, autonomous acquisition, real transition signals, dis
 
 ## AI state
 
-Candidate evidence summary remains the only UI-exposed AI capability. Provider adapters also support schema-validated extraction for controlled validation work. The app remains functional without AI; local Compose includes the optional SDKs, configuration defaults to disabled, requests are time/output bounded, OpenAI storage is off, and provider error bodies are not persisted. Synthetic live connectivity passed for OpenAI `gpt-5-mini` and Anthropic `claude-sonnet-4-5`; public-evidence output quality remains untested.
+Candidate evidence summary remains the only UI-exposed AI capability. Provider adapters also support schema-validated extraction for controlled validation work. The app remains functional without AI; local Compose includes the optional SDKs, configuration defaults to disabled, requests are time/output bounded, OpenAI storage is off, and provider error bodies are not persisted. Public-evidence output quality was exercised but did not pass: 12/14 corrected-run responses were parseable and only 3/14 matched the conflated top-level pre-label.
 
 ## Highest risks
 
@@ -51,10 +51,10 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Qualify the approved seven-slot public-case manifest, present its exact subjects for approval, and then execute within the recorded limits before closing Milestone 3.1. Resume Issue #32 immediately when the Utah BEL archive arrives; its currently forecast documentation conflicts are recorded on that issue.
+Replace the conflated live-validation outcome enum with separate origin, identity, relationship/timeline, and operating-status dimensions; add explicit incomplete/refusal handling and split token accounting. Validate that contract against saved synthetic fixtures before deciding whether another live cohort is justified. Resume Issue #32 immediately when the Utah BEL archive arrives; its currently forecast documentation conflicts are recorded on that issue.
 
 ## Latest validation
 
-The current Milestone 3.1 implementation exercises 94 backend/API tests and upgrade/downgrade/upgrade through all eleven migrations on an empty SQLite database, plus four frontend tests, a production build, and rendered desktop review. The optional-provider API image builds with both SDKs. Synthetic live connectivity passed for both configured providers; no public-case model run or convergence case has been persisted locally. Earlier Milestone 3 validation exercised bounded Colorado and Texas sources; live Utah validation remains pending delivery, with the branch conflict forecast currently limited to two documentation files.
+The current Milestone 3.1 implementation exercises 94 backend/API tests and upgrade/downgrade/upgrade through all eleven migrations on an empty SQLite database, plus four frontend tests, a production build, and rendered desktop review. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. Results are recorded without claiming validation. Earlier Milestone 3 validation exercised bounded Colorado and Texas sources; live Utah validation remains pending delivery, with the branch conflict forecast currently limited to two documentation files.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.
