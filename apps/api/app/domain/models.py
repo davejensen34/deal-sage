@@ -213,6 +213,58 @@ class ResearchInference(TimestampMixin, Base):
     status: Mapped[str] = mapped_column(String(30), default="proposed", index=True)
 
 
+class ResearchQuery(TimestampMixin, Base):
+    """One bounded search-provider call; query text stays inside its research case."""
+    __tablename__ = "research_queries"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    query_text: Mapped[str] = mapped_column(Text)
+    provider: Mapped[str] = mapped_column(String(80), index=True)
+    max_results: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(30), default="running", index=True)
+    requested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    result_count: Mapped[int] = mapped_column(Integer, default=0)
+    error_class: Mapped[str | None] = mapped_column(String(120))
+
+
+class SourceCandidate(TimestampMixin, Base):
+    """A dynamically discovered source that has not been promoted to a connector."""
+    __tablename__ = "source_candidates"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    canonical_url: Mapped[str] = mapped_column(String(1000))
+    domain: Mapped[str] = mapped_column(String(255), index=True)
+    publisher: Mapped[str | None] = mapped_column(String(200))
+    likely_source_type: Mapped[str] = mapped_column(String(60), index=True)
+    geography: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    relevance_reason: Mapped[str] = mapped_column(Text)
+    proposed_use: Mapped[str] = mapped_column(String(80), index=True)
+    discovered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    search_provider: Mapped[str] = mapped_column(String(80), index=True)
+    access_observations: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String(30), default="candidate", index=True)
+    promoted_source_id: Mapped[int | None] = mapped_column(ForeignKey("sources.id"), index=True)
+    promotion_reason: Mapped[str | None] = mapped_column(Text)
+    promoted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    __table_args__ = (
+        UniqueConstraint("case_id", "canonical_url", name="uq_source_candidate_case_url"),
+    )
+
+
+class SourceCandidateDiscovery(Base):
+    """Retain every bounded query that independently surfaced a candidate."""
+    __tablename__ = "source_candidate_discoveries"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    candidate_id: Mapped[int] = mapped_column(ForeignKey("source_candidates.id"), index=True)
+    query_id: Mapped[int] = mapped_column(ForeignKey("research_queries.id"), index=True)
+    result_rank: Mapped[int] = mapped_column(Integer)
+    __table_args__ = (
+        UniqueConstraint("candidate_id", "query_id", name="uq_candidate_query_discovery"),
+    )
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)

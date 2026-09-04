@@ -32,6 +32,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 
 - Issue #33 established the shared unresolved research case and evidence→claim→inference traceability spine.
 - Issue #35 implements reusable nested allowlisting, recursive capability-field removal, and defense-in-depth persistence rejection while keeping source safety distinct from usefulness.
+- Issue #37 adds provider-neutral bounded search provenance and dynamic source candidates that never become evidence or persistent connectors automatically.
 
 ## Definition of done
 

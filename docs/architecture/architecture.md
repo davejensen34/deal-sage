@@ -26,6 +26,8 @@ Discovery is not business-name dependent. A research path may begin with a trans
 
 Milestone 3.1 converges every origin through a shared `ResearchCase`. Minimal case evidence retains public-source provenance and produces semantically precise claims; DealSage inferences cite those claim IDs and remain structurally distinct from source facts. `case_specific_research` supports bounded public investigation without manufacturing a reusable adapter, while `persistent_connector` identifies systematically repeated acquisition that passed the stronger source-contract review.
 
+Search is a capability separate from model reasoning. A provider-neutral `SearchProvider` executes only within a case query budget and records query/provider/status/latency provenance. Results stage deduplicated `SourceCandidate` records; they do not become evidence, known sources, or adapters until later retrieval and explicit evaluation. Repeated queries retain discovery links without inflating the candidate count.
+
 ## Future extension points
 
 Source adapters can add HTTPX, Trafilatura, Playwright, or Scrapy under source-specific rules. Persistent jobs may start in-process and later use a queue when scale proves the need. Local storage can move to S3-compatible storage. PostgreSQL can add pg_trgm and pgvector. OIDC, managed PostgreSQL, distributed workers, Kubernetes, and enterprise telemetry remain options—not dependencies.
