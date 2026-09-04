@@ -364,6 +364,35 @@ class IdentityResolution(TimestampMixin, Base):
     status: Mapped[str] = mapped_column(String(30), default="proposed", index=True)
 
 
+class ConfidenceAssessment(TimestampMixin, Base):
+    """A reproducible deterministic confidence snapshot with claim-level factors."""
+    __tablename__ = "confidence_assessments"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    method_version: Mapped[str] = mapped_column(String(60), index=True)
+    business_identity: Mapped[int] = mapped_column(Integer)
+    owner_relationship: Mapped[int] = mapped_column(Integer)
+    transition_identity: Mapped[int] = mapped_column(Integer)
+    operating_status: Mapped[int] = mapped_column(Integer)
+    overall_opportunity: Mapped[int] = mapped_column(Integer)
+    factors: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    contradictory_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+
+
+class BusinessProfileObservation(TimestampMixin, Base):
+    """A sourced fact, third-party estimate, or explicit DealSage inference."""
+    __tablename__ = "business_profile_observations"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    field_name: Mapped[str] = mapped_column(String(80), index=True)
+    value: Mapped[dict[str, Any]] = mapped_column(JSON)
+    classification: Mapped[str] = mapped_column(String(40), index=True)
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    inference_id: Mapped[int | None] = mapped_column(ForeignKey("research_inferences.id"), index=True)
+    confidence: Mapped[float] = mapped_column(Float)
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)
