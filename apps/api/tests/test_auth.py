@@ -32,7 +32,7 @@ def test_jit_user_uses_provider_subject_not_email(override_db_session):
 def test_authenticated_callback_session_and_audit_attribution(client,monkeypatch,override_db_session):
     class FakeClient:
         async def authorize_access_token(self,request):
-            return {"userinfo":{"sub":"google-subject","email":"pilot@example.com","name":"Pilot Analyst"}}
+            return {"userinfo":{"sub":"google-subject","email":"pilot@example.com","email_verified":True,"name":"Pilot Analyst"}}
     original_mode=auth_routes.settings.auth_mode
     auth_routes.settings.auth_mode="oidc"
     monkeypatch.setattr(auth_routes.oauth,"create_client",lambda name:FakeClient())
@@ -46,5 +46,13 @@ def test_authenticated_callback_session_and_audit_attribution(client,monkeypatch
         assert event.user_id is not None
         assert client.post("/api/auth/logout").json()["status"] == "signed_out"
         assert client.get("/api/auth/me").status_code == 401
+        assert client.get("/api/auth/callback",follow_redirects=False).status_code == 307
+        assert client.get("/api/auth/me").json()["display_name"] == "Pilot Analyst"
     finally:
         auth_routes.settings.auth_mode=original_mode
+
+
+def test_auth_config_never_exposes_credentials(client):
+    data=client.get("/api/auth/config").json()
+    assert data == {"mode":"demo","provider":"demo","configured":True,"redirect_uri":None}
+    assert "secret" not in str(data).lower()

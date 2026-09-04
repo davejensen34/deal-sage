@@ -15,10 +15,10 @@ class Settings(BaseSettings):
     oidc_provider: str = "google"
     google_client_id: str | None = None
     google_client_secret: str | None = None
-    google_redirect_uri: str = "http://localhost:8000/api/auth/callback"
+    google_redirect_uri: str = "http://localhost:3000/api/auth/callback"
     allowed_emails: str = ""
     allowed_domains: str = ""
-    web_app_url: str = "http://localhost:5173"
+    web_app_url: str = "http://localhost:3000"
     cors_origins: str = "http://localhost:5173"
     evidence_storage_path: Path = Path("./data/evidence")
     model_provider: str = "disabled"
