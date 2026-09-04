@@ -6,6 +6,8 @@ Status: in progress in GitHub Milestone 3; source-registry research begins in Is
 
 - Issue #20 established the primary-source registry and access decisions for Colorado, Utah, and Texas.
 - Issue #22 implements the source-neutral raw-to-curated landing, signal-first unresolved subjects, replay, lineage, quarantine, and acquisition-run summaries.
+- Issue #24 established the federated signal-first source portfolio and rejected recent vital records as a statewide discovery feed.
+- Issue #26 implements bounded Colorado and Texas source samples plus the purchase-free Utah BEL three-file contract fixture. A live Utah sample remains gated by explicit cost approval.
 
 ## Goal
 

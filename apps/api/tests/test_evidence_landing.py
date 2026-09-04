@@ -44,6 +44,17 @@ def test_contract_drift_quarantines_without_publishing_subjects(override_db_sess
     assert run.status == "partial"
 
 
+def test_retrieval_failure_is_recorded_without_sensitive_detail(override_db_session, tmp_path: Path):
+    landing = EvidenceLanding(override_db_session, LocalEvidenceStorage(tmp_path))
+    run = landing.start_run("source", "Colorado", "signal_first", "a" * 64)
+
+    landing.fail_run(run, RuntimeError("token=must-not-be-persisted"))
+
+    assert run.status == "failed"
+    assert run.error == "RuntimeError"
+    assert run.metrics["artifacts"] == 0
+
+
 def test_local_evidence_storage_refuses_conflicting_rewrite(tmp_path:Path):
     storage=LocalEvidenceStorage(tmp_path)
     storage.save("raw/key",b"original")

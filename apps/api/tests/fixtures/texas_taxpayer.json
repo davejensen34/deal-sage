@@ -1,0 +1,17 @@
+{
+  "taxpayer_number": "32099999999",
+  "taxpayer_name": "Fictional Hill Country Machine LLC",
+  "taxpayer_address": "100 SAMPLE ROAD",
+  "taxpayer_city": "AUSTIN",
+  "taxpayer_state": "TX",
+  "taxpayer_zip": "78701",
+  "taxpayer_county_code": "227",
+  "taxpayer_organizational_type": "CL",
+  "record_type_code": "U",
+  "responsibility_beginning_date": "2024-01-02T00:00:00.000",
+  "secretary_of_state_sos_or_coa_file_number": "0805999999",
+  "sos_charter_date": "2024-01-02T00:00:00.000",
+  "sos_status_code": "A",
+  "right_to_transact_business_code": "A",
+  "_621111": "332710"
+}

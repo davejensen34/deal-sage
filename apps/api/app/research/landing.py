@@ -93,6 +93,14 @@ class EvidenceLanding:
         self._finish_run(run)
         return records
 
+    def fail_run(self, run: AcquisitionRun, error: Exception) -> None:
+        """Persist a retrieval failure without recording response bodies or secrets."""
+        run.status = "failed"
+        run.finished_at = datetime.now(timezone.utc)
+        run.error = type(error).__name__
+        run.metrics = {"artifacts": 0, "curated_records": 0, "quarantined_records": 0}
+        self.db.commit()
+
     def _finish_run(self, run: AcquisitionRun) -> None:
         self.db.flush()
         artifact_ids = select(RunArtifact.artifact_id).where(RunArtifact.run_id == run.id)
