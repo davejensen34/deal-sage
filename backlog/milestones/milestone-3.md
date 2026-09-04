@@ -1,6 +1,6 @@
 # Milestone 3 — Multi-State Data Acquisition and Curation
 
-Status: ready for kickoff; implementation not started.
+Status: in progress in GitHub Milestone 3; source-registry research begins in Issue #20.
 
 ## Goal
 
