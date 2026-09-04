@@ -3,7 +3,7 @@ from typing import Any
 
 from jsonschema import validate
 
-from .base import AIProvider
+from .base import AIProvider, AIProviderIncompleteError, AIProviderRefusalError, TokenUsage
 
 
 class OpenAIProvider(AIProvider):
@@ -14,10 +14,26 @@ class OpenAIProvider(AIProvider):
         self.model = model
         self.max_output_tokens = max_output_tokens
         self.last_token_usage = None
+        self.last_usage = TokenUsage()
 
     def _capture_usage(self, response: Any) -> None:
         usage = getattr(response, "usage", None)
-        self.last_token_usage = getattr(usage, "total_tokens", None)
+        self.last_usage = TokenUsage(
+            input_tokens=getattr(usage, "input_tokens", None),
+            output_tokens=getattr(usage, "output_tokens", None),
+            total_tokens=getattr(usage, "total_tokens", None),
+        )
+        self.last_token_usage = self.last_usage.total_tokens
+
+    @staticmethod
+    def _ensure_complete(response: Any) -> None:
+        if getattr(response, "status", None) == "incomplete":
+            details = getattr(response, "incomplete_details", None)
+            raise AIProviderIncompleteError(getattr(details, "reason", None))
+        for item in getattr(response, "output", []) or []:
+            for block in getattr(item, "content", []) or []:
+                if getattr(block, "type", None) == "refusal":
+                    raise AIProviderRefusalError(getattr(block, "refusal", None))
 
     async def summarize(self, context: str) -> str:
         response = await self.client.responses.create(
@@ -29,6 +45,7 @@ class OpenAIProvider(AIProvider):
             store=False,
         )
         self._capture_usage(response)
+        self._ensure_complete(response)
         return response.output_text
 
     async def extract_structured(self, text: str, schema: dict[str, Any]) -> dict[str, Any]:
@@ -40,6 +57,7 @@ class OpenAIProvider(AIProvider):
             text={"format": {"type": "json_schema", "name": "dealsage_extraction", "schema": schema, "strict": True}},
         )
         self._capture_usage(response)
+        self._ensure_complete(response)
         result = json.loads(response.output_text)
         validate(instance=result, schema=schema)
         return result

@@ -41,6 +41,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Issue #49 prepares bounded OpenAI and Anthropic local execution and defines the seven-slot public-case protocol. No live provider call or real-person cohort execution is claimed until keys and human approval are present.
 - Issue #51 corrects the synthetic smoke assertion and records successful local connectivity for both configured providers.
 - Issue #53 qualifies and executes the approved seven-case cohort within budget. The run proves the current single outcome taxonomy is unsuitable for evaluation; Milestone 3.1 remains open for a multidimensional version-two contract and incomplete-output handling.
+- Issue #55 replaces that taxonomy with seven independent dimensions, deterministic consistency and disposition precedence, explicit provider outcomes, split token usage, per-dimension metrics, a gated version-two runner, and seven saved fictional fixtures. It makes no new live calls and does not reopen the exhausted cohort protocol.
 
 ## Definition of done
 
@@ -52,7 +53,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Research frontier items, queries, steps, budgets, stop reasons, and provider/cost provenance are reconstructable.
 - Claims preserve relationship language, dates, source authority/directness, uncertainty, and fact/estimate/inference boundaries.
 - Resolution handles aliases, geography/timeline evidence, contradictions, negative outcomes, and likely duplicate/syndicated evidence without name-only merging.
-- Confidence remains explainable and keeps business identity, owner relationship, transition identity, and overall opportunity concepts distinct.
+- Confidence remains explainable and keeps business identity, owner relationship, transition identity, operating status, and overall opportunity concepts distinct.
 - Analysts can understand case origin, searches, evidence, conflicts, confidence changes, stopping reason, and opportunity hypothesis without reading raw agent logs.
 - Actual signal-first and cross-strategy funnel metrics are captured without invented conversion rates.
 - Live validation includes success, former-owner, inactive-business, ambiguous-identity, contradictory-ownership, and business-first cases.

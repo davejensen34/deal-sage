@@ -313,6 +313,6 @@ async def ai_summary(candidate_id:int,db:Session=Depends(get_db)):
     except Exception as exc: summary=""; ok=False; error=type(exc).__name__
     # Provider exception bodies can echo submitted evidence or request metadata;
     # persist only the exception class and keep the client-facing error generic.
-    db.add(AIExecution(candidate_id=c.id,provider=settings.model_provider,model=model,prompt_version="candidate-summary-v1",token_usage=provider.last_token_usage,latency_ms=int((perf_counter()-start)*1000),success=ok,error=error)); db.commit()
+    db.add(AIExecution(candidate_id=c.id,provider=settings.model_provider,model=model,prompt_version="candidate-summary-v1",input_tokens=provider.last_usage.input_tokens,output_tokens=provider.last_usage.output_tokens,token_usage=provider.last_token_usage,latency_ms=int((perf_counter()-start)*1000),success=ok,error=error)); db.commit()
     if not ok: raise HTTPException(502,"AI provider request failed")
     return {"label":"AI Research Summary","summary":summary,"provider":settings.model_provider,"model":model,"prompt_version":"candidate-summary-v1"}

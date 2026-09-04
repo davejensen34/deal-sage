@@ -568,6 +568,8 @@ class AIExecution(Base):
     model: Mapped[str] = mapped_column(String(120))
     prompt_version: Mapped[str] = mapped_column(String(40))
     timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    input_tokens: Mapped[int | None] = mapped_column(Integer)
+    output_tokens: Mapped[int | None] = mapped_column(Integer)
     token_usage: Mapped[int | None] = mapped_column(Integer)
     latency_ms: Mapped[int | None] = mapped_column(Integer)
     success: Mapped[bool] = mapped_column(Boolean)

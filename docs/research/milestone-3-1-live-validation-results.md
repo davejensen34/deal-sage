@@ -40,4 +40,6 @@ Those dimensions must become separate required fields with deterministic precede
 
 ## Closeout decision
 
-The run validates real local provider connectivity, native structured-output integration, evidence grounding, budget enforcement, and several useful negative behaviors. It does not validate the current comparison rubric or close Milestone 3.1. The next implementation slice is a version-two multidimensional evaluation contract exercised against saved synthetic fixtures. Because the live case call ceiling has been reached, the approved public cohort will not be rerun without a new explicit protocol decision.
+The run validates real local provider connectivity, native structured-output integration, evidence grounding, budget enforcement, and several useful negative behaviors. It does not validate the version-one comparison rubric or close Milestone 3.1.
+
+Issue #55 subsequently implemented and offline-validated the version-two multidimensional contract described in `docs/architecture/model-evaluation.md`. That follow-up changes no result above and makes no retrospective version-two quality claim. Because the live case call ceiling has been reached, the approved public cohort will not be rerun without a new explicit protocol decision.
