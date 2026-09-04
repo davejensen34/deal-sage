@@ -97,6 +97,17 @@ async def main() -> None:
         "experiment": "Milestone 3 bounded multi-state source samples",
         "contains_record_level_data": False,
         "sources": summaries,
+        "decisions": [
+            {
+                "source_key": "official_obituary_public_browse",
+                "coverage": "Colorado, Utah, Texas",
+                "status": "rejected",
+                "reason": (
+                    "Public responses exposed edit/session capability fields; "
+                    "ingestion is blocked pending a safe minimal provider contract."
+                ),
+            }
+        ],
     }
     result_path.write_text(json.dumps(published, indent=2) + "\n")
     print(json.dumps(published, indent=2))

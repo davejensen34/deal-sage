@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, and #24 established the source registry, evidence landing, and signal-first source portfolio. Issue #26 is validating bounded Colorado, Texas, and Utah source contracts.
+Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, and #26 established the source registry, evidence landing, signal-first portfolio, and bounded multi-state source samples. Issue #28 adds source-operations visibility.
 
 ## What works and has been validated
 

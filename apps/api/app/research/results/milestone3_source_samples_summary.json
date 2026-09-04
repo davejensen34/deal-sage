@@ -52,5 +52,13 @@
       "marginal_cost_usd": 0,
       "next_action": "Obtain explicit approval before purchasing the $5 live sample."
     }
+  ],
+  "decisions": [
+    {
+      "source_key": "official_obituary_public_browse",
+      "coverage": "Colorado, Utah, Texas",
+      "status": "rejected",
+      "reason": "Public responses exposed edit/session capability fields; ingestion is blocked pending a safe minimal provider contract."
+    }
   ]
 }
