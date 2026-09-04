@@ -393,6 +393,19 @@ class BusinessProfileObservation(TimestampMixin, Base):
     confidence: Mapped[float] = mapped_column(Float)
 
 
+class AnalystConclusion(TimestampMixin, Base):
+    """A human-authored case outcome kept separate from evidence and inference."""
+    __tablename__ = "analyst_conclusions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    analyst_name: Mapped[str] = mapped_column(String(160))
+    outcome: Mapped[str] = mapped_column(String(60), index=True)
+    statement: Mapped[str] = mapped_column(Text)
+    supporting_inference_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    status: Mapped[str] = mapped_column(String(30), default="draft", index=True)
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)

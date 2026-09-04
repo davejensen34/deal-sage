@@ -145,6 +145,7 @@ def test_case_metrics_are_aggregate_only(client, override_db_session):
     assert response.status_code == 200
     assert response.json()["cases"] >= 1
     assert response.json()["by_origin_strategy"]["business_first"] >= 1
+    assert response.json()["origin_metrics"]["business_first"]["evidence_items"] >= 1
     assert "private-case-value" not in str(response.json())
     assert "frontier_items" in response.json()
     assert "research_steps" in response.json()

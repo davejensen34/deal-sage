@@ -37,6 +37,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Issue #41 adds durable frontier questions and deterministic bounded planning with reconstructable action/model provenance, attempt limits, research budgets, and explicit stopping reasons.
 - Issue #43 adds common bidirectional identity hypotheses, claim-backed aliases, explicit contradictions, and duplicate/syndicated/same-publisher evidence classification with a name-only resolution prohibition.
 - Issue #45 adds versioned deterministic confidence across distinct business, relationship, transition, operating-status, and opportunity axes plus explicitly classified profile facts, estimates, and inferences.
+- Issue #46 adds the authenticated analyst case narrative, explicit human conclusion layer, corrected source-decision language, and an evidence-based validation assessment. Live search/model and real-case scenario validation remain open closeout gaps.
 
 ## Definition of done
 
