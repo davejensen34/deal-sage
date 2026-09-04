@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 2 — Business and Owner Discovery Proof is complete and validated in Pull Request #7. The Colorado experiment produced a deliberate negative result: the official bulk source is suitable for entity and registered-agent evidence, but not owner discovery. Do not open Milestone 3 without user direction.
+Milestone 2.1 — Research Trail and Pilot Identity is complete and validated through Pull Requests #11–#13. Do not open Milestone 3 without user direction.
 
 ## What works and has been validated
 
@@ -11,6 +11,8 @@ Milestone 2 — Business and Owner Discovery Proof is complete and validated in 
 - Search, status/state/confidence filters, pagination, and API sorting work.
 - Candidate detail exposes business/person/signal, three confidence values, rationale, conflicts, gaps, evidence provenance, and audit history.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
+- Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
+- Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and mock-tested.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
 ## Implemented but not fully validated
@@ -31,7 +33,7 @@ Milestone 2 — Business and Owner Discovery Proof is complete and validated in 
 
 ## Missing or intentionally deferred
 
-Owner-capable live sources, autonomous acquisition, real transition signals, distributed work, enterprise authentication, multi-user authorization, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
+Owner-capable live sources, autonomous acquisition, real transition signals, distributed work, enterprise RBAC/organizations, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
 
 ## AI state
 
@@ -47,8 +49,8 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Wait for user direction before opening Milestone 3. The next source experiment should reject schemas without explicit owner/controller roles before adapter implementation.
+Wait for user direction before opening Milestone 3 — Owner → Transition Signal Discovery.
 
 ## Latest validation
 
-Milestone 2 validation exercised 14 backend/API tests, 1 frontend component test, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack. A live bounded Colorado request retrieved 50 records successfully in 496 ms at zero marginal API cost. Rendered inspection covered the Research decision, metrics, role taxonomy, source contract, and limitations; reverse-proxy API requests were verified after correcting base-path normalization. Broader breakpoint coverage remains partial.
+Milestone 2.1 validation exercised 23 backend/API/auth tests, 2 frontend tests, upgrade/downgrade through all three migrations, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack with an existing demo volume. Rendered inspection covered the measured funnel, progressive research trail, owner-readiness boundary, demo identity, and branded login/error states. Google OIDC callback, JIT provisioning, allowlists, session/logout behavior, authenticated API protection, and user-linked audit attribution were mock-validated; Google was not live-provider tested because credentials were not supplied. Broader breakpoint coverage remains partial.

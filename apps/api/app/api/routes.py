@@ -8,6 +8,7 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 from app.ai.providers.anthropic import AnthropicProvider
 from app.ai.providers.openai import OpenAIProvider
+from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ResearchStage, ResearchTrail, ReviewCase, TransitionSignal
@@ -15,7 +16,7 @@ from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
 
 
@@ -84,30 +85,30 @@ def load_candidate(candidate_id: int, db: Session) -> CandidateMatch:
 
 
 @router.get("/candidates/{candidate_id}")
-def detail(candidate_id:int,db:Session=Depends(get_db)):
+def detail(candidate_id:int,db:Session=Depends(get_db),identity:Identity=Depends(current_identity)):
     c=load_candidate(candidate_id,db)
     review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id))
     audits=db.scalars(select(AuditEvent).where(AuditEvent.candidate_id==candidate_id).order_by(AuditEvent.timestamp.desc())).all()
-    db.add(AuditEvent(candidate_id=c.id,actor=settings.demo_analyst_name,action="candidate_viewed",detail="Candidate detail reviewed.")); db.commit()
+    db.add(AuditEvent(candidate_id=c.id,user_id=identity.user_id,actor=identity.display_name,action="candidate_viewed",detail="Candidate detail reviewed.")); db.commit()
     source=lambda s:{"id":s.id,"source_type":s.source_type,"publisher":s.publisher,"canonical_url":s.canonical_url,"published_at":s.published_at,"retrieved_at":s.retrieved_at,"reliability":s.reliability,"is_demo":s.is_demo}
     return {"id":c.id,"business":{k:getattr(c.business,k) for k in ["id","legal_name","doing_business_as","status","industry","website","address","city","state","postal_code","registration_number","employee_range","revenue_range"]},"person":{"id":c.person.id,"full_name":c.person.full_name,"aliases":c.person.aliases,"approximate_birth_year":c.person.approximate_birth_year,"city":c.person.city,"state":c.person.state},"relationship":{k:getattr(c.relationship_record,k) for k in ["relationship_type","start_date","end_date","active","confidence"]},"signal":{"signal_type":c.signal.signal_type,"published_name":c.signal.published_name,"possible_transition_date":c.signal.possible_transition_date,"publication_date":c.signal.publication_date,"city":c.signal.city,"state":c.signal.state,"age":c.signal.age,"relatives":c.signal.relatives,"occupation_clues":c.signal.occupation_clues,"business_clues":c.signal.business_clues,"extraction_confidence":c.signal.extraction_confidence,"source":source(c.signal.source)},"scores":{"business_relationship":c.owner_business_confidence,"signal_identity":c.signal_identity_confidence,"overall_candidate":c.overall_candidate_confidence},"status":c.status,"match_explanation":c.match_explanation,"positive_signals":c.positive_signals,"conflicting_signals":c.conflicting_signals,"missing_evidence":c.missing_evidence,"recommended_next_action":c.recommended_next_action,"last_researched_at":c.last_researched_at,"evidence":[{"id":e.id,"evidence_type":e.evidence_type,"extracted_text":e.extracted_text,"normalized_facts":e.normalized_facts,"extractor_type":e.extractor_type,"model_used":e.model_used,"retrieved_at":e.retrieved_at,"evidence_strength":e.evidence_strength,"explanation":e.explanation,"classification":e.classification,"source":source(e.source)} for e in c.evidence],"review":{"assigned_user":review.assigned_user,"status":review.status,"decision":review.decision,"analyst_notes":review.analyst_notes,"decision_reason_codes":review.decision_reason_codes,"reviewed_at":review.reviewed_at} if review else None,"audit":[{"id":a.id,"actor":a.actor,"timestamp":a.timestamp,"action":a.action,"detail":a.detail,"before_state":a.before_state,"after_state":a.after_state} for a in audits]}
 
 
 @router.patch("/candidates/{candidate_id}/status")
-def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_db)):
+def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_db),identity:Identity=Depends(current_identity)):
     c=load_candidate(candidate_id,db); before=c.status; c.status=payload.status
     review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
     if review:
-        review.status="closed" if payload.status in {"validated","rejected"} else "open"; review.decision=payload.status; review.reviewed_at=now; review.decision_reason_codes=[payload.reason]; review.analyst_notes=[*(review.analyst_notes or []),{"note":payload.note,"author":settings.demo_analyst_name,"timestamp":now.isoformat()}]
-    db.add(AuditEvent(candidate_id=c.id,actor=settings.demo_analyst_name,action="status_changed",before_state={"status":before},after_state={"status":payload.status},detail=f"{payload.reason}: {payload.note}")); db.commit()
+        review.status="closed" if payload.status in {"validated","rejected"} else "open"; review.decision=payload.status; review.reviewed_at=now; review.decision_reason_codes=[payload.reason]; review.analyst_notes=[*(review.analyst_notes or []),{"note":payload.note,"author":identity.display_name,"user_id":identity.user_id,"timestamp":now.isoformat()}]
+    db.add(AuditEvent(candidate_id=c.id,user_id=identity.user_id,actor=identity.display_name,action="status_changed",before_state={"status":before},after_state={"status":payload.status},detail=f"{payload.reason}: {payload.note}")); db.commit()
     return {"id":c.id,"status":c.status}
 
 
 @router.post("/candidates/{candidate_id}/notes")
-def add_note(candidate_id:int,payload:NoteCreate,db:Session=Depends(get_db)):
+def add_note(candidate_id:int,payload:NoteCreate,db:Session=Depends(get_db),identity:Identity=Depends(current_identity)):
     load_candidate(candidate_id,db); review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
-    note={"note":payload.note,"author":settings.demo_analyst_name,"timestamp":now.isoformat()}; review.analyst_notes=[*(review.analyst_notes or []),note]
-    db.add(AuditEvent(candidate_id=candidate_id,actor=settings.demo_analyst_name,action="analyst_note_added",after_state=note,detail=payload.note)); db.commit(); return note
+    note={"note":payload.note,"author":identity.display_name,"user_id":identity.user_id,"timestamp":now.isoformat()}; review.analyst_notes=[*(review.analyst_notes or []),note]
+    db.add(AuditEvent(candidate_id=candidate_id,user_id=identity.user_id,actor=identity.display_name,action="analyst_note_added",after_state=note,detail=payload.note)); db.commit(); return note
 
 
 @router.get("/businesses")

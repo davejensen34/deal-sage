@@ -4,7 +4,7 @@ DealSage is an open-source, evidence-backed business ownership intelligence and 
 
 > All included names, companies, records, and evidence are fictional demo data. Confidence scores prioritize research; they are not assertions of fact.
 
-## Milestone 1 capabilities
+## Current capabilities
 
 - Persisted dashboard, candidate queue, database-native search, filters, sorting, and pagination
 - Candidate detail centered on business-control and signal-identity questions
@@ -14,6 +14,8 @@ DealSage is an open-source, evidence-backed business ownership intelligence and 
 - 18 deliberately varied fictional cases, including collisions and false positives
 - SQLite locally; PostgreSQL in Docker Compose
 - Optional OpenAI or Anthropic evidence summary behind a provider abstraction
+- Evidence-backed business → entity → web → person → owner-ready research trails and measured funnel stages
+- Credential-free demo identity plus provider-neutral pilot OIDC with Google as the initial provider
 - OpenAPI at `http://localhost:8000/docs`
 
 ## Run locally (SQLite)
@@ -52,6 +54,10 @@ Open `http://localhost:3000`. Everything runs on one host; no managed service is
 
 Set either `MODEL_PROVIDER=openai` with `OPENAI_API_KEY`, or `MODEL_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`. Models are configurable in `.env`. DealSage works fully with `MODEL_PROVIDER=disabled`, and AI never determines the score.
 
+## Pilot authentication
+
+Local development defaults to `AUTH_MODE=demo`. For Google pilot login, configure OIDC credentials, a unique session secret, HTTPS cookies, and an email/domain allowlist as described in the [pilot authentication guide](docs/deployment/pilot-authentication.md).
+
 ## Tests
 
 ```bash
@@ -65,7 +71,7 @@ The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keep
 
 ## Current limitations
 
-Milestone 1 uses fictional seeded data and does not crawl the web. Authentication is a local demo identity. Search uses portable database filtering rather than FTS5/pg_trgm optimization. AI structured extraction, migrations for evolving production databases, scheduled acquisition, and enterprise identity are intentionally deferred.
+The application uses fictional seeded trails and does not yet discover owners or transition signals from the web. Google OIDC is implemented and mock-tested but awaits live validation with deployment credentials. Search uses portable database filtering rather than FTS5/pg_trgm optimization. Scheduled acquisition, organizations, enterprise RBAC, and multi-tenancy are intentionally deferred.
 
 ## Responsible use
 
