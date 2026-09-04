@@ -37,3 +37,5 @@ Make `TODO` and `FIXME` comments specific and actionable: state the remaining pr
 ## Current workflow
 
 Use concise GitHub Issues for implementation-ready work, short-lived branches named by type and Issue, coherent action-oriented commits, and squash-merge PRs. Do not manufacture retroactive history. Ordinary validated changes may be merged autonomously; stop for material product direction, cost, security, legal, irreversible data, or unresolved architecture decisions.
+
+Milestone completion is also a product-maintenance checkpoint. Before closing a GitHub milestone, reconcile its `backlog/milestones/` record, related `backlog/items/`, `backlog/README.md`, `docs/product/roadmap.md`, and `docs/project/current-state.md` against the implementation and observed validation. The closing pull request must carry those updates. If the next milestone is not explicitly approved, record that no milestone is active rather than advancing it implicitly.
