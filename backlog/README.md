@@ -9,7 +9,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 ## Current product position
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
-- Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, and #26 are complete; Issue #28 tracks aggregate source-operations visibility. Live Utah acquisition remains purchase-gated. Later implementation remains tied to scoped Issues.
+- Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, #26, and #28 are complete; Issue #30 tracks durable signal-first resolution outcomes. Live Utah acquisition remains purchase-gated. Later implementation remains tied to scoped Issues.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence

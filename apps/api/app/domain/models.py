@@ -133,6 +133,18 @@ class FieldLineage(Base):
     __table_args__ = (UniqueConstraint("curated_record_id", "field_name", name="uq_curated_field_lineage"),)
 
 
+class SignalResolution(TimestampMixin, Base):
+    """Durable outcome of researching a person/signal without assuming a business."""
+    __tablename__ = "signal_resolutions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    starting_record_id: Mapped[int] = mapped_column(ForeignKey("curated_records.id"), unique=True, index=True)
+    business_record_id: Mapped[int | None] = mapped_column(ForeignKey("curated_records.id"), index=True)
+    outcome: Mapped[str] = mapped_column(String(40), default="pending", index=True)
+    reason: Mapped[str | None] = mapped_column(Text)
+    resolved_by: Mapped[str | None] = mapped_column(String(160))
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)

@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, and #26 established the source registry, evidence landing, signal-first portfolio, and bounded multi-state source samples. Issue #28 adds source-operations visibility.
+Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, #26, and #28 established the source registry, evidence landing, signal-first portfolio, bounded multi-state samples, and source-operations visibility. Issue #30 adds durable signal-first resolution outcomes.
 
 ## What works and has been validated
 
@@ -51,7 +51,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #26 by merging the bounded Colorado/Texas adapters and purchase-free Utah BEL contract fixture, then obtain explicit approval before a $5 Utah live sample. The evidence landing supports both signal-first and business-first research; model-assisted business discovery remains deferred to Milestone 4.
+Complete Issue #30's signal-first resolution lifecycle, then obtain explicit approval before a $5 Utah live sample and perform the final Milestone 3 reconciliation. Model-assisted business discovery remains deferred to Milestone 4.
 
 ## Latest validation
 
