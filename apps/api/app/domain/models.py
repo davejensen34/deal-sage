@@ -306,6 +306,64 @@ class ResearchStep(TimestampMixin, Base):
     )
 
 
+class CaseAlias(TimestampMixin, Base):
+    """An observed person or business alias with claim-level provenance."""
+    __tablename__ = "case_aliases"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    entity_type: Mapped[str] = mapped_column(String(30), index=True)
+    canonical_value: Mapped[str] = mapped_column(String(240))
+    alias_value: Mapped[str] = mapped_column(String(240))
+    normalized_value: Mapped[str] = mapped_column(String(240), index=True)
+    source_claim_id: Mapped[int] = mapped_column(ForeignKey("evidence_claims.id"), index=True)
+    __table_args__ = (
+        UniqueConstraint("case_id", "entity_type", "normalized_value", name="uq_case_alias_normalized"),
+    )
+
+
+class ClaimContradiction(TimestampMixin, Base):
+    """A conflict between source claims; neither underlying assertion is erased."""
+    __tablename__ = "claim_contradictions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    left_claim_id: Mapped[int] = mapped_column(ForeignKey("evidence_claims.id"), index=True)
+    right_claim_id: Mapped[int] = mapped_column(ForeignKey("evidence_claims.id"), index=True)
+    contradiction_type: Mapped[str] = mapped_column(String(60), index=True)
+    rationale: Mapped[str] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(String(30), default="open", index=True)
+    __table_args__ = (
+        UniqueConstraint("case_id", "left_claim_id", "right_claim_id", name="uq_case_claim_conflict"),
+    )
+
+
+class EvidenceRelationship(TimestampMixin, Base):
+    """Deterministic independence classification for a pair of evidence items."""
+    __tablename__ = "evidence_relationships"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    left_evidence_id: Mapped[int] = mapped_column(ForeignKey("case_evidence.id"), index=True)
+    right_evidence_id: Mapped[int] = mapped_column(ForeignKey("case_evidence.id"), index=True)
+    relationship_type: Mapped[str] = mapped_column(String(40), index=True)
+    basis: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    __table_args__ = (
+        UniqueConstraint("case_id", "left_evidence_id", "right_evidence_id", name="uq_case_evidence_pair"),
+    )
+
+
+class IdentityResolution(TimestampMixin, Base):
+    """A reviewable bidirectional identity hypothesis, never a name-only merge."""
+    __tablename__ = "identity_resolutions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    direction: Mapped[str] = mapped_column(String(40), index=True)
+    subject_value: Mapped[str] = mapped_column(String(240))
+    candidate_value: Mapped[str] = mapped_column(String(240))
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    contradictory_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    support_dimensions: Mapped[list[str]] = mapped_column(JSON, default=list)
+    status: Mapped[str] = mapped_column(String(30), default="proposed", index=True)
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)
