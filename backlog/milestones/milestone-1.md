@@ -1,6 +1,6 @@
 # Milestone 1 — Evidence and Analyst Foundation
 
-Status: in_progress (reconciliation)
+Status: validated
 
 Outcome: a locally runnable fictional-data product that demonstrates evidence-centered candidate review and preserves human decisions.
 
