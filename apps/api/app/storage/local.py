@@ -16,6 +16,12 @@ class LocalEvidenceStorage(EvidenceStorage):
     def save(self, key: str, content: bytes) -> str:
         path = self._path(key)
         path.parent.mkdir(parents=True, exist_ok=True)
+        # Evidence keys are content-addressed. Refuse a conflicting rewrite so a
+        # later parser or run cannot silently alter the source artifact it cites.
+        if path.exists():
+            if path.read_bytes() != content:
+                raise ValueError("Evidence key already contains different content")
+            return str(path)
         path.write_bytes(content)
         return str(path)
 

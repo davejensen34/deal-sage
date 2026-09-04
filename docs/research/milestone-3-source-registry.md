@@ -6,6 +6,8 @@ Reviewed against official state sources on September 4, 2026. This is a decision
 
 Every adapter proposal must identify the source owner, jurisdiction, evidence purpose, canonical entry point, permitted access path, expected refresh, cost, authoritative fields, prohibited inferences, and a source-contract fingerprint. If an access method, schema, terms, or expected content changes, ingestion must quarantine the result until the contract is reviewed.
 
+The source portfolio must distinguish discovery sources from lookup and corroboration sources. State entity registries do not define the candidate universe: signal-first research may begin with a person or transition event and use registries only after business clues emerge. Transition-signal sources require their own primary-source access and responsible-research review before implementation.
+
 Raw evidence must retain retrieval time, request parameters that are safe to retain, response content hash, media type, source record identifier, canonical URL, and adapter/parser version. Credentials, session tokens, payment details, and hidden authentication material are never evidence and must not be stored with artifacts.
 
 ## Colorado

@@ -1,8 +1,10 @@
 from datetime import datetime, timezone
+import json
 from typing import Any
 from urllib.parse import urlencode
 import httpx
 from .base import SourceAdapter, SourceDefinition, SourceRecord
+from app.research.landing import CuratedSubject
 
 
 DATASET_ID = "4ykn-tg5h"
@@ -82,3 +84,17 @@ class ColoradoBusinessEntitiesAdapter(SourceAdapter):
 
 def public_query_url(limit: int = 50) -> str:
     return f"{API_URL}?{urlencode(ColoradoBusinessEntitiesAdapter.query(limit))}"
+
+
+def parse_curated_record(content: bytes) -> list[CuratedSubject]:
+    """Map one stored transport record without upgrading agent evidence to ownership."""
+    raw=json.loads(content)
+    if not isinstance(raw,dict) or not raw.get("entityid") or not raw.get("entityname"):
+        raise ValueError("Colorado entity record is missing required identity fields")
+    entity_id=str(raw["entityid"])
+    business=CuratedSubject(subject_key=f"co:{entity_id}",subject_type="business",data={"registration_number":entity_id,"legal_name":raw["entityname"],"entity_type":raw.get("entitytype"),"status":raw.get("entitystatus"),"city":raw.get("principalcity"),"state":raw.get("principalstate"),"formation_date":raw.get("entityformdate")},lineage={"registration_number":"$.entityid","legal_name":"$.entityname","entity_type":"$.entitytype","status":"$.entitystatus","city":"$.principalcity","state":"$.principalstate","formation_date":"$.entityformdate"})
+    agent_name=" ".join(filter(None,[raw.get("agentfirstname"),raw.get("agentmiddlename"),raw.get("agentlastname"),raw.get("agentsuffix")])) or raw.get("agentorganizationname")
+    subjects=[business]
+    if agent_name:
+        subjects.append(CuratedSubject(subject_key=f"co:{entity_id}:registered-agent",subject_type="relationship_assertion",data={"business_registration_number":entity_id,"person_or_organization_name":agent_name,"relationship_type":"registered_agent","ownership_supported":False},lineage={"business_registration_number":"$.entityid","person_or_organization_name":"$.agentfirstname|$.agentmiddlename|$.agentlastname|$.agentsuffix|$.agentorganizationname"}))
+    return subjects

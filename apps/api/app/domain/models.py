@@ -67,6 +67,72 @@ class Source(Base):
     is_demo: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
+class AcquisitionRun(TimestampMixin, Base):
+    """One bounded source attempt, including signal-first runs with no known business."""
+    __tablename__ = "acquisition_runs"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    source_key: Mapped[str] = mapped_column(String(120), index=True)
+    jurisdiction: Mapped[str] = mapped_column(String(80), index=True)
+    discovery_strategy: Mapped[str] = mapped_column(String(30), index=True)
+    status: Mapped[str] = mapped_column(String(30), default="running", index=True)
+    contract_fingerprint: Mapped[str] = mapped_column(String(64))
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    metrics: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    error: Mapped[str | None] = mapped_column(Text)
+
+
+class RawArtifact(TimestampMixin, Base):
+    """Content-addressed source response; its bytes are immutable in evidence storage."""
+    __tablename__ = "raw_artifacts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    content_hash: Mapped[str] = mapped_column(String(64), index=True)
+    source_key: Mapped[str] = mapped_column(String(120), index=True)
+    source_record_id: Mapped[str | None] = mapped_column(String(200), index=True)
+    canonical_url: Mapped[str] = mapped_column(String(1000))
+    retrieved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    media_type: Mapped[str] = mapped_column(String(120))
+    byte_size: Mapped[int] = mapped_column(Integer)
+    storage_key: Mapped[str] = mapped_column(String(500), unique=True)
+    contract_fingerprint: Mapped[str] = mapped_column(String(64))
+    request_metadata: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    __table_args__ = (UniqueConstraint("source_key", "content_hash", name="uq_raw_source_content"),)
+
+
+class RunArtifact(Base):
+    """Preserve every observation even when multiple runs retrieve identical bytes."""
+    __tablename__ = "run_artifacts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("acquisition_runs.id"), index=True)
+    artifact_id: Mapped[int] = mapped_column(ForeignKey("raw_artifacts.id"), index=True)
+    __table_args__ = (UniqueConstraint("run_id", "artifact_id", name="uq_run_artifact"),)
+
+
+class CuratedRecord(TimestampMixin, Base):
+    """A parser outcome that may describe a person or signal before a business exists."""
+    __tablename__ = "curated_records"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    artifact_id: Mapped[int] = mapped_column(ForeignKey("raw_artifacts.id"), index=True)
+    subject_key: Mapped[str] = mapped_column(String(240))
+    subject_type: Mapped[str] = mapped_column(String(40), index=True)
+    parser_version: Mapped[str] = mapped_column(String(80))
+    schema_version: Mapped[str] = mapped_column(String(80))
+    status: Mapped[str] = mapped_column(String(30), index=True)
+    normalized_data: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    errors: Mapped[list[str]] = mapped_column(JSON, default=list)
+    __table_args__ = (UniqueConstraint("artifact_id", "subject_key", "parser_version", name="uq_curated_artifact_subject_parser"),)
+
+
+class FieldLineage(Base):
+    __tablename__ = "field_lineage"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    curated_record_id: Mapped[int] = mapped_column(ForeignKey("curated_records.id"), index=True)
+    field_name: Mapped[str] = mapped_column(String(160))
+    raw_path: Mapped[str] = mapped_column(String(500))
+    source_value_hash: Mapped[str] = mapped_column(String(64))
+    __table_args__ = (UniqueConstraint("curated_record_id", "field_name", name="uq_curated_field_lineage"),)
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)
