@@ -14,6 +14,7 @@ Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Te
 ## Required scope
 
 - Maintain a source registry with multiple candidate or validated sources for each state, including authority, role, access method, terms or automation constraints, refresh expectations, cost, fields, and known limitations.
+- Maintain a federated signal-first portfolio for each state: discovery-capable obituary/probate/publisher sources plus downstream entity, tax, licensing, and filing corroboration. A statewide business download is not required.
 - Support signal-first, business-first, and hybrid acquisition. Curated records may represent an unresolved person or transition signal before any business is known.
 - Acquire bounded representative data from permitted sources without bypassing access controls, publisher rules, or reasonable rate limits.
 - Separate immutable raw artifacts, normalized source records, validated evidence, and quarantined failures.
@@ -26,7 +27,7 @@ Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Te
 
 ## Definition of done
 
-- Colorado, Utah, and Texas each have at least two documented sources with explicit purpose and limitations; at least one permitted source per state is exercised with a bounded representative sample.
+- Colorado, Utah, and Texas each have at least two documented sources across signal discovery and business corroboration with explicit purpose and limitations; at least one permitted source per state is exercised with a bounded representative sample.
 - The raw-to-curated contract and retention boundary are documented and implemented behind source-neutral interfaces.
 - Re-running the same acquisition is idempotent, and a stored raw artifact can be replayed through a newer parser without refetching it.
 - Normalized facts retain field-level lineage to immutable source evidence; unsupported ownership remains unknown.

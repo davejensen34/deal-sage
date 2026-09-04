@@ -43,7 +43,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Highest risks
 
-1. Whether another permitted public source exposes actual SMB owners/controllers with sufficient quality; Colorado's bulk dataset does not.
+1. Whether permitted obituary, probate, and publisher feeds provide sufficiently timely and broad signal-first coverage; official vital-record systems do not.
 2. Identity-resolution precision and false-positive harm.
 3. Distinguishing legal roles from control across jurisdictions and stale filings.
 4. Research acquisition reliability and sustainable source maintenance.
@@ -51,7 +51,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #20's primary-source registry and access decisions, then open implementation Issues for the raw-to-curated contract and bounded state adapters. Milestone 3 requires multiple documented sources for each of Colorado, Utah, and Texas plus a replayable evidence landing; model-assisted business discovery remains deferred to Milestone 4.
+Complete Issue #24's signal-first source decisions, then implement bounded no-cost adapters where contracts permit and request approval for any paid sample. The evidence landing and business registries support both signal-first and business-first research; model-assisted business discovery remains deferred to Milestone 4.
 
 ## Latest validation
 
