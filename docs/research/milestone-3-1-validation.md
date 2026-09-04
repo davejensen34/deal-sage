@@ -18,7 +18,7 @@ This assessment records observed support as of September 4, 2026. It distinguish
 | Analyst research narrative | Supported | Authenticated API and rendered UI expose origin, hypothesis, activity, evidence, conflicts, confidence, stopping, and human conclusion without raw page bodies or agent logs. |
 | Cross-strategy funnel metrics | Partially supported | Aggregate counts exist by origin and research layer without invented conversion rates; current local data contains no persisted convergence cases. |
 | Live success and negative-case matrix | Not yet supported | The scenario matrix is automated with fictional evidence. Live case validation remains unclaimed until bounded public cases are selected and reviewed responsibly. |
-| Live OpenAI or Anthropic reasoning | Not yet supported | Bounded request construction and structured-output validation are tested without network access. Neither provider has received a live request. The app remains functional without AI. |
+| Live OpenAI or Anthropic reasoning | Partially supported | Synthetic local connectivity passed for OpenAI `gpt-5-mini` and Anthropic `claude-sonnet-4-5`; request construction and structured-output validation are automated. Public evidence extraction and comparative output quality remain untested. The app remains functional without AI. |
 
 ## Closeout decision
 

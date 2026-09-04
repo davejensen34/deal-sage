@@ -9,6 +9,12 @@ from app.ai.providers.openai import OpenAIProvider
 from app.core.config import get_settings
 
 
+def is_ready_response(value: str) -> bool:
+    """Allow cosmetic punctuation without accepting an unrelated model response."""
+    normalized = " ".join(value.casefold().split()).strip(" .!\"'")
+    return normalized == "provider ready"
+
+
 async def run() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -40,7 +46,7 @@ async def run() -> None:
         "Reply with exactly: provider ready"
     )
     latency_ms = int((time.perf_counter() - started) * 1000)
-    if result.strip().lower() != "provider ready":
+    if not is_ready_response(result):
         raise SystemExit("Provider responded, but the bounded smoke-check output was unexpected.")
     print(
         f"provider={settings.model_provider} model={model} "

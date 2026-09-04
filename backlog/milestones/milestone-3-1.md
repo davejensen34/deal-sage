@@ -39,6 +39,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Issue #45 adds versioned deterministic confidence across distinct business, relationship, transition, operating-status, and opportunity axes plus explicitly classified profile facts, estimates, and inferences.
 - Issue #46 adds the authenticated analyst case narrative, explicit human conclusion layer, corrected source-decision language, and an evidence-based validation assessment. Live search/model and real-case scenario validation remain open closeout gaps.
 - Issue #49 prepares bounded OpenAI and Anthropic local execution and defines the seven-slot public-case protocol. No live provider call or real-person cohort execution is claimed until keys and human approval are present.
+- Issue #51 corrects the synthetic smoke assertion and records successful local connectivity for both configured providers. The seven-slot strategy is approved; exact public-case manifest qualification and approval remain pending.
 
 ## Definition of done
 
