@@ -1,7 +1,7 @@
 from __future__ import annotations
 from datetime import date, datetime, timezone
 from typing import Any
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, JSON, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.database import Base
 
@@ -198,6 +198,7 @@ class ReviewCase(TimestampMixin, Base):
 class AuditEvent(Base):
     __tablename__ = "audit_events"
     id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
     candidate_id: Mapped[int | None] = mapped_column(ForeignKey("candidate_matches.id"), index=True)
     actor: Mapped[str] = mapped_column(String(120))
     timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, index=True)
@@ -205,6 +206,19 @@ class AuditEvent(Base):
     before_state: Mapped[dict[str, Any] | None] = mapped_column(JSON)
     after_state: Mapped[dict[str, Any] | None] = mapped_column(JSON)
     detail: Mapped[str | None] = mapped_column(Text)
+
+
+class User(TimestampMixin, Base):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    provider: Mapped[str] = mapped_column(String(50))
+    subject: Mapped[str] = mapped_column(String(255))
+    email: Mapped[str | None] = mapped_column(String(320))
+    display_name: Mapped[str] = mapped_column(String(160))
+    avatar_url: Mapped[str | None] = mapped_column(String(500))
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    last_login_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    __table_args__ = (UniqueConstraint("provider", "subject", name="uq_users_provider_subject"),)
 
 
 class AIExecution(Base):

@@ -4,4 +4,4 @@ This directory preserves roadmap sequencing, product risks, and work not yet rea
 
 Priority order is research correctness and provenance; owner-discovery and identity-resolution viability; analyst trust and workflow value; acquisition coverage, reliability, and cost; then advanced AI, scale, and enterprise concerns.
 
-Active reconciliation: GitHub Issue #1. Do not create speculative Issues for all later work.
+Active milestone: Milestone 2.1 — Research Trail and Pilot Identity. GitHub Issues remain the implementation record; do not create speculative Issues for later work.

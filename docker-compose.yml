@@ -12,6 +12,10 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://dealsage:dealsage-local@postgres:5432/dealsage
       DEMO_MODE: "true"
+      AUTH_MODE: demo
+      SESSION_SECRET: development-only-compose-session-secret
+      SESSION_COOKIE_SECURE: "false"
+      WEB_APP_URL: http://localhost:3000
       CORS_ORIGINS: http://localhost:3000
       MODEL_PROVIDER: ${MODEL_PROVIDER:-disabled}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
