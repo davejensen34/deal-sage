@@ -10,7 +10,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is paused, not closed. Its only open work is Issue #32, awaiting the authorized Utah BEL delivery on a prepared branch.
-- Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active by explicit approval. Issues #33 and #35 established the traceability and sanitation foundations; Issue #37 adds bounded provider-neutral search and dynamic source candidates.
+- Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active by explicit approval. Issues #33, #35, and #37 established traceability, sanitation, bounded provider-neutral search, and dynamic source candidates. Issue #39 adds semantically precise obituary business-clue extraction without converting mentions into ownership conclusions.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence

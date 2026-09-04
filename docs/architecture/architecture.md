@@ -28,6 +28,8 @@ Milestone 3.1 converges every origin through a shared `ResearchCase`. Minimal ca
 
 Search is a capability separate from model reasoning. A provider-neutral `SearchProvider` executes only within a case query budget and records query/provider/status/latency provenance. Results stage deduplicated `SourceCandidate` records; they do not become evidence, known sources, or adapters until later retrieval and explicit evaluation. Repeated queries retain discovery links without inflating the candidate count.
 
+Obituary business-clue extraction sits after evidence retention and before inference. A provider-neutral `BusinessClueExtractor` returns typed clues whose supporting excerpt must occur in the retained `CaseEvidence`. The deterministic baseline recognizes only explicit relationship phrases and preserves owner, co-owner, founder, operator, family-business participant, executive, employee, former-owner, sale, and retirement semantics. `ObituaryClueService` validates a complete extraction before it creates evidence-backed relationship claims; it never creates a current-ownership conclusion or candidate match. Any later model implementation must record provider, model, and prompt version and pass through the same typed, safety-checked contract.
+
 ## Future extension points
 
 Source adapters can add HTTPX, Trafilatura, Playwright, or Scrapy under source-specific rules. Persistent jobs may start in-process and later use a queue when scale proves the need. Local storage can move to S3-compatible storage. PostgreSQL can add pg_trgm and pgvector. OIDC, managed PostgreSQL, distributed workers, Kubernetes, and enterprise telemetry remain options—not dependencies.
