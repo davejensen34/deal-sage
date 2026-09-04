@@ -17,7 +17,7 @@ Milestone 1 — Evidence and Analyst Foundation is implemented and undergoing fi
 
 - OpenAI and Anthropic summary adapters exist behind a provider interface; neither provider has received a live request.
 - Local evidence storage implements save/read/delete but is not exercised through an API workflow.
-- Alembic is configured; the initial migration and migration execution are reconciliation work.
+- Alembic has an initial schema revision validated against an empty SQLite database.
 - Responsive styles exist; desktop rendered workflows are the primary validation target.
 
 ## Partial
@@ -48,3 +48,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 ## Next
 
 Complete Issue #1 through CI and PR. Then, only with user direction, open Milestone 2 with one narrow owner-discovery research experiment described in `backlog/milestones/milestone-2.md`.
+
+## Latest validation
+
+Reconciliation exercised 9 backend/API tests, the initial migration from an empty database, 1 frontend component test, the production frontend build, Compose configuration, and the full Nginx/FastAPI/PostgreSQL stack. Rendered inspection covered the dashboard, sortable/searchable candidate list, registered-agent false-positive detail, evidence and uncertainty hierarchy, decision modal, persisted watchlist decision/note, and updated audit history. No material clipping or hierarchy defect was observed at the desktop validation viewport; broader breakpoint coverage remains partial.
