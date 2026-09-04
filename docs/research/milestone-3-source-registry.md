@@ -57,3 +57,26 @@ Official references:
 - Texas: validate the Comptroller API documentation and one open-data dataset contract before fetching a bounded sample; keep SOSDirect deferred.
 
 These experiments must report retrieval success, latency, field completeness, role yield, stale/ambiguous rate, duplicate/conflict rate, and marginal cost. A source moves from ready to implemented or validated only with stored, reproducible evidence.
+
+## Signal-first research result
+
+Recent state vital records are not a practical discovery feed. Utah keeps death certificates private for 50 years; Texas exposes aggregate dashboards while recent person-level records and indexes use restricted or controlled request paths; no timely open Colorado statewide person-level feed was verified. These sources are therefore corroboration or aggregate context, not lead generation.
+
+Probate/public-notice repositories can discover names by date, county, and notice category without a business name. Colorado law provides for a statewide newspaper notice repository, Utah law requires probate notices under a common heading, and Texas press/court portals expose estate or probate categories. Their public search interfaces do not by themselves establish an automation or reuse contract. The next step is publisher or court-operator permission plus a bounded manual coverage study, not scraping.
+
+OfficialObituary documents a no-auth, state-filtered public browse API and labels responses with `public-browse` and `obituary-browse` contracts. A bounded aggregate check on September 4, 2026 succeeded for all target states but found only six total records (CO 1, UT 3, TX 2); the newest reported dates ranged from January to May 2026. Its terms allow searching and reading but say submissions are not fact-checked. Decision: useful technical fixture and supplemental source, rejected as primary coverage.
+
+Official signal references:
+
+- https://officialobituary.com/docs/api-reference
+- https://officialobituary.com/terms
+- https://coloradopressassociation.com/
+- https://www.coloradojudicial.gov/media/8775
+- https://utahpress.com/services/legal-notices/
+- https://le.utah.gov/xcode/Title75/Chapter1/C75-1-S404_2025050720250507.pdf
+- https://texaspublicnotices.netlify.app/
+- https://topics.txcourts.gov/CitationsPublic/SearchCitationNoticeDoc
+- https://vitalrecords.utah.gov/death
+- https://www.dshs.texas.gov/center-health-statistics/vital-statistics-data/request-procedures
+
+The practical portfolio is therefore federated: authorized obituary/publisher feeds and probate notices discover people; curated clues and later intelligent analysis propose business candidates; state entity, tax, licensing, and filing sources validate those candidates. Comprehensive statewide business downloads are optional accelerators, never a prerequisite.

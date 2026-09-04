@@ -17,3 +17,19 @@ The registry distinguishes a source's authority from the facts it can support. A
 | Texas | Secretary of State SOSDirect | Filing registry, entity search, and plain/certified document retrieval | Account or temporary access; $1 per search, with additional document/certificate fees | Paid interactive service with no verified automation contract; filing roles do not automatically establish ownership | deferred pending cost and access decision |
 
 Detailed source contracts, links, and state-specific next experiments are in `docs/research/milestone-3-source-registry.md`. The next adapter Issue must cite the applicable source decision and may not broaden its access method implicitly.
+
+## Signal-first portfolio
+
+These sources accept geography, date, or notice-type discovery without a known business name. None is sufficient alone, and “deceased” does not imply “business owner.”
+
+| Coverage | Source | Discovery value | Limitation | Decision |
+|---|---|---|---|---|
+| CO, UT, TX | OfficialObituary public browse API | Documented state-filtered, paginated obituary metadata API; no account required | September 4 bounded check returned only 1 CO, 3 UT, and 2 TX records, with newest reported death dates in January–May 2026; publisher says it does not fact-check family submissions | validated technically; rejected as primary coverage; retain as supplemental fixture/source |
+| Colorado | Colorado newspaper statewide public-notice repository / probate notices | Date-driven notices to creditors can identify decedents without a business name | Repository access contract and automated reuse are not documented; probate notice is lagging and not universal | ready for publisher-permission and bounded manual coverage study |
+| Utah | Utah Press Association legal notices | Statewide newspaper notices include a probate heading organized by decedent surname under Utah law | Search is public, but no authorized API or bulk reuse contract was found | ready for publisher-permission and bounded manual coverage study |
+| Texas | Texas Press Association public notices and Texas court citation/notices search | Search supports probate/estate categories and county/date discovery | Coverage varies by participating publication/court; no authorized bulk API was verified | ready for publisher/court contract study; no automation yet |
+| Colorado | Vital statistics / court records | Named-person corroboration may be possible with eligibility or case context | No timely, open statewide person-level death feed was verified | rejected for population discovery |
+| Utah | Vital Records and State Archives | Historical death corroboration | Recent certificates remain private for 50 years | rejected for recent discovery |
+| Texas | DSHS Vital Statistics | Aggregate trends and restricted named verification/index processes | Dashboard is aggregate; recent certificates are restricted and index acquisition is a separate controlled process | rejected for automated recent discovery |
+
+Local newspapers and funeral homes remain a source family, not an implicitly authorized connector. DealSage may onboard a publisher-provided API, RSS feed, sitemap, or written data agreement source by source; it must not generalize permission from one publisher to another.
