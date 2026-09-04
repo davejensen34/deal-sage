@@ -26,7 +26,7 @@ Milestone 3.1 may use OpenAI or Anthropic where contextual reasoning materially 
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 
-Connect OpenAI and/or Anthropic through the provider-neutral boundary after curated evidence exists. Add schema-constrained extraction of business details, evidence-bounded ambiguity and match analysis, synthesis, and research planning. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
+Productize the bounded provider foundation first exercised in Milestone 3.1. Expand schema-constrained extraction of business details, evidence-bounded ambiguity and match analysis, synthesis, and research planning across reviewed workflows. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
 
 ### Milestone 5 — Opportunity Intelligence Workflows
 

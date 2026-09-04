@@ -303,13 +303,16 @@ def activity(db:Session=Depends(get_db)): return [{"id":a.id,"candidate_id":a.ca
 @router.post("/candidates/{candidate_id}/ai-summary")
 async def ai_summary(candidate_id:int,db:Session=Depends(get_db)):
     c=load_candidate(candidate_id,db); provider=None
-    if settings.model_provider=="openai" and settings.openai_api_key: provider=OpenAIProvider(settings.openai_api_key,settings.openai_model); model=settings.openai_model
-    elif settings.model_provider=="anthropic" and settings.anthropic_api_key: provider=AnthropicProvider(settings.anthropic_api_key,settings.anthropic_model); model=settings.anthropic_model
+    provider_options={"max_output_tokens":settings.ai_max_output_tokens,"timeout_seconds":settings.ai_request_timeout_seconds}
+    if settings.model_provider=="openai" and settings.openai_api_key: provider=OpenAIProvider(settings.openai_api_key,settings.openai_model,**provider_options); model=settings.openai_model
+    elif settings.model_provider=="anthropic" and settings.anthropic_api_key: provider=AnthropicProvider(settings.anthropic_api_key,settings.anthropic_model,**provider_options); model=settings.anthropic_model
     else: raise HTTPException(503,"AI summaries are disabled. Configure a provider and API key.")
     prompt=Path(__file__).parents[1]/"ai/prompts/candidate_summary_v1.txt"; context=prompt.read_text()+"\n\n"+str({"candidate":item(c),"evidence":[e.extracted_text for e in c.evidence],"conflicts":c.conflicting_signals,"missing":c.missing_evidence})
     start=perf_counter()
     try: summary=await provider.summarize(context); ok=True; error=None
-    except Exception as exc: summary=""; ok=False; error=str(exc)
-    db.add(AIExecution(candidate_id=c.id,provider=settings.model_provider,model=model,prompt_version="candidate-summary-v1",latency_ms=int((perf_counter()-start)*1000),success=ok,error=error)); db.commit()
+    except Exception as exc: summary=""; ok=False; error=type(exc).__name__
+    # Provider exception bodies can echo submitted evidence or request metadata;
+    # persist only the exception class and keep the client-facing error generic.
+    db.add(AIExecution(candidate_id=c.id,provider=settings.model_provider,model=model,prompt_version="candidate-summary-v1",token_usage=provider.last_token_usage,latency_ms=int((perf_counter()-start)*1000),success=ok,error=error)); db.commit()
     if not ok: raise HTTPException(502,"AI provider request failed")
     return {"label":"AI Research Summary","summary":summary,"provider":settings.model_provider,"model":model,"prompt_version":"candidate-summary-v1"}

@@ -18,8 +18,8 @@ This assessment records observed support as of September 4, 2026. It distinguish
 | Analyst research narrative | Supported | Authenticated API and rendered UI expose origin, hypothesis, activity, evidence, conflicts, confidence, stopping, and human conclusion without raw page bodies or agent logs. |
 | Cross-strategy funnel metrics | Partially supported | Aggregate counts exist by origin and research layer without invented conversion rates; current local data contains no persisted convergence cases. |
 | Live success and negative-case matrix | Not yet supported | The scenario matrix is automated with fictional evidence. Live case validation remains unclaimed until bounded public cases are selected and reviewed responsibly. |
-| Live OpenAI or Anthropic reasoning | Not yet supported | Neither API key is configured and neither provider has received a live request. The app remains functional without AI. |
+| Live OpenAI or Anthropic reasoning | Not yet supported | Bounded request construction and structured-output validation are tested without network access. Neither provider has received a live request. The app remains functional without AI. |
 
 ## Closeout decision
 
-Milestone 3.1 remains active. Issue #46 may merge the truthful analyst narrative and this assessment, but it must not close the milestone until the live validation gaps are either exercised with aggregate-safe recorded results or explicitly moved to an approved follow-up milestone. Utah BEL delivery remains a separate Milestone 3 dependency in Issue #32.
+Milestone 3.1 remains active. Issue #49 defines the bounded live-provider and seven-slot public-case protocol, but the milestone must not close until those gaps are either exercised with aggregate-safe recorded results or explicitly moved to an approved follow-up milestone. Utah BEL delivery remains a separate Milestone 3 dependency in Issue #32.

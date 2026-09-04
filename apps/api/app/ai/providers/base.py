@@ -3,6 +3,8 @@ from typing import Any
 
 
 class AIProvider(ABC):
+    last_token_usage: int | None = None
+
     @abstractmethod
     async def extract_structured(self, text: str, schema: dict[str, Any]) -> dict[str, Any]: ...
     @abstractmethod
