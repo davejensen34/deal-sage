@@ -27,8 +27,40 @@ CASES = [
 ]
 
 
+def seed_missing_research_trails(db: Session) -> None:
+    """Backfill demo breadcrumbs when an older persisted demo database is reused."""
+    profile = db.scalar(select(TargetProfile).limit(1))
+    if not profile:
+        profile = TargetProfile(name="Demo lower-middle-market businesses",criteria={"geography":"United States","employee_range":"11–50 (estimate)","status":"active"},provenance={"type":"fictional_demo","note":"Estimates are not registry facts."})
+        db.add(profile); db.flush()
+    for candidate in db.scalars(select(CandidateMatch)).all():
+        if db.scalar(select(ResearchTrail.id).where(ResearchTrail.business_id == candidate.business_id)):
+            continue
+        relationship = candidate.relationship_record
+        source = next((e.source for e in candidate.evidence if e.evidence_type == "business_filing"), None)
+        trail = ResearchTrail(business_id=candidate.business_id,target_profile_id=profile.id,readiness_explanation="Evaluation pending")
+        db.add(trail); db.flush()
+        identity_ok, web_ok = candidate.owner_business_confidence >= 60, candidate.owner_business_confidence >= 70
+        relationship_ok = candidate.owner_business_confidence >= 75 and relationship.relationship_type not in {"registered_agent","former_owner"}
+        stages = [
+            ResearchStage(trail_id=trail.id,stage_type="target_profile",sequence=1,status="validated",confidence=100,detail="Business matched the fictional demo target profile.",supporting_evidence=["Geography, active status, and estimated size align."]),
+            ResearchStage(trail_id=trail.id,stage_type="business_discovered",sequence=2,status="validated",confidence=90,source_id=source.id if source else None,detail="Business was discovered in a fictional public directory."),
+            ResearchStage(trail_id=trail.id,stage_type="entity_anchored",sequence=3,status="validated",confidence=96,source_id=source.id if source else None,detail="Authoritative fictional registry record anchors the legal entity."),
+            ResearchStage(trail_id=trail.id,stage_type="business_identity_validated",sequence=4,status="validated" if identity_ok else "needs_review",confidence=candidate.owner_business_confidence,source_id=source.id if source else None,detail="Name, geography, and registration evidence were compared.",contradictions=[x.get("label","") for x in candidate.conflicting_signals],missing_evidence=[] if identity_ok else ["Independent business identifier"]),
+            ResearchStage(trail_id=trail.id,stage_type="web_presence_validated",sequence=5,status="validated" if web_ok else "needs_review",confidence=max(candidate.owner_business_confidence-3,0),source_id=source.id if source else None,detail="Fictional company web presence was compared with the entity anchor.",supporting_evidence=["Name and geography align."] if web_ok else [],missing_evidence=[] if web_ok else ["Corroborating phone or address"]),
+            ResearchStage(trail_id=trail.id,stage_type="person_discovered",sequence=6,status="validated",confidence=candidate.owner_business_confidence,person_id=candidate.person_id,source_id=source.id if source else None,detail=f"{candidate.person.full_name} was discovered with the filed role {relationship.relationship_type.replace('_',' ')}."),
+            ResearchStage(trail_id=trail.id,stage_type="relationship_validated",sequence=7,status="validated" if relationship_ok else "insufficient_evidence",confidence=candidate.owner_business_confidence,person_id=candidate.person_id,relationship_id=relationship.id,source_id=source.id if source else None,detail="Person/business relationship retains the source role without upgrading it to ownership.",missing_evidence=[] if relationship_ok else ["Current controlling-owner evidence"]),
+        ]
+        db.add_all(stages); db.flush()
+        ready, reason = owner_readiness(relationship, stages)
+        trail.owner_research_ready, trail.readiness_explanation = ready, reason
+        db.add(ResearchStage(trail_id=trail.id,stage_type="owner_research_ready",sequence=8,status="validated" if ready else "insufficient_evidence",confidence=candidate.owner_business_confidence,person_id=candidate.person_id,relationship_id=relationship.id,detail=reason))
+    db.commit()
+
+
 def seed_database(db: Session) -> None:
     if db.scalar(select(Business.id).limit(1)):
+        seed_missing_research_trails(db)
         return
     now = datetime.now(timezone.utc)
     profile = TargetProfile(name="Demo lower-middle-market businesses", criteria={"geography":"United States","employee_range":"11–50 (estimate)","status":"active"}, provenance={"type":"fictional_demo","note":"Estimates are not registry facts."})
