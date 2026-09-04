@@ -1,0 +1,18 @@
+name: Feature
+description: Define a product capability ready for implementation
+title: ""
+labels: [feature]
+body:
+  - type: textarea
+    attributes: {label: Problem and value, description: What user problem matters and why?}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Desired outcome and scope}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Acceptance criteria, placeholder: "- [ ] Observable result"}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Technical, evidence, AI, and research considerations}
+  - type: textarea
+    attributes: {label: Validation proof}

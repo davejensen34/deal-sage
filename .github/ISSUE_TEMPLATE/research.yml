@@ -1,0 +1,17 @@
+name: Research
+description: Answer a product, source, model, or architecture question
+title: "research: "
+labels: [research]
+body:
+  - type: textarea
+    attributes: {label: Question and decision enabled}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Scope and method}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Evidence and measurements}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: Completion criteria and repository artifact}
+    validations: {required: true}
