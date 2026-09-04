@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 2.2 — Live Local Google Authentication is complete in Issue #14. Do not open Milestone 3 without user direction.
+No milestone is active. Milestone 2.2 — Live Local Google Authentication is complete in Issue #14, and the revised Milestone 3 product direction is approved for the next kickoff.
 
 ## What works and has been validated
 
@@ -50,7 +50,7 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Wait for user direction before opening Milestone 3 — Owner → Transition Signal Discovery.
+Milestone 3 — Multi-State Data Acquisition and Curation has approved product direction and is ready for kickoff. Open its GitHub milestone and implementation-ready Issues before beginning code. Its required starting scope is multiple documented sources for each of Colorado, Utah, and Texas plus a replayable raw-to-curated evidence landing; model-assisted business discovery follows in Milestone 4.
 
 ## Latest validation
 

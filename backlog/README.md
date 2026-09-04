@@ -9,8 +9,16 @@ Priority order is research correctness and provenance; owner-discovery and ident
 ## Current product position
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
-- No milestone is active. Milestone 3 — Owner → Transition Signal Discovery must not begin until the user approves its scope.
+- No milestone is active. Milestone 3 — Multi-State Data Acquisition and Curation is approved in product direction and ready for kickoff; execution begins only when its GitHub milestone and scoped Issues are opened.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
+
+## Approved forward sequence
+
+1. Milestone 3 builds curated, replayable, multi-source data acquisition for Colorado, Utah, and Texas.
+2. Milestone 4 adds provider-neutral OpenAI/Anthropic discovery and analysis over that curated evidence.
+3. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows.
+
+This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 
 ## Source-of-truth contract
 
