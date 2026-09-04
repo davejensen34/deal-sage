@@ -1,18 +1,46 @@
+import json
 from typing import Any
+
+from jsonschema import validate
+
 from .base import AIProvider
 
 
 class AnthropicProvider(AIProvider):
-    def __init__(self, api_key: str, model: str):
+    def __init__(self, api_key: str, model: str, *, max_output_tokens: int = 1000, timeout_seconds: float = 30):
         from anthropic import AsyncAnthropic
-        self.client, self.model = AsyncAnthropic(api_key=api_key), model
+
+        self.client = AsyncAnthropic(api_key=api_key, timeout=timeout_seconds)
+        self.model = model
+        self.max_output_tokens = max_output_tokens
+        self.last_token_usage = None
+
+    def _capture_usage(self, response: Any) -> None:
+        usage = getattr(response, "usage", None)
+        input_tokens = getattr(usage, "input_tokens", 0) or 0
+        output_tokens = getattr(usage, "output_tokens", 0) or 0
+        self.last_token_usage = input_tokens + output_tokens if usage else None
 
     async def summarize(self, context: str) -> str:
-        response = await self.client.messages.create(model=self.model, max_tokens=500, messages=[{"role": "user", "content": context}])
+        response = await self.client.messages.create(model=self.model, max_tokens=self.max_output_tokens, messages=[{"role": "user", "content": context}])
+        self._capture_usage(response)
         return "".join(block.text for block in response.content if block.type == "text")
 
     async def extract_structured(self, text: str, schema: dict[str, Any]) -> dict[str, Any]:
-        raise NotImplementedError("Structured extraction is reserved for Milestone 2")
+        response = await self.client.messages.create(
+            model=self.model,
+            max_tokens=self.max_output_tokens,
+            system=(
+                "Return only one JSON object that conforms exactly to this JSON Schema. "
+                "Do not add markdown or facts absent from the supplied evidence.\n" + json.dumps(schema, sort_keys=True)
+            ),
+            messages=[{"role": "user", "content": text}],
+        )
+        self._capture_usage(response)
+        raw = "".join(block.text for block in response.content if block.type == "text")
+        result = json.loads(raw)
+        validate(instance=result, schema=schema)
+        return result
 
     async def analyze_match(self, context: str) -> dict[str, Any]:
         return {"summary": await self.summarize(context)}
