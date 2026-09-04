@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CuratedRecord, Evidence, Person, RawArtifact, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CuratedRecord, Evidence, Person, RawArtifact, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -46,6 +46,29 @@ def acquisition_runs(db: Session = Depends(get_db)):
         artifact_ids=select(RunArtifact.artifact_id).where(RunArtifact.run_id==run.id)
         result.append({"id":run.id,"source_key":run.source_key,"jurisdiction":run.jurisdiction,"discovery_strategy":run.discovery_strategy,"status":run.status,"started_at":run.started_at,"finished_at":run.finished_at,"metrics":run.metrics,"artifact_count":db.scalar(select(func.count(RawArtifact.id)).where(RawArtifact.id.in_(artifact_ids))) or 0,"curated_count":db.scalar(select(func.count(CuratedRecord.id)).where(CuratedRecord.artifact_id.in_(artifact_ids),CuratedRecord.status=="curated")) or 0,"quarantined_count":db.scalar(select(func.count(CuratedRecord.id)).where(CuratedRecord.artifact_id.in_(artifact_ids),CuratedRecord.status=="quarantined")) or 0})
     return result
+
+
+@router.get("/research/resolution-outcomes")
+def resolution_outcomes(db: Session = Depends(get_db)):
+    """Expose aggregate signal-first outcomes without person or business identifiers."""
+    rows = db.execute(
+        select(SignalResolution.outcome, func.count(SignalResolution.id)).group_by(
+            SignalResolution.outcome
+        )
+    ).all()
+    counts = {outcome: count for outcome, count in rows}
+    return {
+        "total": sum(counts.values()),
+        "outcomes": [
+            {"outcome": outcome, "count": counts.get(outcome, 0)}
+            for outcome in (
+                "pending",
+                "business_resolved",
+                "no_business_found",
+                "relationship_unknown",
+            )
+        ],
+    }
 
 
 @router.get("/research/experiments/colorado-owner-discovery")

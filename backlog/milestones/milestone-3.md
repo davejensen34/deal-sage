@@ -9,6 +9,7 @@ Status: in progress in GitHub Milestone 3; source-registry research begins in Is
 - Issue #24 established the federated signal-first source portfolio and rejected recent vital records as a statewide discovery feed.
 - Issue #26 implements bounded Colorado and Texas source samples plus the purchase-free Utah BEL three-file contract fixture. A live Utah sample remains gated by explicit cost approval.
 - Issue #28 adds analyst-facing aggregate source operations, including live/fixture distinctions and visible rejected or failed source states.
+- Issue #30 persists deterministic signal-first outcomes so research can resolve to an existing business or terminate honestly without one.
 
 ## Goal
 
