@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 2.1 — Research Trail and Pilot Identity is complete and validated through Pull Requests #11–#13. Do not open Milestone 3 without user direction.
+Milestone 2.2 — Live Local Google Authentication is complete in Issue #14. Do not open Milestone 3 without user direction.
 
 ## What works and has been validated
 
@@ -12,7 +12,8 @@ Milestone 2.1 — Research Trail and Pilot Identity is complete and validated th
 - Candidate detail exposes business/person/signal, three confidence values, rationale, conflicts, gaps, evidence provenance, and audit history.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
 - Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
-- Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and mock-tested.
+- Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
+- Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
 ## Implemented but not fully validated
@@ -53,4 +54,4 @@ Wait for user direction before opening Milestone 3 — Owner → Transition Sign
 
 ## Latest validation
 
-Milestone 2.1 validation exercised 23 backend/API/auth tests, 2 frontend tests, upgrade/downgrade through all three migrations, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack with an existing demo volume. Rendered inspection covered the measured funnel, progressive research trail, owner-readiness boundary, demo identity, and branded login/error states. Google OIDC callback, JIT provisioning, allowlists, session/logout behavior, authenticated API protection, and user-linked audit attribution were mock-validated; Google was not live-provider tested because credentials were not supplied. Broader breakpoint coverage remains partial.
+Milestone 2.2 validation exercised 24 backend/API/auth tests, 2 frontend tests, the production frontend build, and the full Nginx/FastAPI/PostgreSQL Compose stack in OIDC mode. A real Google browser flow validated discovery, authorization-code exchange with PKCE, verified-email enforcement, JIT provisioning, signed-session recovery, protected dashboard and candidate access, and user-linked audit attribution. Allowlist rejection, logout, subsequent sign-in, and non-secret configuration disclosure are integration-tested. Credentials remained in the ignored root `.env`; provider tokens were not persisted. Broader breakpoint coverage remains partial.

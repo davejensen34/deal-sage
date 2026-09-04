@@ -1,6 +1,12 @@
 import os
 os.environ["DATABASE_URL"]="sqlite:///:memory:"
 os.environ["DEMO_MODE"]="false"
+# Tests must not inherit a developer's ignored root `.env`. Besides making the
+# suite nondeterministic, doing so could accidentally exercise a live identity
+# provider when the developer intends to run only isolated integration tests.
+os.environ["AUTH_MODE"]="demo"
+os.environ["ALLOWED_EMAILS"]=""
+os.environ["ALLOWED_DOMAINS"]=""
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
