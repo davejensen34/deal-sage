@@ -80,6 +80,47 @@ class BusinessRelationship(Base):
     evidence_refs: Mapped[list[int]] = mapped_column(JSON, default=list)
 
 
+class TargetProfile(TimestampMixin, Base):
+    __tablename__ = "target_profiles"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(160))
+    criteria: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    provenance: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+
+
+class ResearchTrail(TimestampMixin, Base):
+    __tablename__ = "research_trails"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    business_id: Mapped[int] = mapped_column(ForeignKey("businesses.id"), unique=True)
+    target_profile_id: Mapped[int | None] = mapped_column(ForeignKey("target_profiles.id"))
+    owner_research_ready: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    readiness_explanation: Mapped[str] = mapped_column(Text, default="Insufficient evidence")
+    business: Mapped[Business] = relationship()
+    target_profile: Mapped[TargetProfile | None] = relationship()
+    stages: Mapped[list[ResearchStage]] = relationship(back_populates="trail", cascade="all, delete-orphan", order_by="ResearchStage.sequence")
+
+
+class ResearchStage(Base):
+    __tablename__ = "research_stages"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    trail_id: Mapped[int] = mapped_column(ForeignKey("research_trails.id"), index=True)
+    stage_type: Mapped[str] = mapped_column(String(50), index=True)
+    sequence: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(30), index=True)
+    confidence: Mapped[int | None] = mapped_column(Integer)
+    source_id: Mapped[int | None] = mapped_column(ForeignKey("sources.id"))
+    person_id: Mapped[int | None] = mapped_column(ForeignKey("people.id"))
+    relationship_id: Mapped[int | None] = mapped_column(ForeignKey("business_relationships.id"))
+    evidence_refs: Mapped[list[int]] = mapped_column(JSON, default=list)
+    supporting_evidence: Mapped[list[str]] = mapped_column(JSON, default=list)
+    contradictions: Mapped[list[str]] = mapped_column(JSON, default=list)
+    missing_evidence: Mapped[list[str]] = mapped_column(JSON, default=list)
+    detail: Mapped[str] = mapped_column(Text)
+    occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    trail: Mapped[ResearchTrail] = relationship(back_populates="stages")
+    source: Mapped[Source | None] = relationship()
+
+
 class TransitionSignal(Base):
     __tablename__ = "transition_signals"
     id: Mapped[int] = mapped_column(primary_key=True)

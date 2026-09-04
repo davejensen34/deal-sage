@@ -2,7 +2,8 @@ from datetime import date, datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.domain.models import (AuditEvent, Business, BusinessRelationship, CandidateMatch,
-    Evidence, Person, ReviewCase, Source, TransitionSignal)
+    Evidence, Person, ResearchStage, ResearchTrail, ReviewCase, Source, TargetProfile, TransitionSignal)
+from app.domain.research import owner_readiness
 
 CASES = [
  ("Alder Ridge Toolworks", "Eleanor", "Mae", "Voss", "Fort Collins", "CO", "validated", 93, 91, "owner", [], "Very strong match", ["owner_filing","exact_full_name","same_city","company_in_signal","independent_source","age_aligns","timeline_aligns"]),
@@ -30,6 +31,8 @@ def seed_database(db: Session) -> None:
     if db.scalar(select(Business.id).limit(1)):
         return
     now = datetime.now(timezone.utc)
+    profile = TargetProfile(name="Demo lower-middle-market businesses", criteria={"geography":"United States","employee_range":"11–50 (estimate)","status":"active"}, provenance={"type":"fictional_demo","note":"Estimates are not registry facts."})
+    db.add(profile); db.flush()
     for i, (company, first, middle, last, city, state, status, owner_score, signal_score, rel_type, conflicts, explanation, features) in enumerate(CASES, 1):
         business = Business(legal_name=company, doing_business_as=None, industry=["Manufacturing","Business Services","Construction","Distribution"][i%4], website=f"https://example.com/demo/{i}", address=f"{100+i} Market Street", city=city, state=state, postal_code=f"{80000+i}", jurisdiction=state, registration_number=f"DEMO-{state}-{1000+i}", formation_date=date(1994+i%20, 3, 1), employee_range="11–50 (estimate)", revenue_range="$2M–$10M (estimate)", ownership_type="privately held")
         person = Person(first_name=first, middle_name=middle, last_name=last, aliases=[], approximate_birth_year=1944+i%18, city=city, state=state)
@@ -46,6 +49,25 @@ def seed_database(db: Session) -> None:
         db.add_all([
             Evidence(candidate_id=candidate.id,evidence_type="business_filing",source_id=public.id,subject_type="business_relationship",subject_id=relationship.id,extracted_text=f"DEMO FACT: {person.full_name} is listed as {rel_type.replace('_',' ')} of {company}.",normalized_facts={"person":person.full_name,"business":company,"role":rel_type},extractor_type="seeded",evidence_strength="high" if owner_score>75 else "medium",explanation="Establishes the recorded business role; it does not independently prove current beneficial ownership.",classification="source_fact"),
             Evidence(candidate_id=candidate.id,evidence_type="transition_notice",source_id=notice.id,subject_type="transition_signal",subject_id=signal.id,extracted_text=f"DEMO FACT: A fictional public notice reports a transition signal for {person.full_name} of {city}, {state}.",normalized_facts={"name":person.full_name,"city":city,"state":state,"signal":"possible_death"},extractor_type="seeded",evidence_strength="high" if signal_score>75 else "low",explanation="Supports the transition signal but must be resolved to the business-associated identity.",classification="source_fact")])
+        db.flush()
+        trail = ResearchTrail(business_id=business.id,target_profile_id=profile.id,readiness_explanation="Evaluation pending")
+        db.add(trail); db.flush()
+        identity_ok = owner_score >= 60
+        web_ok = owner_score >= 70
+        relationship_ok = owner_score >= 75 and rel_type not in {"registered_agent", "former_owner"}
+        stages = [
+            ResearchStage(trail_id=trail.id,stage_type="target_profile",sequence=1,status="validated",confidence=100,detail="Business matched the fictional demo target profile.",supporting_evidence=["Geography, active status, and estimated size align."],missing_evidence=[]),
+            ResearchStage(trail_id=trail.id,stage_type="business_discovered",sequence=2,status="validated",confidence=90,source_id=public.id,detail="Business was discovered in a fictional public directory.",supporting_evidence=[company]),
+            ResearchStage(trail_id=trail.id,stage_type="entity_anchored",sequence=3,status="validated",confidence=96,source_id=public.id,detail="Authoritative fictional registry record anchors the legal entity.",supporting_evidence=[business.registration_number or "Registry identifier"]),
+            ResearchStage(trail_id=trail.id,stage_type="business_identity_validated",sequence=4,status="validated" if identity_ok else "needs_review",confidence=owner_score,source_id=public.id,detail="Name, geography, and registration evidence were compared.",contradictions=conflicts,missing_evidence=[] if identity_ok else ["Independent business identifier"]),
+            ResearchStage(trail_id=trail.id,stage_type="web_presence_validated",sequence=5,status="validated" if web_ok else "needs_review",confidence=max(owner_score-3,0),source_id=public.id,detail="Fictional company web presence was compared with the entity anchor.",supporting_evidence=["Name and geography align."] if web_ok else [],missing_evidence=[] if web_ok else ["Corroborating phone or address"]),
+            ResearchStage(trail_id=trail.id,stage_type="person_discovered",sequence=6,status="validated",confidence=owner_score,person_id=person.id,source_id=public.id,detail=f"{person.full_name} was discovered with the filed role {rel_type.replace('_',' ')}."),
+            ResearchStage(trail_id=trail.id,stage_type="relationship_validated",sequence=7,status="validated" if relationship_ok else "insufficient_evidence",confidence=owner_score,person_id=person.id,relationship_id=relationship.id,source_id=public.id,detail="Person/business relationship retains the source role without upgrading it to ownership.",contradictions=conflicts,missing_evidence=[] if relationship_ok else ["Current controlling-owner evidence"]),
+        ]
+        db.add_all(stages); db.flush()
+        ready, reason = owner_readiness(relationship, stages)
+        trail.owner_research_ready, trail.readiness_explanation = ready, reason
+        db.add(ResearchStage(trail_id=trail.id,stage_type="owner_research_ready",sequence=8,status="validated" if ready else "insufficient_evidence",confidence=owner_score,person_id=person.id,relationship_id=relationship.id,detail=reason))
         db.add(ReviewCase(candidate_id=candidate.id, assigned_user="Morgan Lee", status="closed" if status in {"validated","rejected"} else "open", decision=status if status in {"validated","rejected"} else None, analyst_notes=[], decision_reason_codes=[]))
         db.add(AuditEvent(candidate_id=candidate.id,actor="DealSage demo seeder",action="candidate_created",after_state={"status":status},detail="Fictional demo candidate created."))
     db.commit()
