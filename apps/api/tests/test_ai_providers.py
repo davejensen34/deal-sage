@@ -81,11 +81,14 @@ async def test_anthropic_structured_extraction_rejects_non_json_wrapping():
         content=[SimpleNamespace(type="text", text='```json\n{"relationship":"owner"}\n```')],
         usage=None,
     )
-    provider, _ = anthropic_provider(response)
+    provider, create = anthropic_provider(response)
     schema = {"type": "object", "properties": {"relationship": {"type": "string"}}}
 
     with pytest.raises(ValueError):
         await provider.extract_structured("evidence packet", schema)
+    assert create.calls[0]["output_config"] == {
+        "format": {"type": "json_schema", "schema": schema}
+    }
 
 
 def test_provider_side_response_storage_cannot_be_enabled():
