@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 through #41 established the common case spine, sanitation, bounded discovery, precise clues, and deterministic planning. Issue #43 adds bidirectional identity hypotheses, aliases, contradictions, and evidence-independence classification. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
+Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Issues #33 through #43 established the common case spine, sanitation, bounded discovery/planning, precise clues, and bidirectional resolution. Issue #45 adds explainable confidence and classified operating-status/profile evidence. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
 
 ## What works and has been validated
 
@@ -51,10 +51,10 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #43's bidirectional identity and evidence-independence layer, then add explainable confidence convergence and operating-status/profile evidence. Resume Issue #32 immediately when the Utah BEL archive arrives.
+Complete Issue #45's explainable confidence and profile-evidence layer, then finish Milestone 3.1 through Issue #46's analyst narrative, cross-strategy metrics, live validation, and reconciliation. Resume Issue #32 immediately when the Utah BEL archive arrives; its currently forecast documentation conflicts are recorded on that issue.
 
 ## Latest validation
 
-The current Milestone 3.1 implementation exercises 80 backend/API tests and upgrade/downgrade/upgrade through all nine migrations on an empty SQLite database. Tests prove unresolved cases, evidence/claim lineage, bounded discovery and planning, precise relationship semantics, cross-case isolation, explicit terminal reasons, both identity-resolution directions, name-only rejection, alias provenance, preserved contradictions, and duplicate/syndicated/independent evidence treatment. Earlier Milestone 3 validation exercised 10/10 bounded Colorado and Texas records at zero marginal API cost, the production frontend build and tests, and the rebuilt Nginx/FastAPI/PostgreSQL Compose stack. Live Utah validation remains pending delivery.
+The current Milestone 3.1 implementation exercises 86 backend/API tests and upgrade/downgrade/upgrade through all ten migrations on an empty SQLite database. Tests prove bounded convergence, both resolution directions, name-only rejection, alias/conflict provenance, evidence independence, separate reproducible confidence axes, negative and inactive outcomes, and labeled profile estimates. Earlier Milestone 3 validation exercised 10/10 bounded Colorado and Texas records at zero marginal API cost, the production frontend build/tests, and the rebuilt Compose stack. Live Utah validation remains pending delivery; the branch conflict forecast is limited to two documentation files at this point.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

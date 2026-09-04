@@ -36,6 +36,7 @@ Issue boundaries may change as implementation evidence emerges; GitHub Issues re
 - Issue #39 adds a provider-neutral obituary business-clue contract and deterministic baseline that preserves explicit relationship, former-owner, sale, and retirement language as source-backed claims without inferring current ownership.
 - Issue #41 adds durable frontier questions and deterministic bounded planning with reconstructable action/model provenance, attempt limits, research budgets, and explicit stopping reasons.
 - Issue #43 adds common bidirectional identity hypotheses, claim-backed aliases, explicit contradictions, and duplicate/syndicated/same-publisher evidence classification with a name-only resolution prohibition.
+- Issue #45 adds versioned deterministic confidence across distinct business, relationship, transition, operating-status, and opportunity axes plus explicitly classified profile facts, estimates, and inferences.
 
 ## Definition of done
 
