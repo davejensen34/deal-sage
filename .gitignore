@@ -1,0 +1,16 @@
+.env
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+dealsage.db
+data/
+node_modules/
+dist/
+coverage/
+*.log
+*.egg-info/
+*.tsbuildinfo
+apps/web/vite.config.js
+apps/web/vite.config.d.ts

@@ -1,0 +1,105 @@
+from datetime import datetime, timezone
+from pathlib import Path
+from time import perf_counter
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import func, or_, select
+from sqlalchemy.orm import Session, selectinload
+from app.ai.providers.anthropic import AnthropicProvider
+from app.ai.providers.openai import OpenAIProvider
+from app.core.config import get_settings
+from app.core.database import get_db
+from app.domain.models import AIExecution, AuditEvent, Business, CandidateMatch, Evidence, Person, ReviewCase, TransitionSignal
+from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
+
+router = APIRouter(prefix="/api")
+settings = get_settings()
+
+
+def item(c: CandidateMatch) -> dict:
+    return {"id":c.id,"business":c.business.legal_name,"owner":c.person.full_name,"city":c.business.city,"state":c.business.state,"signal_type":c.signal.signal_type,"transition_date":c.signal.possible_transition_date,"owner_business_confidence":c.owner_business_confidence,"signal_identity_confidence":c.signal_identity_confidence,"overall_candidate_confidence":c.overall_candidate_confidence,"status":c.status,"updated_at":c.updated_at}
+
+
+@router.get("/health")
+def health(): return {"status":"ok"}
+
+
+@router.get("/dashboard")
+def dashboard(db: Session = Depends(get_db)):
+    candidates = db.scalars(select(CandidateMatch).options(selectinload(CandidateMatch.business), selectinload(CandidateMatch.person), selectinload(CandidateMatch.signal)).order_by(CandidateMatch.updated_at.desc())).all()
+    counts = {status: sum(c.status==status for c in candidates) for status in ["new","researching","needs_review","validated","rejected","watchlist"]}
+    states: dict[str,int] = {}
+    for c in candidates: states[c.business.state or "Unknown"] = states.get(c.business.state or "Unknown",0)+1
+    audits = db.scalars(select(AuditEvent).order_by(AuditEvent.timestamp.desc()).limit(8)).all()
+    return {"metrics":{"total":len(candidates),"new":counts["new"],"needs_review":counts["needs_review"],"validated":counts["validated"],"high_confidence":sum(c.overall_candidate_confidence>=80 for c in candidates),"rejected":counts["rejected"],"average_confidence":round(sum(c.overall_candidate_confidence for c in candidates)/len(candidates)),"evidence_items":db.scalar(select(func.count(Evidence.id)))},"status_distribution":[{"name":k.replace("_"," ").title(),"value":v} for k,v in counts.items()],"geography":[{"state":k,"candidates":v} for k,v in states.items()],"confidence_distribution":[{"range":label,"value":sum(lo<=c.overall_candidate_confidence<=hi for c in candidates)} for label,lo,hi in [("0–39",0,39),("40–59",40,59),("60–79",60,79),("80–100",80,100)]],"recent_candidates":[item(c) for c in candidates[:6]],"recent_activity":[{"id":a.id,"action":a.action,"actor":a.actor,"timestamp":a.timestamp,"detail":a.detail,"candidate_id":a.candidate_id} for a in audits]}
+
+
+@router.get("/candidates", response_model=CandidatePage)
+def candidates(q: str|None=None,status: str|None=None,state: str|None=None,signal: str|None=None,min_confidence: int=0,sort: str="updated",order: str="desc",page: int=Query(1,ge=1),page_size: int=Query(10,ge=1,le=100),db: Session=Depends(get_db)):
+    stmt=select(CandidateMatch).join(CandidateMatch.business).join(CandidateMatch.person).join(CandidateMatch.signal).options(selectinload(CandidateMatch.business),selectinload(CandidateMatch.person),selectinload(CandidateMatch.signal))
+    if q: stmt=stmt.where(or_(Business.legal_name.ilike(f"%{q}%"),Person.first_name.ilike(f"%{q}%"),Person.last_name.ilike(f"%{q}%")))
+    if status: stmt=stmt.where(CandidateMatch.status==status)
+    if state: stmt=stmt.where(Business.state==state)
+    if signal: stmt=stmt.where(CandidateMatch.signal.has(signal_type=signal))
+    stmt=stmt.where(CandidateMatch.overall_candidate_confidence>=min_confidence)
+    total=db.scalar(select(func.count()).select_from(stmt.order_by(None).subquery())) or 0
+    sort_col={"business":Business.legal_name,"owner":Person.last_name,"confidence":CandidateMatch.overall_candidate_confidence,"status":CandidateMatch.status,"updated":CandidateMatch.updated_at}.get(sort,CandidateMatch.updated_at)
+    stmt=stmt.order_by(sort_col.asc() if order=="asc" else sort_col.desc()).offset((page-1)*page_size).limit(page_size)
+    return {"items":[item(c) for c in db.scalars(stmt).all()],"total":total,"page":page,"page_size":page_size}
+
+
+def load_candidate(candidate_id: int, db: Session) -> CandidateMatch:
+    c=db.scalar(select(CandidateMatch).where(CandidateMatch.id==candidate_id).options(selectinload(CandidateMatch.business),selectinload(CandidateMatch.person),selectinload(CandidateMatch.relationship_record),selectinload(CandidateMatch.signal).selectinload(TransitionSignal.source),selectinload(CandidateMatch.evidence).selectinload(Evidence.source)))
+    if not c: raise HTTPException(404,"Candidate not found")
+    return c
+
+
+@router.get("/candidates/{candidate_id}")
+def detail(candidate_id:int,db:Session=Depends(get_db)):
+    c=load_candidate(candidate_id,db)
+    review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id))
+    audits=db.scalars(select(AuditEvent).where(AuditEvent.candidate_id==candidate_id).order_by(AuditEvent.timestamp.desc())).all()
+    db.add(AuditEvent(candidate_id=c.id,actor=settings.demo_analyst_name,action="candidate_viewed",detail="Candidate detail reviewed.")); db.commit()
+    source=lambda s:{"id":s.id,"source_type":s.source_type,"publisher":s.publisher,"canonical_url":s.canonical_url,"published_at":s.published_at,"retrieved_at":s.retrieved_at,"reliability":s.reliability,"is_demo":s.is_demo}
+    return {"id":c.id,"business":{k:getattr(c.business,k) for k in ["id","legal_name","doing_business_as","status","industry","website","address","city","state","postal_code","registration_number","employee_range","revenue_range"]},"person":{"id":c.person.id,"full_name":c.person.full_name,"aliases":c.person.aliases,"approximate_birth_year":c.person.approximate_birth_year,"city":c.person.city,"state":c.person.state},"relationship":{k:getattr(c.relationship_record,k) for k in ["relationship_type","start_date","end_date","active","confidence"]},"signal":{"signal_type":c.signal.signal_type,"published_name":c.signal.published_name,"possible_transition_date":c.signal.possible_transition_date,"publication_date":c.signal.publication_date,"city":c.signal.city,"state":c.signal.state,"age":c.signal.age,"relatives":c.signal.relatives,"occupation_clues":c.signal.occupation_clues,"business_clues":c.signal.business_clues,"extraction_confidence":c.signal.extraction_confidence,"source":source(c.signal.source)},"scores":{"business_relationship":c.owner_business_confidence,"signal_identity":c.signal_identity_confidence,"overall_candidate":c.overall_candidate_confidence},"status":c.status,"match_explanation":c.match_explanation,"positive_signals":c.positive_signals,"conflicting_signals":c.conflicting_signals,"missing_evidence":c.missing_evidence,"recommended_next_action":c.recommended_next_action,"last_researched_at":c.last_researched_at,"evidence":[{"id":e.id,"evidence_type":e.evidence_type,"extracted_text":e.extracted_text,"normalized_facts":e.normalized_facts,"extractor_type":e.extractor_type,"model_used":e.model_used,"retrieved_at":e.retrieved_at,"evidence_strength":e.evidence_strength,"explanation":e.explanation,"classification":e.classification,"source":source(e.source)} for e in c.evidence],"review":{"assigned_user":review.assigned_user,"status":review.status,"decision":review.decision,"analyst_notes":review.analyst_notes,"decision_reason_codes":review.decision_reason_codes,"reviewed_at":review.reviewed_at} if review else None,"audit":[{"id":a.id,"actor":a.actor,"timestamp":a.timestamp,"action":a.action,"detail":a.detail,"before_state":a.before_state,"after_state":a.after_state} for a in audits]}
+
+
+@router.patch("/candidates/{candidate_id}/status")
+def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_db)):
+    c=load_candidate(candidate_id,db); before=c.status; c.status=payload.status
+    review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
+    if review:
+        review.status="closed" if payload.status in {"validated","rejected"} else "open"; review.decision=payload.status; review.reviewed_at=now; review.decision_reason_codes=[payload.reason]; review.analyst_notes=[*(review.analyst_notes or []),{"note":payload.note,"author":settings.demo_analyst_name,"timestamp":now.isoformat()}]
+    db.add(AuditEvent(candidate_id=c.id,actor=settings.demo_analyst_name,action="status_changed",before_state={"status":before},after_state={"status":payload.status},detail=f"{payload.reason}: {payload.note}")); db.commit()
+    return {"id":c.id,"status":c.status}
+
+
+@router.post("/candidates/{candidate_id}/notes")
+def add_note(candidate_id:int,payload:NoteCreate,db:Session=Depends(get_db)):
+    load_candidate(candidate_id,db); review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
+    note={"note":payload.note,"author":settings.demo_analyst_name,"timestamp":now.isoformat()}; review.analyst_notes=[*(review.analyst_notes or []),note]
+    db.add(AuditEvent(candidate_id=candidate_id,actor=settings.demo_analyst_name,action="analyst_note_added",after_state=note,detail=payload.note)); db.commit(); return note
+
+
+@router.get("/businesses")
+def businesses(db:Session=Depends(get_db)): return db.scalars(select(Business).order_by(Business.legal_name)).all()
+@router.get("/people")
+def people(db:Session=Depends(get_db)): return [{"id":p.id,"name":p.full_name,"city":p.city,"state":p.state} for p in db.scalars(select(Person)).all()]
+@router.get("/evidence")
+def evidence(db:Session=Depends(get_db)): return [{"id":e.id,"candidate_id":e.candidate_id,"type":e.evidence_type,"strength":e.evidence_strength,"classification":e.classification,"publisher":e.source.publisher,"retrieved_at":e.retrieved_at} for e in db.scalars(select(Evidence).options(selectinload(Evidence.source)).order_by(Evidence.retrieved_at.desc())).all()]
+@router.get("/activity")
+def activity(db:Session=Depends(get_db)): return [{"id":a.id,"candidate_id":a.candidate_id,"actor":a.actor,"timestamp":a.timestamp,"action":a.action,"detail":a.detail} for a in db.scalars(select(AuditEvent).order_by(AuditEvent.timestamp.desc()).limit(100)).all()]
+
+
+@router.post("/candidates/{candidate_id}/ai-summary")
+async def ai_summary(candidate_id:int,db:Session=Depends(get_db)):
+    c=load_candidate(candidate_id,db); provider=None
+    if settings.model_provider=="openai" and settings.openai_api_key: provider=OpenAIProvider(settings.openai_api_key,settings.openai_model); model=settings.openai_model
+    elif settings.model_provider=="anthropic" and settings.anthropic_api_key: provider=AnthropicProvider(settings.anthropic_api_key,settings.anthropic_model); model=settings.anthropic_model
+    else: raise HTTPException(503,"AI summaries are disabled. Configure a provider and API key.")
+    prompt=Path(__file__).parents[1]/"ai/prompts/candidate_summary_v1.txt"; context=prompt.read_text()+"\n\n"+str({"candidate":item(c),"evidence":[e.extracted_text for e in c.evidence],"conflicts":c.conflicting_signals,"missing":c.missing_evidence})
+    start=perf_counter()
+    try: summary=await provider.summarize(context); ok=True; error=None
+    except Exception as exc: summary=""; ok=False; error=str(exc)
+    db.add(AIExecution(candidate_id=c.id,provider=settings.model_provider,model=model,prompt_version="candidate-summary-v1",latency_ms=int((perf_counter()-start)*1000),success=ok,error=error)); db.commit()
+    if not ok: raise HTTPException(502,"AI provider request failed")
+    return {"label":"AI Research Summary","summary":summary,"provider":settings.model_provider,"model":model,"prompt_version":"candidate-summary-v1"}

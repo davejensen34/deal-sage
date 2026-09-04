@@ -1,0 +1,2 @@
+import {render,screen} from '@testing-library/react';import {describe,expect,it} from 'vitest';import {Score,Status} from './Status';
+describe('research indicators',()=>{it('shows scores and status separately',()=>{render(<><Score value={87} label="Signal identity"/><Status value="needs_review"/></>);expect(screen.getByText('87%')).toBeInTheDocument();expect(screen.getByText('Signal identity')).toBeInTheDocument();expect(screen.getByText('needs review')).toBeInTheDocument()})});

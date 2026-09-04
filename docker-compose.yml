@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: dealsage
+      POSTGRES_USER: dealsage
+      POSTGRES_PASSWORD: dealsage-local
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U dealsage"], interval: 5s, timeout: 5s, retries: 10}
+  api:
+    build: ./apps/api
+    environment:
+      DATABASE_URL: postgresql+psycopg://dealsage:dealsage-local@postgres:5432/dealsage
+      DEMO_MODE: "true"
+      CORS_ORIGINS: http://localhost:3000
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-disabled}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    depends_on: {postgres: {condition: service_healthy}}
+    volumes: ["evidence-data:/app/data/evidence"]
+  web:
+    build: ./apps/web
+    ports: ["3000:80"]
+    depends_on: [api]
+volumes: {postgres-data: {}, evidence-data: {}}
