@@ -2,7 +2,7 @@
 
 ## Active milestone
 
-Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20, #22, #24, #26, and #28 established the source registry, evidence landing, signal-first portfolio, bounded multi-state samples, and source-operations visibility. Issue #30 adds durable signal-first resolution outcomes.
+Milestone 3.1 — Evidence Convergence and Dynamic Discovery is active. Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`.
 
 ## What works and has been validated
 
@@ -24,7 +24,7 @@ Milestone 3 — Multi-State Data Acquisition and Curation is active. Issues #20,
 
 ## Partial
 
-- The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. They are automated-test validated but not yet exercised with the live Utah or Texas sources.
+- The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. Colorado and Texas bounded live sources were exercised successfully; Utah's authorized live BEL delivery remains pending in Issue #32.
 - Acquisition-run summaries are available through the authenticated API; detailed raw evidence review and quarantine resolution UI remain deferred.
 - Seed case scores are curated persisted fixtures; deterministic scoring functions are tested but feature observations are not yet persisted/recalculated from evidence.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
@@ -51,10 +51,10 @@ Candidate evidence summary is the only bounded AI capability. The UI and endpoin
 
 ## Next
 
-Complete Issue #30's signal-first resolution lifecycle, then obtain explicit approval before a $5 Utah live sample and perform the final Milestone 3 reconciliation. Model-assisted business discovery remains deferred to Milestone 4.
+Implement Issue #33's research-case/evidence/claim/inference foundation before adding search or model-driven research. Resume Issue #32 immediately when the Utah BEL archive arrives.
 
 ## Latest validation
 
-The current Milestone 3 landing slice exercises 29 backend/API tests, 2 frontend tests, the production frontend build, and upgrade/downgrade/upgrade through all four migrations on an empty SQLite database. The rebuilt Nginx/FastAPI/PostgreSQL Compose stack exposes the authenticated acquisition-run endpoint and contains all five landing tables. Tests prove signal-first subjects without a business, content idempotency, parser replay, field lineage, source-contract quarantine, immutable local storage, non-sensitive API summaries, and the Colorado registered-agent boundary. Live Utah and Texas acquisition has not yet been exercised.
+The current Milestone 3.1 foundation exercises 44 backend/API tests and upgrade/downgrade/upgrade through all six migrations on an empty SQLite database. Tests prove unresolved signal-first cases, source-use mode boundaries, minimal evidence retention, evidence-to-claim lineage, precise relationship semantics, cross-case isolation, model provenance requirements, and aggregate-only metrics. Earlier Milestone 3 validation exercised 10/10 bounded Colorado and Texas records at zero marginal API cost, the production frontend build and tests, and the rebuilt Nginx/FastAPI/PostgreSQL Compose stack. Live Utah validation remains pending delivery.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

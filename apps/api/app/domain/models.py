@@ -145,6 +145,74 @@ class SignalResolution(TimestampMixin, Base):
     resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class ResearchCase(TimestampMixin, Base):
+    """One evidence-convergence investigation, valid before any entity is resolved."""
+    __tablename__ = "research_cases"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    origin_strategy: Mapped[str] = mapped_column(String(30), index=True)
+    status: Mapped[str] = mapped_column(String(30), default="open", index=True)
+    person_id: Mapped[int | None] = mapped_column(ForeignKey("people.id"), index=True)
+    business_id: Mapped[int | None] = mapped_column(ForeignKey("businesses.id"), index=True)
+    transition_signal_id: Mapped[int | None] = mapped_column(ForeignKey("transition_signals.id"), index=True)
+    candidate_match_id: Mapped[int | None] = mapped_column(ForeignKey("candidate_matches.id"), index=True)
+    research_budget: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    confidence: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    stop_reason: Mapped[str | None] = mapped_column(String(60), index=True)
+    stopped_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class CaseEvidence(TimestampMixin, Base):
+    """Minimal public evidence retained for one case, not a reusable connector."""
+    __tablename__ = "case_evidence"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    known_source_id: Mapped[int | None] = mapped_column(ForeignKey("sources.id"), index=True)
+    source_mode: Mapped[str] = mapped_column(String(40), index=True)
+    canonical_url: Mapped[str] = mapped_column(String(1000))
+    publisher: Mapped[str] = mapped_column(String(200))
+    source_type: Mapped[str] = mapped_column(String(60), index=True)
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    retrieved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    content_hash: Mapped[str] = mapped_column(String(64), index=True)
+    relevant_excerpt: Mapped[str | None] = mapped_column(Text)
+    extracted_facts: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    provenance: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    classification: Mapped[str] = mapped_column(String(40), index=True)
+
+
+class EvidenceClaim(TimestampMixin, Base):
+    """One normalized assertion derived from case evidence, with precise semantics."""
+    __tablename__ = "evidence_claims"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    evidence_id: Mapped[int] = mapped_column(ForeignKey("case_evidence.id"), index=True)
+    subject_type: Mapped[str] = mapped_column(String(50), index=True)
+    predicate: Mapped[str] = mapped_column(String(80), index=True)
+    object_value: Mapped[dict[str, Any]] = mapped_column(JSON)
+    relationship_semantics: Mapped[str | None] = mapped_column(String(60), index=True)
+    confidence: Mapped[float] = mapped_column(Float)
+    classification: Mapped[str] = mapped_column(String(40), index=True)
+    source_authority: Mapped[str] = mapped_column(String(30))
+    directness: Mapped[str] = mapped_column(String(30))
+    status: Mapped[str] = mapped_column(String(30), default="asserted", index=True)
+
+
+class ResearchInference(TimestampMixin, Base):
+    """A DealSage hypothesis supported by claims, never presented as source fact."""
+    __tablename__ = "research_inferences"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    inference_type: Mapped[str] = mapped_column(String(80), index=True)
+    statement: Mapped[str] = mapped_column(Text)
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    confidence: Mapped[float] = mapped_column(Float)
+    method: Mapped[str] = mapped_column(String(30), index=True)
+    provider: Mapped[str | None] = mapped_column(String(60))
+    model: Mapped[str | None] = mapped_column(String(120))
+    prompt_version: Mapped[str | None] = mapped_column(String(80))
+    status: Mapped[str] = mapped_column(String(30), default="proposed", index=True)
+
+
 class BusinessRelationship(Base):
     __tablename__ = "business_relationships"
     id: Mapped[int] = mapped_column(primary_key=True)

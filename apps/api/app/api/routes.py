@@ -11,7 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CuratedRecord, Evidence, Person, RawArtifact, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AuditEvent, Business, CandidateMatch, CaseEvidence, CuratedRecord, Evidence, EvidenceClaim, Person, RawArtifact, ResearchCase, ResearchInference, ResearchStage, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, TransitionSignal
 from app.domain.research import funnel_counts
 from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
@@ -68,6 +68,25 @@ def resolution_outcomes(db: Session = Depends(get_db)):
                 "relationship_unknown",
             )
         ],
+    }
+
+
+@router.get("/research/case-metrics")
+def research_case_metrics(db: Session = Depends(get_db)):
+    """Expose convergence volumes without returning case evidence or claims."""
+    strategy_rows = db.execute(
+        select(ResearchCase.origin_strategy, func.count(ResearchCase.id)).group_by(
+            ResearchCase.origin_strategy
+        )
+    ).all()
+    return {
+        "cases": db.scalar(select(func.count(ResearchCase.id))) or 0,
+        "evidence_items": db.scalar(select(func.count(CaseEvidence.id))) or 0,
+        "claims": db.scalar(select(func.count(EvidenceClaim.id))) or 0,
+        "inferences": db.scalar(select(func.count(ResearchInference.id))) or 0,
+        "by_origin_strategy": {
+            strategy: count for strategy, count in strategy_rows
+        },
     }
 
 
