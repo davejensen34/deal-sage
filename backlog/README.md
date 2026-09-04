@@ -9,7 +9,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 ## Current product position
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
-- No milestone is active. Milestone 3 — Multi-State Data Acquisition and Curation is approved in product direction and ready for kickoff; execution begins only when its GitHub milestone and scoped Issues are opened.
+- Milestone 3 — Multi-State Data Acquisition and Curation is active. GitHub Milestone 3 and Issue #20 opened the source-registry research slice; later implementation must remain tied to scoped Issues.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence
