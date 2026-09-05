@@ -45,4 +45,4 @@ The source contract itself establishes the decisive precision boundary: a regist
 
 ## Demonstration and follow-up
 
-The Research page exposes the official source contract, exact public query, normalized role counts, aggregate quality measures, and decision without publishing record-level names. The next owner-discovery experiment should require explicit owner/controller roles before adapter implementation; Utah remains proposed pending current access, field, and terms verification.
+The Research page exposes the official source contract, exact public query, normalized role counts, aggregate quality measures, and decision without publishing record-level names. Utah subsequently supplied the explicit owner-role experiment in Issue #32; its result is recorded separately in `utah-bel-experiment.md` and does not change Colorado's negative owner-yield finding.

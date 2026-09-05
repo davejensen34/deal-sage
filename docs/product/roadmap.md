@@ -16,7 +16,7 @@ Establish a replayable evidence supply chain for Colorado, Utah, and Texas as th
 
 Milestone 3 proves deterministic acquisition, normalization, deduplication, provenance, replay, and source-change handling. It does not claim AI-derived business facts, comprehensive owner coverage, or transition-signal intelligence.
 
-Milestone 3 is paused—not closed—while the authorized Utah BEL sample delivery is pending in Issue #32.
+Complete. Bounded Colorado and Texas sources established entity/status corroboration, while the delivered Utah BEL sample established replayable owner-role candidate evidence without converting source labels into validated ownership. The detailed result is recorded in `docs/research/utah-bel-experiment.md` and `backlog/milestones/milestone-3.md`.
 
 ### Milestone 3.1 — Evidence Convergence and Dynamic Discovery
 

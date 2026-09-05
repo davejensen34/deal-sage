@@ -25,4 +25,4 @@ This assessment records observed support as of September 4, 2026. It distinguish
 
 Milestone 3.1 is complete as a validated foundation. Issue #53 executed the approved protocol and recorded the failures without changing pre-labels after seeing output; Issue #55 resolves the resulting contract defect offline. The live quality rows remain only partially supported, and closeout does not convert them into passing results. A newly bounded live protocol belongs to a future explicitly approved Milestone 4 evaluation rather than being required to repeat this milestone.
 
-No later milestone is active automatically. Utah BEL delivery remains a separate paused Milestone 3 dependency in Issue #32.
+No later milestone is active automatically. Utah BEL delivery was subsequently validated in Issue #32, completing the separate Milestone 3 dependency without changing this Milestone 3.1 assessment.

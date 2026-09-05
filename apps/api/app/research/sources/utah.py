@@ -1,5 +1,6 @@
 from collections.abc import Mapping
 import csv
+from datetime import date
 from io import BytesIO, StringIO
 import json
 from pathlib import PurePosixPath
@@ -10,6 +11,7 @@ from .base import SourceDefinition
 
 
 CONTROL_ROLE_CANDIDATES = {
+    "owner",
     "member",
     "manager",
     "managing member",
@@ -18,6 +20,22 @@ CONTROL_ROLE_CANDIDATES = {
 }
 REQUIRED_SHEETS = ("BUSENTITY", "BUSINFO", "PRINCIPAL")
 MAX_ARCHIVE_ENTRY_BYTES = 5_000_000
+EXPECTED_HEADERS = {
+    "BUSENTITY": {
+        "Entity Number", "Entity ID", "Entity Type", "License Type", "Business Name",
+        "Address", "Address 2", "City", "State", "Zip Code", "Registration Date",
+        "Expiration Date", "Home State", "License Status", "Status Reason",
+        "Date Status Changed", "Last Renewal Date", "Applicant Name", "NAICS Code",
+    },
+    "PRINCIPAL": {
+        "Entity ID", "Entity Type", "License Type", "Business Name", "Member Position",
+        "Full name", "Address", "Address 2", "City", "State", "Zip Code",
+    },
+}
+BUSINFO_HEADER_VARIANTS = (
+    {"Entity ID", "Entity Type", "License Type", "Business Name", "Information Type", "Information"},
+    {"Entity ID", "Entity Type", "License Type", "Business Name", "Female Owned", "Minority Owned"},
+)
 
 UTAH_BEL_DEFINITION = SourceDefinition(
     key="utah_business_entity_list",
@@ -34,7 +52,7 @@ UTAH_BEL_DEFINITION = SourceDefinition(
         "Paid list download; custom minimum $5 for first 200 records; "
         "no acquisition without approval"
     ),
-    license="Public record under GRAMA; purchase and reuse terms require confirmation",
+    license="Utah public business-registration record under GRAMA; no separate redistribution license observed",
     expected_refresh="Official page reports data updated through the previous Tuesday",
     role_value=(
         "Entity plus reported officer, principal, partner, member-position, "
@@ -43,7 +61,7 @@ UTAH_BEL_DEFINITION = SourceDefinition(
     limitations=(
         "Names and addresses only; no phone or email.",
         "Reported roles are evidence requiring validation, not authoritative beneficial ownership.",
-        "Delivered archive and CSV headers must match the documented three-list contract.",
+        "Delivered CSV headers are contract-checked; observed BUSINFO demographic flags remain raw-only.",
     ),
     last_tested=None,
 )
@@ -68,8 +86,14 @@ def canonical_bel_package_from_csv(files: Mapping[str, bytes]) -> bytes:
         reader = csv.DictReader(StringIO(text))
         if not reader.fieldnames:
             raise ValueError(f"Utah BEL {sheet} file has no header")
+        headers = {str(field).strip() for field in reader.fieldnames if field and str(field).strip()}
+        if sheet == "BUSINFO":
+            if headers not in BUSINFO_HEADER_VARIANTS:
+                raise ValueError("Utah BEL BUSINFO headers differ from all reviewed variants")
+        elif headers != EXPECTED_HEADERS[sheet]:
+            raise ValueError(f"Utah BEL {sheet} headers differ from the reviewed contract")
         matched[sheet] = [
-            {str(key).strip(): (value or "").strip() for key, value in row.items()}
+            {str(key).strip(): (value or "").strip() for key, value in row.items() if key and str(key).strip()}
             for row in reader
         ]
 
@@ -77,6 +101,69 @@ def canonical_bel_package_from_csv(files: Mapping[str, bytes]) -> bytes:
     if missing:
         raise ValueError(f"Utah BEL delivery is missing: {', '.join(sorted(missing))}")
     return json.dumps(matched, sort_keys=True, separators=(",", ":")).encode()
+
+
+def delivery_component_subject(sheet: str, content: bytes) -> list[CuratedSubject]:
+    """Describe a delivered file without publishing any record-level values."""
+    package = json.loads(canonical_bel_package_from_csv({f"{name}.csv": content if name == sheet else _empty_sheet(name) for name in REQUIRED_SHEETS}))
+    rows = package[sheet]
+    return [
+        CuratedSubject(
+            subject_key=f"ut-bel-delivery:{sheet.lower()}",
+            subject_type="delivery_component",
+            data={"sheet": sheet, "row_count": len(rows), "headers": sorted(rows[0]) if rows else []},
+            lineage={},
+        )
+    ]
+
+
+def _empty_sheet(sheet: str) -> bytes:
+    if sheet == "BUSINFO":
+        headers = sorted(BUSINFO_HEADER_VARIANTS[1])
+    else:
+        headers = sorted(EXPECTED_HEADERS[sheet])
+    return (",".join(f'"{header}"' for header in headers) + "\n").encode()
+
+
+def summarize_bel_package(content: bytes) -> dict[str, object]:
+    """Calculate aggregate quality measures while names and addresses stay private."""
+    package = json.loads(content)
+    entities = package["BUSENTITY"]
+    info = package["BUSINFO"]
+    principals = package["PRINCIPAL"]
+    entity_ids = [row.get("Entity ID", "") for row in entities]
+    known_ids = set(entity_ids)
+    role_counts: dict[str, int] = {}
+    for row in principals:
+        role = row.get("Member Position", "") or "Unknown"
+        role_counts[role] = role_counts.get(role, 0) + 1
+    relationship_keys = [
+        (row.get("Entity ID"), row.get("Member Position"), row.get("Full name"))
+        for row in principals
+    ]
+    observed_values = [value for row in entities + principals for value in row.values()]
+    registration_dates = [
+        date.fromisoformat(value)
+        for row in entities
+        if (value := row.get("Registration Date", ""))
+    ]
+    return {
+        "entity_rows": len(entities),
+        "business_info_rows": len(info),
+        "principal_rows": len(principals),
+        "entity_id_duplicates": len(entity_ids) - len(set(entity_ids)),
+        "relationship_duplicates": len(relationship_keys) - len(set(relationship_keys)),
+        "orphan_business_info_rows": sum(row.get("Entity ID") not in known_ids for row in info),
+        "orphan_principal_rows": sum(row.get("Entity ID") not in known_ids for row in principals),
+        "field_completeness_percent": round(sum(value not in (None, "") for value in observed_values) / len(observed_values) * 100, 1) if observed_values else 0,
+        "role_counts": dict(sorted(role_counts.items())),
+        "explicit_owner_role_assertions": role_counts.get("Owner", 0),
+        "control_role_candidate_assertions": sum(
+            count for role, count in role_counts.items() if role.casefold() in CONTROL_ROLE_CANDIDATES
+        ),
+        "latest_registration_date": max(registration_dates).isoformat() if registration_dates else None,
+        "businfo_contract": "demographic_flags_raw_only" if "Female Owned" in (info[0] if info else {}) else "information_pairs_raw_only",
+    }
 
 
 def parse_bel_csv_archive(content: bytes) -> list[CuratedSubject]:

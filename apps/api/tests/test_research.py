@@ -1,6 +1,7 @@
+import csv
 import json
 from datetime import datetime, timezone
-from io import BytesIO
+from io import BytesIO, StringIO
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -14,12 +15,23 @@ from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, par
 from app.research.sources.utah import (
     UTAH_BEL_DEFINITION,
     canonical_bel_package_from_csv,
+    delivery_component_subject,
     parse_bel_csv_archive,
     parse_bel_package,
+    summarize_bel_package,
 )
 
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures/colorado_records.json"
+
+
+def csv_bytes(headers: list[str], row: dict[str, str] | None = None) -> bytes:
+    output = StringIO()
+    writer = csv.DictWriter(output, fieldnames=headers)
+    writer.writeheader()
+    if row:
+        writer.writerow(row)
+    return output.getvalue().encode()
 
 
 def fixture_records() -> list[dict]:
@@ -111,18 +123,31 @@ def test_utah_bel_join_preserves_role_without_validating_ownership():
 
 
 def test_utah_delivery_csvs_join_from_the_actual_three_file_contract():
+    entity_headers = [
+        "Entity Number", "Entity ID", "Entity Type", "License Type", "Business Name",
+        "Address", "Address 2", "City", "State", "Zip Code", "Registration Date",
+        "Expiration Date", "Home State", "License Status", "Status Reason",
+        "Date Status Changed", "Last Renewal Date", "Applicant Name", "NAICS Code",
+    ]
+    info_headers = [
+        "Entity ID", "Entity Type", "License Type", "Business Name", "Female Owned", "Minority Owned",
+    ]
+    principal_headers = [
+        "Entity ID", "Entity Type", "License Type", "Business Name", "Member Position",
+        "Full name", "Address", "Address 2", "City", "State", "Zip Code",
+    ]
     files = {
-        "order_BUSENTITY.csv": (
-            b"Entity Number,Entity ID,Entity Type,Business Name,City,State,License Status,NAICS Code\n"
-            b"9999999-0160,9999999,Domestic Limited Liability Company,Fictional Wasatch Tool LLC,Provo,UT,Active,332710\n"
+        "order_BUSENTITY.csv": csv_bytes(
+            entity_headers,
+            {"Entity Number": "9999999-0160", "Entity ID": "9999999", "Entity Type": "Domestic Limited Liability Company", "Business Name": "Fictional Wasatch Tool LLC", "City": "Provo", "State": "UT", "License Status": "Active", "NAICS Code": "332710", "Registration Date": "2026-08-15"},
         ),
-        "order_BUSINFO.csv": (
-            b"Entity ID,Entity Type,Business Name,Information Type,Information\n"
-            b"9999999,LLC,Fictional Wasatch Tool LLC,DBA,Wasatch Tool\n"
+        "order_BUSINFO.csv": csv_bytes(
+            info_headers,
+            {"Entity ID": "9999999", "Entity Type": "LLC", "Business Name": "Fictional Wasatch Tool LLC", "Female Owned": "No", "Minority Owned": "No"},
         ),
-        "order_PRINCIPAL.csv": (
-            b"Entity ID,Entity Type,Business Name,Member Position,Full name,City,State\n"
-            b"9999999,LLC,Fictional Wasatch Tool LLC,Member,Jordan Example,Provo,UT\n"
+        "order_PRINCIPAL.csv": csv_bytes(
+            principal_headers,
+            {"Entity ID": "9999999", "Entity Type": "LLC", "Business Name": "Fictional Wasatch Tool LLC", "Member Position": "Member", "Full name": "Jordan Example", "City": "Provo", "State": "UT"},
         ),
     }
     package = canonical_bel_package_from_csv(files)
@@ -132,6 +157,22 @@ def test_utah_delivery_csvs_join_from_the_actual_three_file_contract():
         "relationship_assertion",
     ]
     assert subjects[1].data["ownership_validated"] is False
+    assert delivery_component_subject("BUSINFO", files["order_BUSINFO.csv"])[0].data["row_count"] == 1
+    assert summarize_bel_package(package) == {
+        "entity_rows": 1,
+        "business_info_rows": 1,
+        "principal_rows": 1,
+        "entity_id_duplicates": 0,
+        "relationship_duplicates": 0,
+        "orphan_business_info_rows": 0,
+        "orphan_principal_rows": 0,
+        "field_completeness_percent": 53.3,
+        "role_counts": {"Member": 1},
+        "explicit_owner_role_assertions": 0,
+        "control_role_candidate_assertions": 1,
+        "latest_registration_date": "2026-08-15",
+        "businfo_contract": "demographic_flags_raw_only",
+    }
 
     archive_bytes = BytesIO()
     with ZipFile(archive_bytes, "w") as archive:
@@ -141,15 +182,41 @@ def test_utah_delivery_csvs_join_from_the_actual_three_file_contract():
 
 
 def test_utah_delivery_rejects_missing_or_duplicate_contract_files():
+    entity_headers = [
+        "Entity Number", "Entity ID", "Entity Type", "License Type", "Business Name",
+        "Address", "Address 2", "City", "State", "Zip Code", "Registration Date",
+        "Expiration Date", "Home State", "License Status", "Status Reason",
+        "Date Status Changed", "Last Renewal Date", "Applicant Name", "NAICS Code",
+    ]
+    entity_file = csv_bytes(entity_headers)
     with pytest.raises(ValueError, match="missing"):
-        canonical_bel_package_from_csv({"BUSENTITY.csv": b"Entity ID,Business Name\n1,Example\n"})
+        canonical_bel_package_from_csv({"BUSENTITY.csv": entity_file})
     with pytest.raises(ValueError, match="multiple BUSENTITY"):
         canonical_bel_package_from_csv(
             {
-                "one_BUSENTITY.csv": b"Entity ID,Business Name\n1,Example\n",
-                "two_BUSENTITY.csv": b"Entity ID,Business Name\n2,Example 2\n",
+                "one_BUSENTITY.csv": entity_file,
+                "two_BUSENTITY.csv": entity_file,
             }
         )
+
+
+def test_utah_delivery_rejects_unreviewed_header_drift():
+    with pytest.raises(ValueError, match="headers differ"):
+        canonical_bel_package_from_csv({"BUSINFO.csv": b"Entity ID,Business Name,Unexpected\n1,Example,value\n"})
+
+
+def test_utah_explicit_owner_role_is_a_candidate_not_validated_ownership():
+    package = {
+        "BUSENTITY": [{"Entity ID": "1", "Business Name": "Fictional Owner Test LLC"}],
+        "BUSINFO": [],
+        "PRINCIPAL": [{"Entity ID": "1", "Member Position": "Owner", "Full name": "Taylor Example"}],
+    }
+
+    relationship = parse_bel_package(json.dumps(package).encode())[1]
+
+    assert relationship.data["reported_role"] == "Owner"
+    assert relationship.data["control_role_candidate"] is True
+    assert relationship.data["ownership_validated"] is False
 
 
 def test_canonical_evidence_is_stable_and_rejects_sensitive_source_fields():

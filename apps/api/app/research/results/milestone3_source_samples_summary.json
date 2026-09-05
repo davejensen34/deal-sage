@@ -43,14 +43,41 @@
     {
       "source_key": "utah_business_entity_list",
       "jurisdiction": "Utah",
-      "sample_kind": "fictional_contract_fixture",
-      "live_source_exercised": false,
-      "requested": 0,
-      "retrieved": 0,
-      "curated": 3,
+      "sample_kind": "live_bounded_purchase",
+      "live_source_exercised": true,
+      "requested": 188,
+      "retrieved": 188,
+      "curated": 658,
       "quarantined": 0,
-      "marginal_cost_usd": 0,
-      "next_action": "Await delivery of the authorized $5 live sample in Issue #32."
+      "artifact_count": 4,
+      "new_artifacts_this_run": 0,
+      "repeat_verified": true,
+      "duplicate_artifacts": 0,
+      "field_completeness_percent": 86.8,
+      "relationship_assertions": 470,
+      "ownership_supported_assertions": 0,
+      "explicit_owner_role_assertions": 205,
+      "control_role_candidate_assertions": 205,
+      "role_counts": {
+        "Applicant": 77,
+        "Owner": 205,
+        "Registered Agent": 188
+      },
+      "join_quality": {
+        "entity_id_duplicates": 0,
+        "relationship_duplicates": 0,
+        "orphan_business_info_rows": 0,
+        "orphan_principal_rows": 0
+      },
+      "freshness": {
+        "status": "measured_from_registration_date",
+        "latest_registration_date": "2026-08-30"
+      },
+      "businfo_contract": "demographic_flags_raw_only",
+      "retrieval_success_percent": 100.0,
+      "retrieval_latency_ms": 31,
+      "marginal_cost_usd": 5.0,
+      "reuse_review": "Public Utah business-registration records; retained privately with aggregate-only publication and no separate redistribution license observed."
     }
   ],
   "decisions": [

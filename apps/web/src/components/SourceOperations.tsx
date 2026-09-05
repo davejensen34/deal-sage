@@ -11,6 +11,10 @@ export type SourceSample = {
   field_completeness_percent?: number;
   relationship_assertions?: number;
   ownership_supported_assertions?: number;
+  explicit_owner_role_assertions?: number;
+  control_role_candidate_assertions?: number;
+  role_counts?: Record<string, number>;
+  repeat_verified?: boolean;
   retrieval_latency_ms?: number;
   marginal_cost_usd: number;
   freshness?: {status: string; reason: string};
@@ -58,9 +62,12 @@ export function SourceOperations({result}: {result: SourceSampleResult}) {
             <dt>Quarantined</dt><dd>{source.quarantined}</dd>
             <dt>Field completeness</dt><dd>{source.field_completeness_percent ?? 'not measured'}{source.field_completeness_percent !== undefined && '%'}</dd>
             <dt>Relationship evidence</dt><dd>{source.relationship_assertions ?? 'fixture only'}</dd>
+            <dt>Explicit owner roles</dt><dd>{source.explicit_owner_role_assertions ?? 'not measured'}</dd>
             <dt>Ownership supported</dt><dd>{source.ownership_supported_assertions ?? 0}</dd>
             <dt>Marginal cost</dt><dd>${source.marginal_cost_usd}</dd>
           </dl>
+          {source.role_counts && <p><Database/> Roles: {Object.entries(source.role_counts).map(([role,count])=>`${role} ${count}`).join(' · ')}</p>}
+          {source.repeat_verified && <p><CheckCircle2/> Identical delivery replay verified</p>}
           {source.freshness && <p><Database/> Freshness: {label(source.freshness.status)}</p>}
           {source.next_action && <p><AlertTriangle/> {source.next_action}</p>}
         </article>;

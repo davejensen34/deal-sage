@@ -24,7 +24,7 @@ Official references:
 
 ## Utah
 
-1. **Utah.gov Business Entity List (BEL)** — the official order page says the list includes business names and addresses plus registered officers, principals, partners, and agents. Its published example separates entity, information, and principal/member-position CSV lists joined by Entity ID. This is the strongest currently documented owner/controller experiment candidate, but it is paid: a custom request starts at $5 for 200 records and a full list is $0.01 per record. The minimum purchase was explicitly authorized in Issue #32; delivery is pending. The importer accepts the original ZIP, bounds and validates its entries, and retains the exact archive as immutable private evidence.
+1. **Utah.gov Business Entity List (BEL)** — validated through the explicitly authorized $5 bounded delivery in Issue #32. Utah delivered three separate CSVs rather than one archive. All 188 BUSENTITY and BUSINFO rows and 470 PRINCIPAL rows joined deterministically by Entity ID without duplicate keys, orphan rows, or quarantine. Observed roles were Owner (205), Applicant (77), and Registered Agent (188). Owner is a control-role candidate, but no row is automatically validated ownership. The observed BUSINFO schema used `Female Owned` and `Minority Owned` flags instead of the published information key/value example; those flags remain private raw evidence and are not promoted. The exact three files and canonical joined package are immutable private artifacts; only aggregates are published.
 2. **Division of Corporations Business Search and filed documents** — suitable for bounded entity/detail corroboration. Utah states that filed images can be purchased through Business Search for $2 each. Do not automate or purchase records until the exact access contract and sample budget are approved.
 3. **Division of Professional Licensing lookup** — a public corroboration candidate for regulated firms and people. Its coverage is sector-limited, and a professional or business license does not establish ownership.
 
@@ -53,7 +53,7 @@ Official references:
 ## Next experiments
 
 - Colorado: preserve the validated Socrata adapter as the first raw-to-curated implementation fixture; separately review a small set of filing-detail records without assuming an automated route.
-- Utah: inspect the pending authorized $5 BEL delivery, then run the exact archive through the bounded three-CSV importer and publish aggregate-only results.
+- Utah: retain the validated bounded BEL delivery and contract fingerprint; require a new cost/access decision before any repeat purchase or broader acquisition.
 - Texas: retain the now-validated Active Franchise Taxpayers adapter for entity/tax corroboration, monitor its contract fingerprint, and keep SOSDirect deferred.
 
 These experiments must report retrieval success, latency, field completeness, role yield, stale/ambiguous rate, duplicate/conflict rate, and marginal cost. A source moves from ready to implemented or validated only with stored, reproducible evidence.
