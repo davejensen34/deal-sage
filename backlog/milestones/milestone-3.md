@@ -1,15 +1,16 @@
 # Milestone 3 — Multi-State Data Acquisition and Curation
 
-Status: paused, not closed. Issues #20–#30 are complete; Issue #32 is waiting for the authorized Utah BEL delivery on the preserved `feature/32-utah-live-sample` branch.
+Status: complete and validated (September 4, 2026).
 
 ## Progress
 
 - Issue #20 established the primary-source registry and access decisions for Colorado, Utah, and Texas.
 - Issue #22 implements the source-neutral raw-to-curated landing, signal-first unresolved subjects, replay, lineage, quarantine, and acquisition-run summaries.
 - Issue #24 established the federated signal-first source portfolio and rejected recent vital records as a statewide discovery feed.
-- Issue #26 implements bounded Colorado and Texas source samples plus the purchase-free Utah BEL three-file contract fixture. A live Utah sample remains gated by explicit cost approval.
+- Issue #26 implemented bounded Colorado and Texas source samples plus the purchase-free Utah BEL three-file contract fixture. Live Utah acquisition remained gated there until the later explicit authorization and delivery handled by Issue #32.
 - Issue #28 adds analyst-facing aggregate source operations, including live/fixture distinctions and visible rejected or failed source states.
 - Issue #30 persists deterministic signal-first outcomes so research can resolve to an existing business or terminate honestly without one.
+- Issue #32 validates the authorized $5 Utah BEL delivery: three original CSV artifacts plus a deterministic joined package, 188 entities, 470 role assertions, clean repeat behavior, and aggregate-only publication.
 
 ## Goal
 
@@ -43,3 +44,11 @@ Build a trustworthy, replayable evidence supply chain for Colorado, Utah, and Te
 ## Explicitly deferred
 
 Live OpenAI/Anthropic analysis, autonomous research planning, authoritative AI-written facts, opportunity scoring changes, watchlist automation, alerts, national coverage, and production-scale distributed ingestion.
+
+## Closeout result
+
+Colorado and Texas bounded live sources validate entity/status corroboration without ownership claims. Utah's bounded BEL delivery validates the three-file join and demonstrates stronger role evidence: 205 explicit `Owner`, 77 `Applicant`, and 188 `Registered Agent` rows across 188 entities. All 188 BUSINFO and 470 PRINCIPAL rows joined to known entities with no duplicate entity IDs, duplicate relationship tuples, orphan rows, or quarantine. Field completeness was 86.8%, the latest registration date was August 30, 2026, and the actual marginal cost was $5.
+
+The delivered BUSINFO schema contained `Female Owned` and `Minority Owned` flags instead of the public example's information key/value fields. The importer recognizes that reviewed variant but retains those columns in private raw evidence rather than promoting them. Explicit owner-role rows become control-role candidates only; `ownership_validated` remains false until corroborating evidence and human review support it.
+
+Milestone 3 therefore validates a replayable, provenance-preserving multi-state acquisition foundation. It does not establish comprehensive owner coverage, authorize recurring statewide purchases, or supply a live transition-signal feed.

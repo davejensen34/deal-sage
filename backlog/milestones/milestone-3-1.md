@@ -1,6 +1,6 @@
 # Milestone 3.1 — Evidence Convergence and Dynamic Discovery
 
-Status: complete as a validated foundation (September 4, 2026). Milestone 3 remains paused—not closed—while its authorized Utah BEL delivery is pending in Issue #32.
+Status: complete as a validated foundation (September 4, 2026). Milestone 3 subsequently completed when Issue #32 validated the delivered Utah BEL sample.
 
 ## Goal
 

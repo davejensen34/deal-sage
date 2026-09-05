@@ -2,9 +2,7 @@
 
 ## Milestone status
 
-No execution milestone is active. Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. Issues #33 through #51 established the common case spine, bounded discovery/planning, explainable confidence, analyst narrative, provider integration, and approved public-case protocol. Issue #53 executed the seven-case comparison and exposed the required version-two evaluation contract; Issue #55 implements and validates that replacement offline without another provider call.
-
-Milestone 3 remains open but safely paused at Issue #32 while the authorized Utah BEL delivery is pending; its tested importer preparation is preserved on `feature/32-utah-live-sample`. Milestone 4 remains proposed and is not active.
+No execution milestone is active. Milestone 3 — Multi-State Data Acquisition and Curation is complete after Issue #32 validated the delivered bounded Utah BEL sample. Milestone 3.1 — Evidence Convergence and Dynamic Discovery is also complete as a validated foundation. Milestone 4 remains proposed and is not active.
 
 ## What works and has been validated
 
@@ -17,6 +15,7 @@ Milestone 3 remains open but safely paused at Issue #32 while the authorized Uta
 - Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
 - Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
 - The version-two model evaluation contract separates seven case dimensions, rejects internal contradictions deterministically, distinguishes incomplete/refusal/invalid/failed provider outcomes, records split token usage, and produces per-dimension metrics. Seven fictional case shapes pass through both provider mocks without live calls.
+- The authorized $5 Utah BEL delivery landed as three immutable private CSV artifacts plus a replayable joined package. It produced 188 businesses and 470 relationship assertions, including 205 explicit owner-role candidates, with clean joins, no quarantine, and aggregate-only analyst reporting. Source roles remain unvalidated ownership assertions.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
 ## Implemented but not fully validated
@@ -27,7 +26,7 @@ Milestone 3 remains open but safely paused at Issue #32 while the authorized Uta
 
 ## Partial
 
-- The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. Colorado and Texas bounded live sources were exercised successfully; Utah's authorized live BEL delivery remains pending in Issue #32.
+- The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. Colorado, Utah, and Texas bounded live sources were exercised successfully; none provides comprehensive statewide beneficial-ownership truth.
 - Acquisition-run summaries are available through the authenticated API; detailed raw evidence review and quarantine resolution UI remain deferred.
 - Seed case scores are curated persisted fixtures; deterministic scoring functions are tested but feature observations are not yet persisted/recalculated from evidence.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
@@ -38,7 +37,7 @@ Milestone 3 remains open but safely paused at Issue #32 while the authorized Uta
 
 ## Missing or intentionally deferred
 
-Owner-capable live sources, autonomous acquisition, real transition signals, distributed work, enterprise RBAC/organizations, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
+Autonomous acquisition, live transition-signal sources, validated beneficial-ownership coverage, distributed work, enterprise RBAC/organizations, production monitoring, backups, semantic search, and national coverage. These belong to later milestones.
 
 ## AI state
 
@@ -54,12 +53,12 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Resume Issue #32 when the Utah BEL archive arrives. Separately, decide whether and when to approve Milestone 4; its first live evaluation must use a newly approved version-two protocol and must not reuse the exhausted Milestone 3.1 authorization. Until either event, no implementation milestone is active.
+Decide whether and when to approve Milestone 4; its first live evaluation must use a newly approved version-two protocol and must not reuse the exhausted Milestone 3.1 authorization. Until then, no implementation milestone is active.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current Milestone 3.1 implementation exercises 108 backend/API tests and upgrade/downgrade/upgrade through all twelve migrations on an empty SQLite database, plus four frontend tests, a production build, and rendered desktop review. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement is validated only against fictional fixtures and adapter mocks; no new provider call was made. Earlier Milestone 3 validation exercised bounded Colorado and Texas sources; live Utah validation remains pending delivery, with the branch conflict forecast currently limited to two documentation files.
+The current implementation exercises 112 backend/API tests, four frontend tests, all twelve migrations in both directions, the production build, Compose validation, and rendered desktop review. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement is validated only against fictional fixtures and adapter mocks; no new provider call was made.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

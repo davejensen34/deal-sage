@@ -73,7 +73,7 @@ The React/TypeScript client communicates with a FastAPI service. SQLAlchemy keep
 
 ## Current limitations
 
-The analyst UI is still driven primarily by fictional seeded candidates and research trails. Provider-neutral search is implemented only with a fixture provider; no live web-search provider or persistent owner-capable source connector is configured. Colorado and Texas adapters corroborate entities rather than ownership, and the authorized Utah BEL sample is still pending delivery. The approved seven-case model exercise exposed evaluation-contract and incomplete-output failures, so it is evidence of integration behavior—not validated analysis quality. Search uses portable database filtering rather than FTS5/pg_trgm optimization. Scheduled acquisition, organizations, enterprise RBAC, and multi-tenancy remain deferred.
+The analyst UI is still driven primarily by fictional seeded candidates and research trails. Provider-neutral search is implemented only with a fixture provider; no live web-search or transition-signal connector is configured. Colorado and Texas adapters corroborate entities rather than ownership. The bounded Utah BEL delivery exposed explicit owner-role evidence, but those source labels remain unvalidated relationship assertions. The approved seven-case model exercise exposed evaluation-contract and incomplete-output failures, so it is evidence of integration behavior—not validated analysis quality. Search uses portable database filtering rather than FTS5/pg_trgm optimization. Scheduled acquisition, organizations, enterprise RBAC, and multi-tenancy remain deferred.
 
 ## Responsible use
 

@@ -9,14 +9,14 @@ Priority order is research correctness and provenance; owner-discovery and ident
 ## Current product position
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
-- Milestone 3 — Multi-State Data Acquisition and Curation is paused, not closed. Its only open work is Issue #32, awaiting the authorized Utah BEL delivery on a prepared branch.
+- Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
-- No execution milestone is active. Milestone 3 remains paused at Issue #32 for the authorized Utah BEL delivery; Milestone 4 is proposed but has not been approved or started.
+- No execution milestone is active. Milestone 4 is proposed but has not been approved or started.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Approved forward sequence
 
-1. Finish Milestone 3 when the pending Utah BEL delivery arrives.
+1. Milestone 3 has completed the bounded Colorado, Utah, and Texas evidence-supply foundation.
 2. Milestone 3.1 has completed evidence convergence, bounded public research, and the provider-neutral search/model foundation over traceable evidence.
 3. If explicitly approved, Milestone 4 productizes deeper intelligent discovery and performs a newly governed live quality evaluation.
 4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
