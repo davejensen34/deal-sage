@@ -1,6 +1,6 @@
 # Milestone 4 — Intelligent Business Discovery and Analysis
 
-Status: ready for explicit activation; no implementation milestone is active and no new live model calls are authorized.
+Status: in progress as of September 8, 2026; no new live model calls or spending are authorized.
 
 ## Goal
 
@@ -15,6 +15,15 @@ Productize evidence-bounded model assistance for business-detail extraction, ide
 These foundations are adequate to begin productization. They are not authorization for unrestricted research, a new provider cohort, recurring cost, or automatic publication of model output.
 
 ## Sequenced workstreams
+
+- 4.1 — Issue #69
+- 4.2 — Issue #64
+- 4.3 — Issue #63
+- 4.4 — Issue #70
+- 4.5 — Issue #71 (separately gated live evaluation)
+- 4.6 — Issue #72
+
+Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenance contract with case-local lineage, safe structured output, explicit non-completed outcomes, and offline validation.
 
 ### 4.1 — Durable model proposals and execution provenance
 

@@ -213,6 +213,29 @@ class ResearchInference(TimestampMixin, Base):
     status: Mapped[str] = mapped_column(String(30), default="proposed", index=True)
 
 
+class ModelProposal(Base):
+    """Immutable, evidence-linked output from one bounded model execution."""
+    __tablename__ = "model_proposals"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    task: Mapped[str] = mapped_column(String(40), index=True)
+    provider: Mapped[str] = mapped_column(String(60), index=True)
+    model: Mapped[str] = mapped_column(String(120))
+    prompt_version: Mapped[str] = mapped_column(String(80))
+    schema_version: Mapped[str] = mapped_column(String(80))
+    execution_outcome: Mapped[str] = mapped_column(String(30), index=True)
+    proposed_output: Mapped[dict[str, Any] | None] = mapped_column(JSON)
+    supported_evidence_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    supported_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    input_tokens: Mapped[int | None] = mapped_column(Integer)
+    output_tokens: Mapped[int | None] = mapped_column(Integer)
+    total_tokens: Mapped[int | None] = mapped_column(Integer)
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    cost_cents: Mapped[int] = mapped_column(Integer, default=0)
+    error_class: Mapped[str | None] = mapped_column(String(120))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class ResearchQuery(TimestampMixin, Base):
     """One bounded search-provider call; query text stays inside its research case."""
     __tablename__ = "research_queries"
