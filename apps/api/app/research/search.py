@@ -151,6 +151,32 @@ class SearchService:
         self.db.refresh(candidate)
         return candidate
 
+    def decide_access(
+        self,
+        candidate_id: int,
+        *,
+        decision: str,
+        reason: str,
+        decided_by: str,
+    ) -> SourceCandidate:
+        """Record a human or governed-policy decision before any retrieval."""
+        candidate = self.db.get(SourceCandidate, candidate_id)
+        if candidate is None:
+            raise ValueError("Source candidate does not exist")
+        if decision not in {"approved", "blocked"}:
+            raise ValueError("Source access decision must be approved or blocked")
+        if not reason.strip() or not decided_by.strip():
+            raise ValueError("Source access decision requires reason and attribution")
+        if candidate.access_decision != "pending":
+            raise ValueError("Source access decision is immutable")
+        candidate.access_decision = decision
+        candidate.access_decision_reason = reason.strip()
+        candidate.access_decided_by = decided_by.strip()
+        candidate.access_decided_at = datetime.now(timezone.utc)
+        self.db.commit()
+        self.db.refresh(candidate)
+        return candidate
+
     def _stage_candidate(
         self,
         case: ResearchCase,

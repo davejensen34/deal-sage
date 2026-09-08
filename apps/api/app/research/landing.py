@@ -51,17 +51,7 @@ class EvidenceLanding:
         return run
 
     def land(self, run: AcquisitionRun, envelope: LandingEnvelope, parser: Parser, parser_version: str, schema_version: str) -> list[CuratedRecord]:
-        digest = sha256(envelope.content).hexdigest()
-        artifact = self.db.scalar(select(RawArtifact).where(RawArtifact.source_key == envelope.source_key, RawArtifact.content_hash == digest))
-        if artifact is None:
-            source_bucket = sha256(envelope.source_key.encode()).hexdigest()[:12]
-            storage_key = f"raw/{source_bucket}/{digest}"
-            self.storage.save(storage_key, envelope.content)
-            artifact = RawArtifact(content_hash=digest, source_key=envelope.source_key, source_record_id=envelope.source_record_id, canonical_url=envelope.canonical_url, retrieved_at=envelope.retrieved_at, media_type=envelope.media_type, byte_size=len(envelope.content), storage_key=storage_key, contract_fingerprint=envelope.contract_fingerprint, request_metadata=envelope.request_metadata)
-            self.db.add(artifact)
-            self.db.flush()
-        if self.db.scalar(select(RunArtifact).where(RunArtifact.run_id == run.id, RunArtifact.artifact_id == artifact.id)) is None:
-            self.db.add(RunArtifact(run_id=run.id, artifact_id=artifact.id))
+        artifact = self.land_artifact(run, envelope)
         try:
             if envelope.contract_fingerprint != run.contract_fingerprint:
                 raise ValueError("Source contract fingerprint changed during acquisition")
@@ -92,6 +82,26 @@ class EvidenceLanding:
             records.append(record)
         self._finish_run(run)
         return records
+
+    def land_artifact(self, run: AcquisitionRun, envelope: LandingEnvelope) -> RawArtifact:
+        """Persist transport bytes before parsing or case-level interpretation."""
+        digest = sha256(envelope.content).hexdigest()
+        artifact = self.db.scalar(select(RawArtifact).where(RawArtifact.source_key == envelope.source_key, RawArtifact.content_hash == digest))
+        if artifact is None:
+            source_bucket = sha256(envelope.source_key.encode()).hexdigest()[:12]
+            storage_key = f"raw/{source_bucket}/{digest}"
+            self.storage.save(storage_key, envelope.content)
+            artifact = RawArtifact(content_hash=digest, source_key=envelope.source_key, source_record_id=envelope.source_record_id, canonical_url=envelope.canonical_url, retrieved_at=envelope.retrieved_at, media_type=envelope.media_type, byte_size=len(envelope.content), storage_key=storage_key, contract_fingerprint=envelope.contract_fingerprint, request_metadata=envelope.request_metadata)
+            self.db.add(artifact)
+            self.db.flush()
+        if self.db.scalar(select(RunArtifact).where(RunArtifact.run_id == run.id, RunArtifact.artifact_id == artifact.id)) is None:
+            self.db.add(RunArtifact(run_id=run.id, artifact_id=artifact.id))
+        self.db.flush()
+        return artifact
+
+    def finish_artifact_run(self, run: AcquisitionRun) -> None:
+        """Complete a raw-only landing run used by case-specific web research."""
+        self._finish_run(run)
 
     def fail_run(self, run: AcquisitionRun, error: Exception) -> None:
         """Persist a retrieval failure without recording response bodies or secrets."""

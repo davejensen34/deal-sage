@@ -5,7 +5,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.domain.models import CaseEvidence, EvidenceClaim, ResearchCase, ResearchInference, Source
+from app.domain.models import CaseEvidence, EvidenceClaim, RawArtifact, ResearchCase, ResearchInference, Source
 from app.research.ingestion import assert_safe_source_content
 
 
@@ -78,6 +78,7 @@ class ResearchCaseService:
         classification: str = "source_fact",
         published_at: datetime | None = None,
         known_source_id: int | None = None,
+        raw_artifact_id: int | None = None,
     ) -> CaseEvidence:
         self._require_case(case_id)
         if source_mode not in SOURCE_MODES:
@@ -94,6 +95,14 @@ class ResearchCaseService:
             known_source_id is None or self.db.get(Source, known_source_id) is None
         ):
             raise ValueError("Persistent connector evidence requires a known source")
+        if raw_artifact_id is not None:
+            artifact = self.db.get(RawArtifact, raw_artifact_id)
+            if artifact is None:
+                raise ValueError("Case evidence raw artifact does not exist")
+            if artifact.content_hash != sha256(content).hexdigest():
+                raise ValueError("Case evidence content does not match its raw artifact")
+            if artifact.canonical_url != canonical_url:
+                raise ValueError("Case evidence URL does not match its raw artifact")
         # Callers sanitize external responses before selecting facts. This final
         # guard prevents a future caller from persisting capability-like fields.
         assert_safe_source_content(extracted_facts)
@@ -101,6 +110,7 @@ class ResearchCaseService:
         evidence = CaseEvidence(
             case_id=case_id,
             known_source_id=known_source_id,
+            raw_artifact_id=raw_artifact_id,
             source_mode=source_mode,
             canonical_url=canonical_url,
             publisher=publisher.strip(),
