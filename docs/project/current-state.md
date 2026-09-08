@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69, #64, #63, and #70 complete the durable proposal contract, evidence-bounded extraction and ambiguity analysis, offline-validated dynamic opportunity-research loop, and analyst disposition workflow. The approved Issue #71 evaluation used three search calls and stopped before model analysis because the frozen evidence packet did not reproduce. Issue #72 remains for closeout; the consumed protocol authorizes no retry.
+Milestone 4 — Intelligent Business Discovery and Analysis is complete with a change decision as of September 8, 2026. Its durable proposal contract, evidence-bounded extraction and ambiguity analysis, dynamic opportunity-research loop, and analyst disposition workflow are implemented and offline validated. The approved live evaluation used three search calls and stopped before model analysis because the frozen evidence packet did not reproduce. No milestone is active; Milestone 5 remains proposed with a narrowed initial scope.
 
 ## What works and has been validated
 
@@ -56,12 +56,12 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Complete Issue #72 reconciliation and decide whether to close Milestone 4 with a narrowed Milestone 5 gate. Issue #71 produced a negative integration result rather than live model-quality evidence; any future live evaluation needs a new frozen protocol and explicit approval.
+Obtain explicit approval before activating the narrowed Milestone 5 scope. Existing reviewed evidence and deterministic state may support scoring, saved research, watchlists, and provenance-preserving exports. Live model-derived enrichment, unattended refresh, and refresh-dependent alerts require a new frozen protocol with retrieval-and-hash source preflight and explicit cost approval.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 151 backend/API tests, five frontend tests, all sixteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+The current implementation exercises 151 backend/API tests and five frontend tests. All sixteen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

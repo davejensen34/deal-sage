@@ -1,6 +1,6 @@
 # Milestone 4 — Intelligent Business Discovery and Analysis
 
-Status: in progress as of September 8, 2026; Issue #71 stopped within its approved live-evaluation bounds and Issue #72 remains.
+Status: complete with a change decision as of September 8, 2026.
 
 ## Goal
 
@@ -23,7 +23,15 @@ These foundations are adequate to begin productization. They are not authorizati
 - 4.5 — Issue #71 (separately gated live evaluation)
 - 4.6 — Issue #72
 
-Progress: Issues #69 and #64 complete 4.1–4.2 with durable model proposals, safe execution provenance, structured extraction, and evidence-bounded ambiguity analysis. Issue #63 completes the offline-validated 4.3 loop: schema-constrained next-action proposals, deterministic approval with durable frontier lineage, permissioned document retrieval, immutable artifact-first evidence landing, optional disabled-by-default OpenAI web discovery, audited one-step orchestration, duplicate suppression, bounded retries, and explicit terminal reasons. Issue #70 completes 4.4 with immutable, attributable analyst accept/correct/reject/defer records and an evidence-aware review surface that leaves provider output untouched. Issue #71 executed the approved protocol using three search calls and an estimated $0.06, then stopped before model analysis because none of the six frozen anchors reproduced as qualified evidence. The initial runner incorrectly continued discovery after the first failure; its fail-closed behavior is corrected and the protocol will not be rerun. Issue #72 remains for reconciliation and closeout.
+Progress: Issues #69 and #64 complete 4.1–4.2 with durable model proposals, safe execution provenance, structured extraction, and evidence-bounded ambiguity analysis. Issue #63 completes the offline-validated 4.3 loop: schema-constrained next-action proposals, deterministic approval with durable frontier lineage, permissioned document retrieval, immutable artifact-first evidence landing, optional disabled-by-default OpenAI web discovery, audited one-step orchestration, duplicate suppression, bounded retries, and explicit terminal reasons. Issue #70 completes 4.4 with immutable, attributable analyst accept/correct/reject/defer records and an evidence-aware review surface that leaves provider output untouched. Issue #71 executed the approved protocol using three search calls and an estimated $0.06, then stopped before model analysis because none of the six frozen anchors reproduced as qualified evidence. The initial runner incorrectly continued discovery after the first failure; its fail-closed behavior is corrected and the protocol will not be rerun. Issue #72 reconciles and closes the milestone.
+
+## Result and change decision
+
+Milestone 4 completes the productized, provider-neutral proposal and analyst-review boundary. Fictional fixtures and mocks validate extraction, ambiguity analysis, research planning, deterministic approval, immutable provenance, and attributable disposition without requiring AI for core operation.
+
+The live evaluation did not validate model quality. Its frozen source packet failed before model execution, demonstrating that reproducible source qualification—not additional prompting—is the immediate constraint. Milestone 5 may proceed only with workflows that consume existing reviewed evidence or deterministic state. Live model-derived enrichment, unattended refresh, alerts based on refreshed evidence, and claims of model quality remain gated by a newly approved evaluation whose preflight retrieves and hashes all evidence before the first paid call.
+
+Closeout validation observed 151 backend/API tests and five frontend tests passing, a production frontend build, all sixteen migrations upgrading, downgrading, and re-upgrading on an empty SQLite database, valid Compose configuration, a rebuilt healthy PostgreSQL/FastAPI/Nginx stack, successful `/api/health`, and a rendered local dashboard. The build retains its existing large-chunk warning; no UI behavior changed in the closeout.
 
 ### 4.1 — Durable model proposals and execution provenance
 
