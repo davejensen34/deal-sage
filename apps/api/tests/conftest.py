@@ -7,6 +7,7 @@ os.environ["DEMO_MODE"]="false"
 os.environ["AUTH_MODE"]="demo"
 os.environ["ALLOWED_EMAILS"]=""
 os.environ["ALLOWED_DOMAINS"]=""
+os.environ["WEB_SEARCH_PROVIDER"]="disabled"
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
