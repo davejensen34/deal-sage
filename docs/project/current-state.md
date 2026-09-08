@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69 and #64 establish the durable model-proposal contract plus evidence-bounded business extraction and ambiguity analysis. Issues #63, #70, #71, and #72 sequence bounded planning, analyst disposition, separately governed live evaluation, and closeout. No new live model calls or spending are authorized.
+Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69 and #64 establish the durable model-proposal contract plus evidence-bounded business extraction and ambiguity analysis. Issue #63 now implements the broader dynamic opportunity-research loop: source-neutral discovery, permissioned retrieval and evidence landing, model-assisted curation, deterministic follow-up approval, and bounded convergence. Issues #70, #71, and #72 then provide analyst disposition, separately governed end-to-end live evaluation, and closeout. No new live model calls or spending are authorized.
 
 ## What works and has been validated
 
@@ -55,12 +55,12 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Proceed to Issue #63 for bounded model-assisted research-plan proposals over the existing deterministic frontier, then continue through the sequenced workstreams in `backlog/milestones/milestone-4.md`. The Issue #71 live evaluation remains separately gated by a newly approved version-two protocol and cost ceiling.
+Continue Issue #63 with permissioned retrieval and provenance-preserving evidence landing, followed by a live-capable discovery adapter, bounded orchestration, and convergence/replay validation. The first 4.3 slice already supports evidence-linked next-action proposals and deterministic approval into the research frontier with durable proposal lineage. The Issue #71 end-to-end live evaluation remains separately gated by a frozen protocol, provider/model selection, call ceiling, and cost ceiling.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 122 backend/API tests, four frontend tests, all thirteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.2 contracts are validated only against fictional fixtures and adapter mocks; no new provider call was made.
+The current implementation exercises 124 backend/API tests, four frontend tests, all fourteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.3 contracts are validated only against fictional fixtures and adapter mocks; no new provider or search call was made.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

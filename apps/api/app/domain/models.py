@@ -293,6 +293,7 @@ class ResearchFrontierItem(TimestampMixin, Base):
     __tablename__ = "research_frontier_items"
     id: Mapped[int] = mapped_column(primary_key=True)
     case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    proposal_id: Mapped[int | None] = mapped_column(ForeignKey("model_proposals.id"), index=True)
     question_type: Mapped[str] = mapped_column(String(80), index=True)
     question: Mapped[str] = mapped_column(Text)
     rationale: Mapped[str] = mapped_column(Text)

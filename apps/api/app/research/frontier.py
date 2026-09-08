@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.domain.models import (
     CaseEvidence,
     EvidenceClaim,
+    ModelProposal,
     ResearchCase,
     ResearchFrontierItem,
     ResearchQuery,
@@ -66,6 +67,7 @@ class ResearchPlanner:
         priority: int,
         supporting_claim_ids: list[int] | None = None,
         max_attempts: int = 2,
+        proposal_id: int | None = None,
     ) -> ResearchFrontierItem:
         case = self._require_open_case(case_id)
         if question_type not in QUESTION_TYPES:
@@ -80,8 +82,13 @@ class ResearchPlanner:
         ).all()
         if len(claims) != len(claim_ids) or any(claim.case_id != case.id for claim in claims):
             raise ValueError("Frontier claims must all belong to the same research case")
+        if proposal_id is not None:
+            proposal = self.db.get(ModelProposal, proposal_id)
+            if proposal is None or proposal.case_id != case.id or proposal.task != "research_plan":
+                raise ValueError("Frontier proposal must be a same-case research plan")
         item = ResearchFrontierItem(
             case_id=case.id,
+            proposal_id=proposal_id,
             question_type=question_type,
             question=question.strip(),
             rationale=rationale.strip(),

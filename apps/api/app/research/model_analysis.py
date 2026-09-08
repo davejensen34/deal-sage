@@ -66,6 +66,27 @@ AMBIGUITY_ANALYSIS_SCHEMA: dict[str, Any] = {
     "additionalProperties": False,
 }
 
+RESEARCH_PLAN_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "question_type": {"type": "string", "enum": [
+            "resolve_person_identity", "resolve_business_identity", "verify_relationship",
+            "verify_transition_identity", "verify_operating_status", "resolve_contradiction",
+            "find_independent_evidence",
+        ]},
+        "question": {"type": "string", "minLength": 1, "maxLength": 500},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "next_action": {"type": "string", "enum": ["search", "retrieve", "model_analysis", "stop"]},
+        "query": {"type": ["string", "null"], "maxLength": 500},
+        "source_type": {"type": ["string", "null"]},
+        "evidence_ids": {"type": "array", "items": {"type": "integer"}, "minItems": 1, "uniqueItems": True},
+        "claim_ids": {"type": "array", "items": {"type": "integer"}, "uniqueItems": True},
+        "expected_information_gain": {"type": "string", "minLength": 1, "maxLength": 1000},
+    },
+    "required": ["question_type", "question", "rationale", "next_action", "query", "source_type", "evidence_ids", "claim_ids", "expected_information_gain"],
+    "additionalProperties": False,
+}
+
 OWNER_SUPPORT_SEMANTICS = frozenset({"owner", "co_owner"})
 
 
@@ -134,6 +155,37 @@ class ModelAnalysisService:
             instruction="Analyze identity and relationship ambiguity using only the supplied evidence. Abstain when non-name support is insufficient.",
             packet=packet,
             validate_output=lambda output: _validate_ambiguity_output(output, packet),
+        )
+
+    async def propose_research_plan(
+        self,
+        case_id: int,
+        provider: AIProvider,
+        *,
+        provider_name: str,
+        model: str,
+        evidence_ids: list[int],
+        claim_ids: list[int] | None = None,
+        prompt_version: str = "research-plan-v1",
+    ) -> ModelProposal:
+        """Propose one next step; deterministic code decides whether it may run."""
+        packet = self._packet(case_id, evidence_ids, claim_ids or [])
+        return await self._execute(
+            case_id,
+            provider,
+            provider_name=provider_name,
+            model=model,
+            prompt_version=prompt_version,
+            schema_version="research-plan-v1",
+            task="research_plan",
+            schema=RESEARCH_PLAN_SCHEMA,
+            instruction=(
+                "Propose exactly one bounded next research action using only the supplied evidence. "
+                "Prefer an independent source and abstain with next_action=stop when no safe, material "
+                "question remains. Never claim that a proposed search result is evidence."
+            ),
+            packet=packet,
+            validate_output=lambda output: _validate_research_plan(output, packet),
         )
 
     def _packet(self, case_id: int, evidence_ids: list[int], claim_ids: list[int]) -> EvidencePacket:
@@ -270,6 +322,19 @@ def _validate_ambiguity_output(output: dict[str, Any], packet: EvidencePacket) -
         cited_claims = [claim for claim in packet.claims if claim.id in output["claim_ids"]]
         if not any(claim.relationship_semantics in OWNER_SUPPORT_SEMANTICS for claim in cited_claims):
             raise ValueError("Current-owner proposal requires explicit owner-role claim support")
+
+
+def _validate_research_plan(output: dict[str, Any], packet: EvidencePacket) -> None:
+    if not set(output["evidence_ids"]).issubset(set(packet.evidence_ids)):
+        raise ValueError("Research plan cites unsupported evidence")
+    if not set(output["claim_ids"]).issubset(set(packet.claim_ids)):
+        raise ValueError("Research plan cites unsupported claims")
+    action = output["next_action"]
+    query = output["query"]
+    if action == "search" and (not query or not query.strip()):
+        raise ValueError("Search proposal requires a bounded query")
+    if action != "search" and query is not None:
+        raise ValueError("Only a search proposal may contain a query")
 
 
 def _execution_outcome(exc: Exception) -> str:
