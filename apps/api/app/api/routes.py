@@ -11,9 +11,10 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
 from app.domain.research import funnel_counts
-from app.domain.schemas import CandidatePage, NoteCreate, StatusUpdate
+from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, StatusUpdate
+from app.research.proposal_dispositions import ModelProposalDispositionService
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter
 from app.research.sources.utah import UTAH_BEL_DEFINITION
@@ -151,6 +152,18 @@ def research_case_narratives(db: Session = Depends(get_db)):
         conclusion = db.scalar(
             select(AnalystConclusion).where(AnalystConclusion.case_id == case.id).order_by(AnalystConclusion.id.desc())
         )
+        proposals = db.scalars(
+            select(ModelProposal).where(ModelProposal.case_id == case.id).order_by(ModelProposal.id)
+        ).all()
+        proposal_ids = [proposal.id for proposal in proposals]
+        dispositions = db.scalars(
+            select(ModelProposalDisposition)
+            .where(ModelProposalDisposition.proposal_id.in_(proposal_ids))
+            .order_by(ModelProposalDisposition.id)
+        ).all() if proposal_ids else []
+        dispositions_by_proposal: dict[int, list[ModelProposalDisposition]] = {}
+        for disposition in dispositions:
+            dispositions_by_proposal.setdefault(disposition.proposal_id, []).append(disposition)
         narratives.append({
             "id": case.id,
             "origin_strategy": case.origin_strategy,
@@ -193,12 +206,76 @@ def research_case_narratives(db: Session = Depends(get_db)):
                 "provider": step.provider, "model": step.model, "status": step.status,
                 "cost_cents": step.cost_cents,
             } for step in steps],
+            "model_proposals": [_proposal_payload(
+                proposal, dispositions_by_proposal.get(proposal.id, [])
+            ) for proposal in proposals],
             "conclusion": {
                 "analyst": conclusion.analyst_name, "outcome": conclusion.outcome,
                 "statement": conclusion.statement, "status": conclusion.status,
             } if conclusion else None,
         })
     return {"cases": narratives}
+
+
+@router.post("/research/model-proposals/{proposal_id}/dispositions")
+def dispose_model_proposal(
+    proposal_id: int,
+    payload: ProposalDispositionCreate,
+    db: Session = Depends(get_db),
+    identity: Identity = Depends(current_identity),
+):
+    try:
+        disposition = ModelProposalDispositionService(db).add(
+            proposal_id,
+            analyst_name=identity.display_name,
+            user_id=identity.user_id,
+            decision=payload.decision,
+            rationale=payload.rationale,
+            corrected_output=payload.corrected_output,
+            supporting_evidence_ids=payload.supporting_evidence_ids,
+            supporting_claim_ids=payload.supporting_claim_ids,
+        )
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return _disposition_payload(disposition)
+
+
+def _proposal_payload(
+    proposal: ModelProposal, dispositions: list[ModelProposalDisposition]
+) -> dict:
+    return {
+        "id": proposal.id,
+        "task": proposal.task,
+        "provider": proposal.provider,
+        "model": proposal.model,
+        "prompt_version": proposal.prompt_version,
+        "schema_version": proposal.schema_version,
+        "execution_outcome": proposal.execution_outcome,
+        "proposed_output": proposal.proposed_output,
+        "supported_evidence_ids": proposal.supported_evidence_ids,
+        "supported_claim_ids": proposal.supported_claim_ids,
+        "input_tokens": proposal.input_tokens,
+        "output_tokens": proposal.output_tokens,
+        "latency_ms": proposal.latency_ms,
+        "cost_cents": proposal.cost_cents,
+        "error_class": proposal.error_class,
+        "created_at": proposal.created_at,
+        "dispositions": [_disposition_payload(item) for item in dispositions],
+    }
+
+
+def _disposition_payload(disposition: ModelProposalDisposition) -> dict:
+    return {
+        "id": disposition.id,
+        "decision": disposition.decision,
+        "rationale": disposition.rationale,
+        "corrected_output": disposition.corrected_output,
+        "supporting_evidence_ids": disposition.supporting_evidence_ids,
+        "supporting_claim_ids": disposition.supporting_claim_ids,
+        "analyst": disposition.analyst_name,
+        "user_id": disposition.user_id,
+        "created_at": disposition.created_at,
+    }
 
 
 @router.get("/research/experiments/colorado-owner-discovery")

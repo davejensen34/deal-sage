@@ -11,7 +11,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
-- Milestone 4 is active. Issues #69, #64, and #63 complete the durable proposal, evidence-bounded analysis, and dynamic opportunity-research loop foundations. Issue #70 is next for attributable analyst disposition over immutable proposals. No new live model calls or spending are authorized.
+- Milestone 4 is active. Issues #69, #64, #63, and #70 complete the durable proposal, evidence-bounded analysis, dynamic opportunity-research loop, and attributable analyst-disposition workstreams. Issue #71 is next, but its live evaluation requires a frozen protocol and explicit provider, model, call, and cost approval. No new live model calls or spending are authorized.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence

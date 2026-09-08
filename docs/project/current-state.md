@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69, #64, and #63 complete the durable proposal contract, evidence-bounded extraction and ambiguity analysis, and the offline-validated dynamic opportunity-research loop. Issues #70, #71, and #72 now sequence analyst disposition, separately governed end-to-end live evaluation, and closeout. No new live model calls or spending are authorized.
+Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69, #64, #63, and #70 complete the durable proposal contract, evidence-bounded extraction and ambiguity analysis, offline-validated dynamic opportunity-research loop, and analyst disposition workflow. Issues #71 and #72 now sequence separately governed end-to-end live evaluation and closeout. No new live model calls or spending are authorized.
 
 ## What works and has been validated
 
@@ -17,6 +17,7 @@ Milestone 4 — Intelligent Business Discovery and Analysis is active as of Sept
 - The version-two model evaluation contract separates seven case dimensions, rejects internal contradictions deterministically, distinguishes incomplete/refusal/invalid/failed provider outcomes, records split token usage, and produces per-dimension metrics. Seven fictional case shapes pass through both provider mocks without live calls.
 - Model proposals persist as immutable, case-linked execution results with evidence or claim lineage, complete provider/version provenance, safe structured output, split usage, latency, bounded cost, and explicit failure outcomes. Non-completed calls retain no provider payload or exception body.
 - Structured business extraction and ambiguity analysis operate on selected case evidence and claims through the provider-neutral interface. Deterministic post-validation rejects unsupported citations, name-only resolution, relationship/timeline conflicts, and ownership proposals lacking explicit owner-role evidence; invalid output is not retained.
+- Authenticated analysts can accept, correct, reject, or defer immutable model proposals with a rationale and case-local evidence/claim lineage. The Research workspace displays source-linked provider output, safe execution provenance, and the additive human disposition history as visibly separate layers; corrections never rewrite the original proposal.
 - The authorized $5 Utah BEL delivery landed as three immutable private CSV artifacts plus a replayable joined package. It produced 188 businesses and 470 relationship assertions, including 205 explicit owner-role candidates, with clean joins, no quarantine, and aggregate-only analyst reporting. Source roles remain unvalidated ownership assertions.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
@@ -43,7 +44,7 @@ Autonomous acquisition, live transition-signal sources, validated beneficial-own
 
 ## AI state
 
-Candidate evidence summary remains the only UI-exposed AI capability. Provider adapters also support schema-validated extraction for controlled validation work. The app remains functional without AI; local Compose includes the optional SDKs, configuration defaults to disabled, requests are time/output bounded, OpenAI storage is off, and provider error bodies are not persisted. Public-evidence output quality was exercised but did not pass: 12/14 corrected-run responses were parseable and only 3/14 matched the conflated top-level pre-label. The replacement contract passes fictional offline fixtures but has no live quality result.
+Candidate evidence summaries and case-linked model proposals are UI-exposed AI capabilities. Proposal output is explicitly labeled, retains safe execution provenance and evidence/claim references, and remains non-authoritative until an analyst records a separate disposition. Provider adapters also support schema-validated extraction for controlled validation work. The app remains functional without AI; local Compose includes the optional SDKs, configuration defaults to disabled, requests are time/output bounded, OpenAI storage is off, and provider error bodies are not persisted. Public-evidence output quality was exercised but did not pass: 12/14 corrected-run responses were parseable and only 3/14 matched the conflated top-level pre-label. The replacement contract passes fictional offline fixtures but has no live quality result.
 
 ## Highest risks
 
@@ -55,12 +56,12 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Proceed to Issue #70 for analyst review and disposition of immutable model proposals. The completed 4.3 loop supports evidence-linked next-action proposals, deterministic approval into the frontier, attributable and immutable source-access decisions, bounded public-document retrieval, content-addressed artifact landing, optional hosted search, audited one-step execution, duplicate suppression, bounded retries, and explicit stopping. The Issue #71 end-to-end live evaluation remains separately gated by a frozen protocol, provider/model selection, call ceiling, and cost ceiling.
+Prepare Issue #71's end-to-end live evaluation protocol without executing it. Freeze the evidence-safe cohort, provider/model choices, case and call ceilings, cost ceiling, success measures, and stop conditions for explicit approval before any live call. The completed 4.3–4.4 workflow now supports evidence-linked planning, deterministic approval and retrieval, immutable proposals, and attributable human disposition.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 136 backend/API tests, four frontend tests, all fifteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.3 contracts are validated only against fictional fixtures and adapter mocks; no new provider or search call was made.
+The current implementation exercises 140 backend/API tests, five frontend tests, all sixteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.4 contracts are validated only against fictional fixtures and adapter mocks; no new provider or search call was made.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

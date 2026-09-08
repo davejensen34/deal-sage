@@ -23,7 +23,7 @@ These foundations are adequate to begin productization. They are not authorizati
 - 4.5 — Issue #71 (separately gated live evaluation)
 - 4.6 — Issue #72
 
-Progress: Issues #69 and #64 complete 4.1–4.2 with durable model proposals, safe execution provenance, structured extraction, and evidence-bounded ambiguity analysis. Issue #63 completes the offline-validated 4.3 loop: schema-constrained next-action proposals, deterministic approval with durable frontier lineage, permissioned document retrieval, immutable artifact-first evidence landing, optional disabled-by-default OpenAI web discovery, audited one-step orchestration, duplicate suppression, bounded retries, and explicit terminal reasons. No live search or model call was made. Issue #70 is the next workstream.
+Progress: Issues #69 and #64 complete 4.1–4.2 with durable model proposals, safe execution provenance, structured extraction, and evidence-bounded ambiguity analysis. Issue #63 completes the offline-validated 4.3 loop: schema-constrained next-action proposals, deterministic approval with durable frontier lineage, permissioned document retrieval, immutable artifact-first evidence landing, optional disabled-by-default OpenAI web discovery, audited one-step orchestration, duplicate suppression, bounded retries, and explicit terminal reasons. Issue #70 completes 4.4 with immutable, attributable analyst accept/correct/reject/defer records and an evidence-aware review surface that leaves provider output untouched. No live search or model call was made. Issue #71 is next and remains separately gated.
 
 ### 4.1 — Durable model proposals and execution provenance
 
