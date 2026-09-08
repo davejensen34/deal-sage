@@ -56,6 +56,8 @@ Open `http://localhost:3000`. Everything runs on one host; no managed service is
 
 Set either `MODEL_PROVIDER=openai` with `OPENAI_API_KEY`, or `MODEL_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`. Models and strict request, output, call, and cost ceilings are configurable in the root `.env`. DealSage works with `MODEL_PROVIDER=disabled`, and AI never determines authoritative scores or workflow state. Live calls are explicit and are never part of the automated test suite; see the [AI strategy](docs/architecture/ai-strategy.md).
 
+Dynamic discovery has a separate `WEB_SEARCH_PROVIDER` gate and remains `disabled` by default. Setting it to `openai` makes the bounded adapter available to research orchestration but does not authorize an evaluation run, recurring discovery, or autonomous retrieval. Search output stages untrusted candidate URLs; access approval and evidence landing remain separate steps.
+
 ## Pilot authentication
 
 Local development defaults to `AUTH_MODE=demo`. Google OIDC has been validated locally. To use it, configure OIDC credentials, a unique session secret, and an email/domain allowlist as described in the [pilot authentication guide](docs/deployment/pilot-authentication.md). Local HTTP validation uses an explicitly documented insecure-cookie exception; deployed environments require HTTPS and secure cookies.

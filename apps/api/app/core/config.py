@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173"
     evidence_storage_path: Path = Path("./data/evidence")
     model_provider: Literal["disabled", "openai", "anthropic"] = "disabled"
+    web_search_provider: Literal["disabled", "openai"] = "disabled"
+    web_search_max_results: int = Field(default=5, ge=1, le=20)
+    web_search_max_output_tokens: int = Field(default=300, ge=1, le=1000)
     openai_api_key: str | None = None
     openai_model: str = "gpt-5-mini"
     anthropic_api_key: str | None = None
@@ -54,6 +57,21 @@ class Settings(BaseSettings):
     @property
     def allowed_domain_set(self) -> set[str]:
         return {item.strip().lower() for item in self.allowed_domains.split(",") if item.strip()}
+
+    def build_search_provider(self):
+        """Construct an explicitly enabled provider without making a network call."""
+        if self.web_search_provider == "disabled":
+            return None
+        if not self.openai_api_key:
+            raise ValueError("OpenAI web search is enabled but OPENAI_API_KEY is missing")
+        from app.research.search_openai import OpenAIWebSearchProvider
+
+        return OpenAIWebSearchProvider(
+            self.openai_api_key,
+            self.openai_model,
+            timeout_seconds=self.ai_request_timeout_seconds,
+            max_output_tokens=self.web_search_max_output_tokens,
+        )
 
 
 @lru_cache
