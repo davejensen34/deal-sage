@@ -1,6 +1,6 @@
 # Milestone 5 — Opportunity Intelligence Workflows
 
-Status: proposed; gated by Milestones 3 and 4.
+Status: proposed; gated by a successful Milestone 4 closeout decision.
 
 ## Goal
 
@@ -13,6 +13,18 @@ Turn validated evidence and human-reviewed analysis into repeatable analyst work
 - Explainable opportunity prioritization built from deterministic, versioned features.
 - Coverage, freshness, cost, and analyst-disposition feedback loops.
 - Export or integration seams that preserve evidence links and confidence boundaries.
+
+## Likely sequence
+
+1. Persist evidence-derived scoring features and reproduce all displayed scores deterministically.
+2. Productize saved research and dedicated watchlists over reviewed cases.
+3. Add bounded refresh workflows with visible source freshness and failure state.
+4. Add opt-in alerts only after refresh behavior is trustworthy and cost-bounded.
+5. Add export and integration seams that retain evidence references, inference status, and analyst disposition.
+
+## Entry gate
+
+Milestone 4 must show that model proposals can be reviewed and dispositioned without bypassing provenance, deterministic validation, or human authority. Any partial or negative quality result narrows Milestone 5 scope rather than being silently treated as success.
 
 ## Boundary
 

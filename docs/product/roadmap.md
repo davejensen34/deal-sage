@@ -28,13 +28,15 @@ The approved seven-case provider exercise validated bounded integration behavior
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 
-Productize the bounded provider foundation first exercised in Milestone 3.1. Expand schema-constrained extraction of business details, evidence-bounded ambiguity and match analysis, synthesis, and research planning across reviewed workflows. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
+Ready for explicit activation; not active. Productize the bounded provider foundation first exercised in Milestone 3.1 through durable model proposals, schema-constrained business-detail extraction, evidence-bounded ambiguity and match analysis, synthesis, bounded research-plan suggestions, and analyst disposition. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
+
+Implementation proceeds through workstreams 4.1–4.4 using mocks and fictional fixtures by default. A version-two live quality cohort is workstream 4.5 and requires its own frozen protocol, call ceiling, and cost approval; configured API keys do not authorize spending. The durable scope and definition of done are in `backlog/milestones/milestone-4.md`.
 
 ### Milestone 5 — Opportunity Intelligence Workflows
 
-Turn validated curated evidence and reviewed analysis into enrichment, saved research, watchlists, alerts, refresh workflows, and explainable opportunity prioritization. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
+Proposed and gated by Milestone 4. Turn validated curated evidence and reviewed analysis into enrichment, evidence-derived deterministic scoring, saved research, watchlists, bounded refresh workflows, opt-in alerts, and provenance-preserving exports. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
 ### Subsequent milestones
 
-6. Operational productization: authentication, multi-user controls, backups, monitoring, and deployment hardening.
-7. Broader transition intelligence: retirement, succession, ownership transfer, founder exit, dissolution, and leadership change.
+6. Operational productization: multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.
+7. Broader transition intelligence: retirement, succession, ownership transfer, founder exit, dissolution, and leadership change. Proposed and gated by validated precision and sustainable source operations.
