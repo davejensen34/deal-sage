@@ -23,7 +23,7 @@ These foundations are adequate to begin productization. They are not authorizati
 - 4.5 — Issue #71 (separately gated live evaluation)
 - 4.6 — Issue #72
 
-Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenance contract with case-local lineage, safe structured output, explicit non-completed outcomes, and offline validation. Issue #64 productizes business extraction and identity/relationship ambiguity analysis over minimal case evidence packets, with deterministic citation, non-name, timeline, and explicit-owner-role checks. Issue #63 has begun with a schema-constrained, evidence-linked next-action proposal and a separate deterministic approval boundary that records proposal-to-frontier lineage and rejects duplicate approval. Permissioned retrieval, evidence landing, live-capable discovery, orchestration, and convergence validation remain in 4.3.
+Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenance contract with case-local lineage, safe structured output, explicit non-completed outcomes, and offline validation. Issue #64 productizes business extraction and identity/relationship ambiguity analysis over minimal case evidence packets, with deterministic citation, non-name, timeline, and explicit-owner-role checks. Issue #63 now has schema-constrained, evidence-linked next-action proposals; deterministic proposal approval with durable frontier lineage; and permissioned, bounded document retrieval that lands immutable raw artifacts before linked case evidence. Live-capable discovery, loop orchestration, and convergence validation remain in 4.3.
 
 ### 4.1 — Durable model proposals and execution provenance
 
