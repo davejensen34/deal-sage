@@ -11,14 +11,14 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
-- Milestone 4 is active. Issues #69 and #64 establish durable proposals plus evidence-bounded extraction and ambiguity analysis; Issue #63 is the next workstream. No new live model calls or spending are authorized.
+- Milestone 4 is active. Issues #69 and #64 establish durable proposals plus evidence-bounded extraction and ambiguity analysis. Issue #63 now owns the dynamic opportunity-research loop: provider-neutral discovery, permissioned retrieval and evidence landing, model-assisted curation, deterministically approved follow-up, and bounded convergence. No new live model calls or spending are authorized.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence
 
 1. Milestone 3 has completed the bounded Colorado, Utah, and Texas evidence-supply foundation.
 2. Milestone 3.1 has completed evidence convergence, bounded public research, and the provider-neutral search/model foundation over traceable evidence.
-3. When explicitly activated, Milestone 4 productizes deeper intelligent discovery, analyst disposition, and a separately approved live quality evaluation.
+3. Milestone 4 productizes a dynamic, evidence-backed opportunity-research loop, analyst disposition, and a separately approved end-to-end live quality evaluation.
 4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
 5. Milestone 6 hardens a proven pilot for dependable multi-user operation without assuming distributed infrastructure.
 6. Milestone 7 broadens transition intelligence beyond the initial mortality-related signal after precision and source sustainability are demonstrated.

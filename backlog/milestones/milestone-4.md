@@ -23,7 +23,7 @@ These foundations are adequate to begin productization. They are not authorizati
 - 4.5 — Issue #71 (separately gated live evaluation)
 - 4.6 — Issue #72
 
-Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenance contract with case-local lineage, safe structured output, explicit non-completed outcomes, and offline validation. Issue #64 productizes business extraction and identity/relationship ambiguity analysis over minimal case evidence packets, with deterministic citation, non-name, timeline, and explicit-owner-role checks.
+Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenance contract with case-local lineage, safe structured output, explicit non-completed outcomes, and offline validation. Issue #64 productizes business extraction and identity/relationship ambiguity analysis over minimal case evidence packets, with deterministic citation, non-name, timeline, and explicit-owner-role checks. Issue #63 has begun with a schema-constrained, evidence-linked next-action proposal and a separate deterministic approval boundary that records proposal-to-frontier lineage and rejects duplicate approval. Permissioned retrieval, evidence landing, live-capable discovery, orchestration, and convergence validation remain in 4.3.
 
 ### 4.1 — Durable model proposals and execution provenance
 
@@ -40,11 +40,15 @@ Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenan
 - Prevent unsupported citations, name-only resolution, registered-agent-to-owner promotion, and model-authored authoritative facts or scores.
 - Preserve credential-free operation with deterministic fixtures and provider mocks.
 
-### 4.3 — Bounded research-plan proposals
+### 4.3 — Dynamic opportunity research loop
 
-- Allow a model to propose a next question, source type, or research action using the existing `ResearchFrontierItem` and `ResearchStep` contracts.
-- Require deterministic enforcement of source permissions, query/document/model/step/time/cost budgets, attempt limits, and stopping reasons before execution.
-- Distinguish a proposed plan from an approved or executed action in persistence and the analyst narrative.
+- Discover candidate evidence from interchangeable search providers without requiring a known person or business name; support signal-first, business-first, and hybrid case origins.
+- Treat search results as untrusted source candidates. Permit retrieval only after deterministic URL-safety, source-access, case-budget, and attempt checks.
+- Land retrieved documents with immutable provenance and content hashes before extraction or model use; search snippets and model statements are never source evidence.
+- Let a model propose evidence-bounded extraction, ambiguity analysis, the next question, source type, query, or research action. A proposal must cite the supplied case evidence or claims and may abstain.
+- Require deterministic approval before a proposed search or follow-up action enters the existing `ResearchFrontierItem` and `ResearchStep` execution path.
+- Iterate only while new evidence or an unresolved material question justifies another step. Enforce query, document, model, step, attempt, elapsed-time, and cost ceilings plus explicit convergence and stopping reasons.
+- Keep discovery, retrieval, model curation, approved execution, and analyst disposition distinct and auditable.
 
 ### 4.4 — Analyst review and disposition workflow
 
@@ -53,11 +57,12 @@ Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenan
 - Make accepted corrections new human decisions linked to evidence; never rewrite the original provider output.
 - Expose enough execution provenance and safe failure detail to assess trust without exposing raw private evidence.
 
-### 4.5 — Governed version-two quality evaluation
+### 4.5 — Governed end-to-end quality evaluation
 
 - Freeze a human-labeled, evidence-safe cohort and protocol before any live calls.
 - Obtain explicit approval for providers, models, case count, call ceiling, and total cost ceiling.
-- Measure per-dimension quality, citation validity, abstention, contradiction handling, reproducibility where tested, latency, tokens, and cost.
+- Exercise dynamic discovery through reviewed opportunity output, rather than evaluating an isolated model prompt.
+- Measure source yield and permission failures, retrieval and provenance integrity, per-dimension model quality, citation validity, abstention, contradiction handling, convergence, reproducibility where tested, latency, tokens, and cost.
 - Record negative or partial results honestly and use them to decide whether Milestone 5 may consume reviewed model output.
 
 ### 4.6 — Reconciliation and milestone decision
@@ -79,7 +84,7 @@ Progress: Issue #69 implements the 4.1 immutable proposal and execution-provenan
 ## Explicit gates and boundaries
 
 - Activating Milestone 4 requires a user-approved start, a GitHub milestone, and implementation-ready Issues derived from these workstreams.
-- Workstreams 4.1 through 4.4 use mocks and fictional fixtures by default. They do not require live model spending.
+- Workstreams 4.1 through 4.4 use mocks and fictional fixtures by default. Live-capable adapters may be implemented and tested without network access, but no provider calls or spending are implied.
 - Workstream 4.5 requires a separate protocol and cost approval. Existing API keys are configuration, not spending authorization.
 - Models cannot silently mutate source evidence, validated facts, identity decisions, workflow state, or deterministic confidence scores.
 - Milestone 4 does not add autonomous crawling, recurring source purchases, opportunity scoring changes, alerts, enterprise infrastructure, or national coverage.
