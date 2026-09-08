@@ -28,7 +28,7 @@ The approved seven-case provider exercise validated bounded integration behavior
 
 ### Milestone 4 — Intelligent Business Discovery and Analysis
 
-Ready for explicit activation; not active. Productize the bounded provider foundation first exercised in Milestone 3.1 through durable model proposals, schema-constrained business-detail extraction, evidence-bounded ambiguity and match analysis, synthesis, bounded research-plan suggestions, and analyst disposition. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
+Active as of September 8, 2026. Productize the bounded provider foundation first exercised in Milestone 3.1 through durable model proposals, schema-constrained business-detail extraction, evidence-bounded ambiguity and match analysis, synthesis, bounded research-plan suggestions, and analyst disposition. Record provider, model, prompt version, source references, latency, token usage, cost where available, outcome, and human disposition. Models may propose facts and next research steps but may not silently change authoritative records, workflow state, or deterministic scores.
 
 Implementation proceeds through workstreams 4.1–4.4 using mocks and fictional fixtures by default. A version-two live quality cohort is workstream 4.5 and requires its own frozen protocol, call ceiling, and cost approval; configured API keys do not authorize spending. The durable scope and definition of done are in `backlog/milestones/milestone-4.md`.
 
