@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-No execution milestone is active. Milestone 3 — Multi-State Data Acquisition and Curation is complete after Issue #32 validated the delivered bounded Utah BEL sample. Milestone 3.1 — Evidence Convergence and Dynamic Discovery is also complete as a validated foundation. Milestone 4 remains proposed and is not active.
+No execution milestone is active. Milestone 3 — Multi-State Data Acquisition and Curation and Milestone 3.1 — Evidence Convergence and Dynamic Discovery are complete. Milestone 4 has been reconciled into implementation-ready workstreams but awaits explicit activation; no new live model calls or spending are authorized.
 
 ## What works and has been validated
 
@@ -53,7 +53,7 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Decide whether and when to approve Milestone 4; its first live evaluation must use a newly approved version-two protocol and must not reuse the exhausted Milestone 3.1 authorization. Until then, no implementation milestone is active.
+Explicitly activate Milestone 4 when ready, then create its GitHub milestone and implementation Issues from workstreams 4.1 through 4.6 in `backlog/milestones/milestone-4.md`. Productization begins offline with persisted proposals and analyst review; its live evaluation remains separately gated by a newly approved version-two protocol and cost ceiling. Until activation, no implementation milestone is active.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 

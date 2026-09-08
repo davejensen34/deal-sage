@@ -11,15 +11,17 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
-- No execution milestone is active. Milestone 4 is proposed but has not been approved or started.
+- No execution milestone is active. Milestone 4 is implementation-ready but awaits explicit activation; no new live model calls or spending are authorized.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
-## Approved forward sequence
+## Forward sequence
 
 1. Milestone 3 has completed the bounded Colorado, Utah, and Texas evidence-supply foundation.
 2. Milestone 3.1 has completed evidence convergence, bounded public research, and the provider-neutral search/model foundation over traceable evidence.
-3. If explicitly approved, Milestone 4 productizes deeper intelligent discovery and performs a newly governed live quality evaluation.
+3. When explicitly activated, Milestone 4 productizes deeper intelligent discovery, analyst disposition, and a separately approved live quality evaluation.
 4. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
+5. Milestone 6 hardens a proven pilot for dependable multi-user operation without assuming distributed infrastructure.
+6. Milestone 7 broadens transition intelligence beyond the initial mortality-related signal after precision and source sustainability are demonstrated.
 
 This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 

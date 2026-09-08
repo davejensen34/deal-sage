@@ -1,6 +1,6 @@
 # Persist evidence-derived scoring features
 
-Status: proposed · Priority: P1
+Status: proposed for Milestone 5 · Priority: P1 within Milestone 5
 
 Problem: deterministic scoring exists, but demo scores are curated fixtures rather than reproduced from persisted feature observations.
 
