@@ -172,6 +172,16 @@ class CandidateRetrievalService:
             ),
         )
         self.landing.finish_artifact_run(run)
+        existing = self.db.scalar(
+            select(CaseEvidence).where(
+                CaseEvidence.case_id == case.id,
+                CaseEvidence.raw_artifact_id == artifact.id,
+            )
+        )
+        if existing is not None:
+            # Re-observing identical bytes is useful acquisition provenance, but
+            # it is not new evidence and must not inflate case confidence.
+            return existing
         excerpt = _bounded_text_excerpt(document.content, document.media_type)
         return self.cases.add_evidence(
             case.id,
