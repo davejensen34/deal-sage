@@ -1,6 +1,6 @@
 # Milestone 4 governed end-to-end quality evaluation
 
-Status: proposed and executable only after explicit approval. No live call is authorized by this document, committed credentials, or Issue #71.
+Status: approved and stopped on September 8, 2026. The durable result is in `docs/research/milestone-4-live-evaluation-results.md`; this protocol does not authorize a retry.
 
 ## Decision to approve
 
@@ -79,7 +79,7 @@ Stop the run immediately if any provider receives unapproved evidence, a search 
 
 ## Approval record
 
-Approval must state the protocol ID and explicitly authorize the named providers, models, three cases, 18-call ceiling, and USD $2.00 ceiling. Until that occurs, implementation may validate fixtures and dry-run guards only.
+The user explicitly approved protocol `m4-e2e-v1-2026-09-08`, the named OpenAI and Anthropic models, the three-case cohort, 18-call ceiling, and USD $2.00 ceiling on September 8, 2026. Execution used three search calls and stopped before model analysis when the frozen evidence packet could not be reproduced. The approval is consumed and does not extend to a changed manifest or another run.
 
 Pricing references checked September 8, 2026:
 

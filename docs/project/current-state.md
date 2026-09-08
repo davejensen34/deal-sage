@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69, #64, #63, and #70 complete the durable proposal contract, evidence-bounded extraction and ambiguity analysis, offline-validated dynamic opportunity-research loop, and analyst disposition workflow. Issues #71 and #72 now sequence separately governed end-to-end live evaluation and closeout. No new live model calls or spending are authorized.
+Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69, #64, #63, and #70 complete the durable proposal contract, evidence-bounded extraction and ambiguity analysis, offline-validated dynamic opportunity-research loop, and analyst disposition workflow. The approved Issue #71 evaluation used three search calls and stopped before model analysis because the frozen evidence packet did not reproduce. Issue #72 remains for closeout; the consumed protocol authorizes no retry.
 
 ## What works and has been validated
 
@@ -56,12 +56,12 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Review and explicitly approve or revise `docs/research/milestone-4-live-evaluation-protocol.md`. The proposed Issue #71 protocol freezes three state-balanced cases, `gpt-5-mini`, `claude-sonnet-4-5`, OpenAI web search for bounded discovery, an 18-call ceiling, and a USD $2.00 ceiling. Committed validation rejects protocol, provider/model, cohort-shape, and budget drift. No live execution is authorized until approval identifies the exact protocol ID and ceilings.
+Complete Issue #72 reconciliation and decide whether to close Milestone 4 with a narrowed Milestone 5 gate. Issue #71 produced a negative integration result rather than live model-quality evidence; any future live evaluation needs a new frozen protocol and explicit approval.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 147 backend/API tests, five frontend tests, all sixteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.4 contracts and the proposed 4.5 protocol guard are validated only against fictional fixtures and adapter mocks; no new provider or search call was made.
+The current implementation exercises 151 backend/API tests, five frontend tests, all sixteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

@@ -10,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.ai.providers.base import AIProvider, AIProviderOutputError, TokenUsage
+from app.ai.pricing import estimated_cost_cents
 from app.domain.models import CaseEvidence, EvidenceClaim, ModelProposal
 from app.research.ingestion import assert_safe_source_content
 from app.research.model_proposals import ModelProposalService
@@ -260,6 +261,13 @@ class ModelAnalysisService:
             outcome = _execution_outcome(exc)
             error_class = type(exc).__name__
         usage = getattr(provider, "last_usage", TokenUsage())
+        # Only the explicitly approved live-evaluation models have frozen rates.
+        # Fixtures and other disabled-by-default adapters retain zero rather than
+        # inventing a price; a live runner must reject them before execution.
+        try:
+            cost_cents = estimated_cost_cents(provider_name, model, usage)
+        except ValueError:
+            cost_cents = 0
         return self.proposals.record(
             case_id,
             task=task,
@@ -275,6 +283,7 @@ class ModelAnalysisService:
             output_tokens=usage.output_tokens,
             total_tokens=usage.total_tokens,
             latency_ms=round((perf_counter() - started) * 1000),
+            cost_cents=cost_cents,
             error_class=error_class,
         )
 
