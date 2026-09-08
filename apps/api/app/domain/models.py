@@ -237,6 +237,22 @@ class ModelProposal(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 
+class ModelProposalDisposition(Base):
+    """Immutable human judgment about a proposal; the provider output is untouched."""
+    __tablename__ = "model_proposal_dispositions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    proposal_id: Mapped[int] = mapped_column(ForeignKey("model_proposals.id"), index=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    analyst_name: Mapped[str] = mapped_column(String(160))
+    decision: Mapped[str] = mapped_column(String(30), index=True)
+    rationale: Mapped[str] = mapped_column(Text)
+    corrected_output: Mapped[dict[str, Any] | None] = mapped_column(JSON)
+    supporting_evidence_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    supporting_claim_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class ResearchQuery(TimestampMixin, Base):
     """One bounded search-provider call; query text stays inside its research case."""
     __tablename__ = "research_queries"

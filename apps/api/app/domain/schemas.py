@@ -42,6 +42,14 @@ class NoteCreate(BaseModel):
     note: str = Field(min_length=1)
 
 
+class ProposalDispositionCreate(BaseModel):
+    decision: Literal["accept", "correct", "reject", "defer"]
+    rationale: str = Field(min_length=3, max_length=2_000)
+    corrected_output: dict[str, Any] | None = None
+    supporting_evidence_ids: list[int] | None = None
+    supporting_claim_ids: list[int] | None = None
+
+
 class BusinessOut(ORMModel):
     id: int
     legal_name: str
