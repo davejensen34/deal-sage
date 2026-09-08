@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issue #69 establishes the durable model-proposal and execution-provenance contract. Issues #64, #63, #70, #71, and #72 sequence extraction and ambiguity analysis, bounded planning, analyst disposition, separately governed live evaluation, and closeout. No new live model calls or spending are authorized.
+Milestone 4 — Intelligent Business Discovery and Analysis is active as of September 8, 2026. Issues #69 and #64 establish the durable model-proposal contract plus evidence-bounded business extraction and ambiguity analysis. Issues #63, #70, #71, and #72 sequence bounded planning, analyst disposition, separately governed live evaluation, and closeout. No new live model calls or spending are authorized.
 
 ## What works and has been validated
 
@@ -16,6 +16,7 @@ Milestone 4 — Intelligent Business Discovery and Analysis is active as of Sept
 - Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
 - The version-two model evaluation contract separates seven case dimensions, rejects internal contradictions deterministically, distinguishes incomplete/refusal/invalid/failed provider outcomes, records split token usage, and produces per-dimension metrics. Seven fictional case shapes pass through both provider mocks without live calls.
 - Model proposals persist as immutable, case-linked execution results with evidence or claim lineage, complete provider/version provenance, safe structured output, split usage, latency, bounded cost, and explicit failure outcomes. Non-completed calls retain no provider payload or exception body.
+- Structured business extraction and ambiguity analysis operate on selected case evidence and claims through the provider-neutral interface. Deterministic post-validation rejects unsupported citations, name-only resolution, relationship/timeline conflicts, and ownership proposals lacking explicit owner-role evidence; invalid output is not retained.
 - The authorized $5 Utah BEL delivery landed as three immutable private CSV artifacts plus a replayable joined package. It produced 188 businesses and 470 relationship assertions, including 205 explicit owner-role candidates, with clean joins, no quarantine, and aggregate-only analyst reporting. Source roles remain unvalidated ownership assertions.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
@@ -54,12 +55,12 @@ Candidate evidence summary remains the only UI-exposed AI capability. Provider a
 
 ## Next
 
-Proceed to Issue #64 for evidence-bounded extraction and ambiguity analysis over the Issue #69 proposal contract, then continue through the sequenced workstreams in `backlog/milestones/milestone-4.md`. The Issue #71 live evaluation remains separately gated by a newly approved version-two protocol and cost ceiling.
+Proceed to Issue #63 for bounded model-assisted research-plan proposals over the existing deterministic frontier, then continue through the sequenced workstreams in `backlog/milestones/milestone-4.md`. The Issue #71 live evaluation remains separately gated by a newly approved version-two protocol and cost ceiling.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 116 backend/API tests, four frontend tests, all thirteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1 proposal contract are validated only against fictional fixtures and adapter mocks; no new provider call was made.
+The current implementation exercises 122 backend/API tests, four frontend tests, all thirteen migrations in both directions, the production build, and Compose validation. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The approved seven-case public-evidence comparison was executed within budget: the corrected attempt produced 7/7 schema-valid Anthropic outputs and 5/7 OpenAI outputs, but only 3/14 top-level labels matched because the rubric conflated independent dimensions. The version-two replacement and Milestone 4.1–4.2 contracts are validated only against fictional fixtures and adapter mocks; no new provider call was made.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

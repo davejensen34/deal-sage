@@ -50,7 +50,7 @@ class ModelProposalService:
 
         evidence_ids = _unique_ids(supported_evidence_ids or [], "evidence")
         claim_ids = _unique_ids(supported_claim_ids or [], "claim")
-        self._require_case_lineage(case_id, evidence_ids, claim_ids)
+        self.validate_lineage(case_id, evidence_ids, claim_ids)
         _validate_measures(input_tokens, output_tokens, total_tokens, latency_ms, cost_cents)
 
         if execution_outcome == "completed":
@@ -92,7 +92,10 @@ class ModelProposalService:
         self.db.refresh(proposal)
         return proposal
 
-    def _require_case_lineage(self, case_id: int, evidence_ids: list[int], claim_ids: list[int]) -> None:
+    def validate_lineage(self, case_id: int, evidence_ids: list[int], claim_ids: list[int]) -> None:
+        """Reject cross-case citations before provider input or persistence."""
+        evidence_ids = _unique_ids(evidence_ids, "evidence")
+        claim_ids = _unique_ids(claim_ids, "claim")
         if evidence_ids:
             found = set(
                 self.db.scalars(
