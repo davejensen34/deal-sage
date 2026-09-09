@@ -1,0 +1,21 @@
+{
+  "schema_version": "milestone-4-7-packet-preflight-summary-v1",
+  "executed_on": "2026-09-09",
+  "contains_record_level_data": false,
+  "candidate_manifest_hash": "ab440ac86ddb2b49be9483d7d9c48cf9dbe0aa1348b95c88b1a4f35a6df2f0cc",
+  "frozen_packet_hash": "a8d535ed00ade57f3775dd9ad13bcc9b2f48998b077035d1922aa223ebbf84f9",
+  "cases": [
+    {"slot": "M47-CO-1", "state": "CO", "origin": "signal_first", "evidence_items": 2, "retrieved_bytes": 789274},
+    {"slot": "M47-UT-1", "state": "UT", "origin": "business_first", "evidence_items": 2, "retrieved_bytes": 283071},
+    {"slot": "M47-TX-1", "state": "TX", "origin": "hybrid", "evidence_items": 2, "retrieved_bytes": 615549}
+  ],
+  "retrieval": {
+    "attempted": 6,
+    "succeeded": 6,
+    "excerpt_verified": 6,
+    "content_hash_verified": 6,
+    "access_denials": 0,
+    "quarantined": 0
+  },
+  "authorization": {"paid_search_calls": 0, "model_calls": 0}
+}
