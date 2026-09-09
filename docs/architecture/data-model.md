@@ -19,4 +19,6 @@
 - `ResearchFrontierItem` and `ResearchStep`: durable questions, attempts, budgets, actions, provider metadata, results, and explicit stopping behavior.
 - `IdentityResolution`, `ClaimContradiction`, `ConfidenceAssessment`, and `AnalystConclusion`: reviewable identity hypotheses, intact conflicts, versioned deterministic confidence factors, and the separate human conclusion layer.
 
+The research-to-review bridge is intentionally narrow: only a completed proposal with a separate analyst acceptance and same-person owner and transition claims may create a `CandidateMatch`. The bridge copies source evidence rather than model prose, opens a `ReviewCase`, records an audit event, and leaves the candidate in `needs_review`; promotion is not validation.
+
 Partial seams: analyst notes are JSON records rather than a dedicated table; research jobs have an execution interface but no persistent job entity. Colorado and Texas provide bounded entity-corroboration adapters. Utah's three-file importer has been exercised against a delivered bounded sample and retains explicit owner roles as unvalidated relationship assertions. No live search or transition-signal provider exists. These are tracked honestly rather than hidden behind premature abstractions.

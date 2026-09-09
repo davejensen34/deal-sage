@@ -13,6 +13,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
 - Milestone 4 is complete with a change decision. Its proposal, evidence-bounded analysis, research-loop, and analyst-disposition contracts are validated offline; its governed live run stopped before model analysis when the frozen evidence packet did not reproduce. The negative result is preserved and narrows Milestone 5 rather than becoming a quality claim.
 - Milestone 4.7 — Live Opportunity Pipeline is active. It bridges bounded real three-state evidence through source preflight, separately approved model analysis, and a human-reviewed queue before Milestone 5.
+- Issue #92 preserves the deferred Utah/OpenAI ambiguity follow-up; it does not block the accepted Utah case from remaining in human review.
 - Milestone 5 remains proposed and requires explicit approval after the Milestone 4.7 result.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 

@@ -40,6 +40,8 @@ Identity resolution uses one case-local service for person-to-business, business
 
 Confidence convergence keeps business identity, owner relationship, transition identity, operating status, and overall opportunity as separate axes. Versioned deterministic assessments retain every claim factor, base impact, authority/directness/classification/recency adjustment, evidence-independence group, and contradiction penalty. Duplicate, syndicated, and same-publisher support contributes once per feature group. Overall opportunity is conjunctive across the three identity/relationship axes and is capped for inactive or dissolved businesses. Business profile observations retain `source_fact`, `third_party_estimate`, or `dealsage_inference` classification and require claim or inference lineage accordingly; models cannot author authoritative scores.
 
+Promotion into the downstream opportunity queue requires a completed proposal, a separate analyst acceptance, and explicit owner and transition claims for the same person. The queue bridge creates a conservative `CandidateMatch`, copies only source evidence, opens a `ReviewCase`, links the originating `ResearchCase`, and appends an audit event. It never treats acceptance as candidate validation, and unresolved legal identity, succession, or operating status remains visible.
+
 ## Future extension points
 
 Source adapters can add HTTPX, Trafilatura, Playwright, or Scrapy under source-specific rules. Persistent jobs may start in-process and later use a queue when scale proves the need. Local storage can move to S3-compatible storage. PostgreSQL can add pg_trgm and pgvector. Additional OIDC providers, managed PostgreSQL, distributed workers, Kubernetes, and enterprise telemetry remain options—not dependencies.
