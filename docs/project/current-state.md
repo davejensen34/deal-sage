@@ -58,7 +58,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Define and obtain explicit approval for Issue #87's provider/model/task/call/cost protocol over the completed frozen packets. Do not make paid calls or activate Milestone 5 automatically.
+Review and explicitly approve or revise Issue #87 protocol `m4-7-ai-v1-2026-09-09`: OpenAI `gpt-5-mini`, Anthropic `claude-sonnet-4-5`, the three frozen cases, zero search calls, at most twelve model calls, and a USD $1.00 total ceiling. Do not make paid calls or activate Milestone 5 automatically.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
