@@ -1,6 +1,6 @@
 # Milestone 4.7 — Live Opportunity Pipeline
 
-Status: in progress as of September 9, 2026.
+Status: complete as of September 9, 2026.
 
 ## Goal
 
@@ -31,3 +31,13 @@ Progress: Issue #83 assembled and twice executed the operational corpus. A 25-re
 - Colorado and Texas refreshes remain bounded to their permitted public APIs and provide corroboration, not transition discovery or beneficial ownership.
 - No paid search or model call is authorized until Issue #87 carries a frozen protocol and explicit approval.
 - No autonomous crawling, contact, publication of record-level private evidence, recurring scheduler, alerting, or Milestone 5 activation is included.
+
+## Result and Milestone 5 decision
+
+The milestone completed its operational bridge. The local corpus retained 54 immutable artifacts and 736 curated records with zero quarantine. Six ordinary public pages formed three hash-verified transition packets. Governed provider stages made 35 request attempts for an aggregate estimated $0.23 and zero search calls; the final subject-bound ambiguity contract accepted three outputs and rejected three unsupported ownership interpretations deterministically.
+
+Dave Jensen deferred the open-ended Utah/OpenAI result, accepted the evidence-bounded Utah/Claude result, and corrected the Texas/OpenAI operating status while retaining its non-owner conclusion. Only Utah entered the real `needs_review` queue. Its scores remain deliberately conservative—60 owner/business support, 29 transition identity, and 29 overall—and its legal entity, successor, and current local operating status remain unresolved. Issue #92 retains the OpenAI follow-up.
+
+Milestone 5 may be explicitly activated, but the result supports only a narrowed start: persist evidence-derived scoring features and improve analyst workflows over reviewed cases. It does not justify autonomous opportunity generation, unattended refresh, refresh-driven alerts, or broad live model enrichment. Those capabilities remain separately gated by reproducible source evidence, measured analyst value, and bounded cost decisions.
+
+Closeout validation passed 166 backend tests, five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. The existing frontend large-chunk warning remains; no closeout UI behavior changed.

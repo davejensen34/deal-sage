@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4.7 — Live Opportunity Pipeline is active as of September 9, 2026. It follows Milestone 4's change decision by assembling bounded real Colorado, Utah, and Texas evidence into one operational corpus, preflighting reproducible transition packets, and separately gating model analysis into a human-reviewed queue. Milestone 5 remains proposed and is not active.
+Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026. No milestone is active. Milestone 5 is entry-eligible with a narrowed deterministic-scoring and reviewed-workflow start, but it remains proposed until explicitly approved.
 
 ## What works and has been validated
 
@@ -59,12 +59,14 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Reconcile and close Milestone 4.7 through Issue #84, including the Milestone 5 entry decision. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run. Do not activate Milestone 5 automatically.
+Await explicit direction on Milestone 5. The recommended first workstream is persisted evidence-derived scoring features so displayed opportunity scores reproduce from source claims. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
 The current implementation exercises 166 backend/API tests and five frontend tests. All sixteen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+
+Milestone 4.7 closeout re-ran all 166 backend tests and five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. All passed; the existing frontend large-chunk warning remains. No closeout UI behavior changed, so the previously rendered application baseline remains applicable.
 
 Milestone 2.2 previously validated the real Google browser flow, JIT identity, signed session, and user-linked audit attribution. Credentials remain in the ignored root `.env`; provider tokens are not persisted. Broader breakpoint coverage remains partial.

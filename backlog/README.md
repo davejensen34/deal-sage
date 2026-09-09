@@ -12,9 +12,9 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
 - Milestone 4 is complete with a change decision. Its proposal, evidence-bounded analysis, research-loop, and analyst-disposition contracts are validated offline; its governed live run stopped before model analysis when the frozen evidence packet did not reproduce. The negative result is preserved and narrows Milestone 5 rather than becoming a quality claim.
-- Milestone 4.7 — Live Opportunity Pipeline is active. It bridges bounded real three-state evidence through source preflight, separately approved model analysis, and a human-reviewed queue before Milestone 5.
+- Milestone 4.7 — Live Opportunity Pipeline is complete. It bridged bounded real three-state evidence through source preflight, governed model analysis, attributable disposition, and one conservative Utah review candidate.
 - Issue #92 preserves the deferred Utah/OpenAI ambiguity follow-up; it does not block the accepted Utah case from remaining in human review.
-- Milestone 5 remains proposed and requires explicit approval after the Milestone 4.7 result.
+- No milestone is active. Milestone 5 is eligible for explicit approval with deterministic scoring provenance and reviewed-case workflows first; autonomous enrichment and refresh remain gated.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence
