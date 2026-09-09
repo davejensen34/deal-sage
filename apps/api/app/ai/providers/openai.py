@@ -4,6 +4,7 @@ from typing import Any
 from jsonschema import validate
 
 from .base import AIProvider, AIProviderIncompleteError, AIProviderRefusalError, TokenUsage
+from app.ai.schema import provider_safe_schema
 
 
 class OpenAIProvider(AIProvider):
@@ -54,7 +55,7 @@ class OpenAIProvider(AIProvider):
             input=text,
             max_output_tokens=self.max_output_tokens,
             store=False,
-            text={"format": {"type": "json_schema", "name": "dealsage_extraction", "schema": schema, "strict": True}},
+            text={"format": {"type": "json_schema", "name": "dealsage_extraction", "schema": provider_safe_schema(schema), "strict": True}},
         )
         self._capture_usage(response)
         self._ensure_complete(response)

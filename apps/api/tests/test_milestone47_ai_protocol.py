@@ -3,6 +3,7 @@ from copy import deepcopy
 import pytest
 
 from app.research.milestone47_ai_protocol import (
+    EXPECTED_EXECUTION_MATRIX,
     FROZEN_PACKET_HASH,
     PROTOCOL_ID,
     validate_ai_manifest,
@@ -24,7 +25,15 @@ def manifest():
                 "origin": origin,
                 "max_cost_cents": 25,
                 "evidence_ids": [1, 2],
+                "target_subject": "Fictional Person",
                 "prelabel": {"relationship": "unclear"},
+                "claims": [
+                    {
+                        "evidence_id": 1,
+                        "subject_type": "person",
+                        "predicate": "transition",
+                    }
+                ],
             }
         )
     return {
@@ -32,8 +41,10 @@ def manifest():
         "frozen_packet_hash": FROZEN_PACKET_HASH,
         "providers": {"openai": "gpt-5-mini", "anthropic": "claude-sonnet-4-5"},
         "tasks": ["business_extraction", "ambiguity_analysis"],
-        "max_model_calls": 12,
-        "max_cost_cents": 100,
+        "max_model_calls": 6,
+        "max_cost_cents": 75,
+        "max_output_tokens": 3000,
+        "execution_matrix": EXPECTED_EXECUTION_MATRIX,
         "cases": cases,
     }
 
@@ -48,8 +59,8 @@ def test_exact_approved_manifest_passes(manifest):
         ("frozen_packet_hash", "changed", "packet"),
         ("providers", {"openai": "different"}, "provider"),
         ("tasks", ["business_extraction"], "task"),
-        ("max_model_calls", 13, "call ceiling"),
-        ("max_cost_cents", 101, "cost ceiling"),
+        ("max_model_calls", 7, "call ceiling"),
+        ("max_cost_cents", 76, "cost ceiling"),
     ],
 )
 def test_protocol_drift_fails_closed(manifest, field, value, message):

@@ -69,6 +69,21 @@ async def test_openai_structured_extraction_validates_schema():
 
 
 @pytest.mark.asyncio
+async def test_provider_schema_omits_unsupported_constraints_but_validates_them_locally():
+    provider, create = openai_provider(SimpleNamespace(output_text='{"ids":[1,1]}', usage=None))
+    schema = {
+        "type": "object",
+        "properties": {"ids": {"type": "array", "items": {"type": "integer"}, "uniqueItems": True}},
+        "required": ["ids"],
+        "additionalProperties": False,
+    }
+
+    with pytest.raises(Exception, match="non-unique"):
+        await provider.extract_structured("evidence packet", schema)
+    assert "uniqueItems" not in create.calls[0]["text"]["format"]["schema"]["properties"]["ids"]
+
+
+@pytest.mark.asyncio
 async def test_anthropic_summary_is_bounded_and_captures_usage():
     response = SimpleNamespace(
         content=[SimpleNamespace(type="text", text="bounded")],

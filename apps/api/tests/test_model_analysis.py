@@ -45,7 +45,7 @@ def case_with_claim(db, semantics="owner"):
         evidence.id,
         subject_type="person_business_relationship",
         predicate="relationship",
-        object_value={"business_name": "Fictional Example Tool Works"},
+        object_value={"person": "Jordan Example", "business_name": "Fictional Example Tool Works"},
         relationship_semantics=semantics,
         confidence=0.8,
         classification="source_fact",
@@ -193,6 +193,7 @@ async def test_ambiguity_analysis_requires_non_name_support_for_resolution(overr
     case, evidence, claim = case_with_claim(override_db_session)
     provider = FixtureProvider(
         {
+            "subject_name": "Jordan Example",
             "identity_status": "resolved",
             "relationship": "current_owner",
             "relationship_time": "current_at_signal",
@@ -224,6 +225,7 @@ async def test_registered_agent_claim_cannot_be_promoted_to_owner(override_db_se
     case, evidence, claim = case_with_claim(override_db_session, "registered_agent")
     provider = FixtureProvider(
         {
+            "subject_name": "Jordan Example",
             "identity_status": "resolved",
             "relationship": "current_owner",
             "relationship_time": "current_at_signal",
@@ -251,10 +253,46 @@ async def test_registered_agent_claim_cannot_be_promoted_to_owner(override_db_se
 
 
 @pytest.mark.asyncio
+async def test_owner_claim_for_another_person_cannot_support_transition_subject(override_db_session):
+    case, evidence, claim = case_with_claim(override_db_session)
+    claim.object_value = {"person": "Different Person", "business_name": "Fictional Example Tool Works"}
+    override_db_session.commit()
+    provider = FixtureProvider(
+        {
+            "subject_name": "Jordan Example",
+            "identity_status": "resolved",
+            "relationship": "former_owner",
+            "relationship_time": "ended_at_signal",
+            "operating_status": "active",
+            "support_dimensions": ["relationship", "timeline"],
+            "evidence_ids": [evidence.id],
+            "claim_ids": [claim.id],
+            "contradictions": [],
+            "unresolved_questions": [],
+            "summary": "An unrelated owner claim was cited for the transition subject.",
+        }
+    )
+
+    proposal = await ModelAnalysisService(override_db_session).analyze_ambiguity(
+        case.id,
+        provider,
+        provider_name="fixture",
+        model="fixture-v1",
+        evidence_ids=[evidence.id],
+        claim_ids=[claim.id],
+    )
+
+    assert proposal.execution_outcome == "invalid"
+    assert proposal.proposed_output is None
+    assert proposal.error_class == "ValueError"
+
+
+@pytest.mark.asyncio
 async def test_relationship_timeline_conflict_is_not_persisted_as_a_proposal(override_db_session):
     case, evidence, claim = case_with_claim(override_db_session)
     provider = FixtureProvider(
         {
+            "subject_name": "Jordan Example",
             "identity_status": "resolved",
             "relationship": "former_owner",
             "relationship_time": "current_at_signal",
@@ -286,6 +324,7 @@ async def test_ambiguity_analysis_can_abstain_and_preserve_refusal(override_db_s
     case, evidence, claim = case_with_claim(override_db_session)
     abstention = FixtureProvider(
         {
+            "subject_name": "Jordan Example",
             "identity_status": "ambiguous",
             "relationship": "unclear",
             "relationship_time": "unclear",

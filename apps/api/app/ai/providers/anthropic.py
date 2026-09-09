@@ -4,6 +4,7 @@ from typing import Any
 from jsonschema import validate
 
 from .base import AIProvider, AIProviderIncompleteError, AIProviderRefusalError, TokenUsage
+from app.ai.schema import provider_safe_schema
 
 
 class AnthropicProvider(AIProvider):
@@ -55,7 +56,7 @@ class AnthropicProvider(AIProvider):
             messages=[{"role": "user", "content": text}],
             # Prompt-only JSON instructions proved insufficient in the bounded
             # cohort; native constrained decoding is the enforceable contract.
-            output_config={"format": {"type": "json_schema", "schema": schema}},
+            output_config={"format": {"type": "json_schema", "schema": provider_safe_schema(schema)}},
         )
         self._capture_usage(response)
         self._ensure_complete(response)
