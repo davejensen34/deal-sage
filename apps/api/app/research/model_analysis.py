@@ -52,6 +52,7 @@ BUSINESS_EXTRACTION_SCHEMA: dict[str, Any] = {
 AMBIGUITY_ANALYSIS_SCHEMA: dict[str, Any] = {
     "type": "object",
     "properties": {
+        "subject_name": {"type": "string", "minLength": 1},
         "identity_status": {"type": "string", "enum": ["resolved", "ambiguous", "unresolved", "contradicted"]},
         "relationship": {"type": "string", "enum": ["current_owner", "former_owner", "successor", "non_owner_role", "unclear", "none"]},
         "relationship_time": {"type": "string", "enum": ["current_at_signal", "ended_before_signal", "ended_at_signal", "began_after_signal", "unclear", "not_applicable"]},
@@ -63,7 +64,7 @@ AMBIGUITY_ANALYSIS_SCHEMA: dict[str, Any] = {
         "unresolved_questions": {"type": "array", "items": {"type": "string"}},
         "summary": {"type": "string"},
     },
-    "required": ["identity_status", "relationship", "relationship_time", "operating_status", "support_dimensions", "evidence_ids", "claim_ids", "contradictions", "unresolved_questions", "summary"],
+    "required": ["subject_name", "identity_status", "relationship", "relationship_time", "operating_status", "support_dimensions", "evidence_ids", "claim_ids", "contradictions", "unresolved_questions", "summary"],
     "additionalProperties": False,
 }
 
@@ -153,7 +154,11 @@ class ModelAnalysisService:
             schema_version="ambiguity-analysis-v1",
             task="match_analysis",
             schema=AMBIGUITY_ANALYSIS_SCHEMA,
-            instruction="Analyze identity and relationship ambiguity using only the supplied evidence. Abstain when non-name support is insufficient.",
+            instruction=(
+                "Analyze identity and relationship ambiguity using only the supplied evidence. "
+                "Set subject_name to the person identified by the transition claim and analyze only "
+                "that person's business relationship. Abstain when non-name support is insufficient."
+            ),
             packet=packet,
             validate_output=lambda output: _validate_ambiguity_output(output, packet),
         )
@@ -292,6 +297,7 @@ def _validate_business_output(output: dict[str, Any], packet: EvidencePacket) ->
     allowed_evidence = set(packet.evidence_ids)
     allowed_claims = set(packet.claim_ids)
     for observation in output["observations"]:
+        _require_unique_references(observation["evidence_ids"], observation["claim_ids"])
         cited_evidence = set(observation["evidence_ids"])
         cited_claim_ids = set(observation["claim_ids"])
         if not cited_evidence.issubset(allowed_evidence):
@@ -309,6 +315,7 @@ def _validate_business_output(output: dict[str, Any], packet: EvidencePacket) ->
 
 
 def _validate_ambiguity_output(output: dict[str, Any], packet: EvidencePacket) -> None:
+    _require_unique_references(output["evidence_ids"], output["claim_ids"])
     if not set(output["evidence_ids"]).issubset(set(packet.evidence_ids)):
         raise ValueError("Ambiguity analysis cites unsupported evidence")
     if not set(output["claim_ids"]).issubset(set(packet.claim_ids)):
@@ -317,6 +324,19 @@ def _validate_ambiguity_output(output: dict[str, Any], packet: EvidencePacket) -
         raise ValueError("Resolved identity requires a non-name support dimension")
     if output["identity_status"] == "contradicted" and not output["contradictions"]:
         raise ValueError("Contradicted identity requires contradiction detail")
+    transition_subjects = {
+        _normalized_person(claim.object_value.get("person"))
+        for claim in packet.claims
+        if claim.predicate == "transition" and claim.object_value.get("person")
+    }
+    if not transition_subjects:
+        transition_subjects = {
+            _normalized_person(claim.object_value.get("person"))
+            for claim in packet.claims
+            if claim.object_value.get("person")
+        }
+    if len(transition_subjects) != 1 or _normalized_person(output["subject_name"]) not in transition_subjects:
+        raise ValueError("Ambiguity analysis must identify the case transition subject")
     valid_times = {
         "current_owner": {"current_at_signal", "ended_at_signal", "unclear"},
         "former_owner": {"ended_before_signal", "ended_at_signal", "unclear"},
@@ -327,13 +347,19 @@ def _validate_ambiguity_output(output: dict[str, Any], packet: EvidencePacket) -
     }
     if output["relationship_time"] not in valid_times[output["relationship"]]:
         raise ValueError("Relationship time conflicts with the proposed relationship")
-    if output["relationship"] == "current_owner":
+    if output["relationship"] in {"current_owner", "former_owner"}:
         cited_claims = [claim for claim in packet.claims if claim.id in output["claim_ids"]]
-        if not any(claim.relationship_semantics in OWNER_SUPPORT_SEMANTICS for claim in cited_claims):
-            raise ValueError("Current-owner proposal requires explicit owner-role claim support")
+        target = _normalized_person(output["subject_name"])
+        if not any(
+            claim.relationship_semantics in OWNER_SUPPORT_SEMANTICS | {"former_owner"}
+            and _normalized_person(claim.object_value.get("person")) == target
+            for claim in cited_claims
+        ):
+            raise ValueError("Owner proposal requires explicit same-subject owner-role claim support")
 
 
 def _validate_research_plan(output: dict[str, Any], packet: EvidencePacket) -> None:
+    _require_unique_references(output["evidence_ids"], output["claim_ids"])
     if not set(output["evidence_ids"]).issubset(set(packet.evidence_ids)):
         raise ValueError("Research plan cites unsupported evidence")
     if not set(output["claim_ids"]).issubset(set(packet.claim_ids)):
@@ -344,6 +370,16 @@ def _validate_research_plan(output: dict[str, Any], packet: EvidencePacket) -> N
         raise ValueError("Search proposal requires a bounded query")
     if action != "search" and query is not None:
         raise ValueError("Only a search proposal may contain a query")
+
+
+def _require_unique_references(evidence_ids: list[int], claim_ids: list[int]) -> None:
+    """Enforce uniqueness locally because provider grammars omit `uniqueItems`."""
+    if len(evidence_ids) != len(set(evidence_ids)) or len(claim_ids) != len(set(claim_ids)):
+        raise ValueError("Model output contains duplicate evidence or claim references")
+
+
+def _normalized_person(value: Any) -> str:
+    return " ".join(str(value or "").casefold().replace("’", "'").split())
 
 
 def _execution_outcome(exc: Exception) -> str:
