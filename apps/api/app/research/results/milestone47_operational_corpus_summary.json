@@ -1,0 +1,51 @@
+{
+  "schema_version": "milestone-4-7-operational-corpus-v1",
+  "executed_on": "2026-09-09",
+  "contains_record_level_data": false,
+  "sources": [
+    {
+      "source_key": "colorado_business_entities",
+      "jurisdiction": "Colorado",
+      "sample_kind": "live_bounded_refresh",
+      "requested": 25,
+      "retrieved": 25,
+      "curated": 50,
+      "relationship_assertions": 25,
+      "ownership_supported_assertions": 0,
+      "quarantined": 0,
+      "marginal_cost_usd": 0
+    },
+    {
+      "source_key": "texas_active_franchise_taxpayers",
+      "jurisdiction": "Texas",
+      "sample_kind": "live_bounded_refresh",
+      "requested": 25,
+      "retrieved": 25,
+      "curated": 25,
+      "relationship_assertions": 0,
+      "ownership_supported_assertions": 0,
+      "quarantined": 0,
+      "marginal_cost_usd": 0
+    },
+    {
+      "source_key": "utah_business_entity_list",
+      "jurisdiction": "Utah",
+      "sample_kind": "retained_live_delivery_replay",
+      "artifacts": 4,
+      "curated": 661,
+      "quarantined": 0,
+      "marginal_cost_usd": 0
+    }
+  ],
+  "aggregate": {
+    "artifacts": 54,
+    "curated_records": 736,
+    "quarantined_records": 0,
+    "repeat_artifacts": 54,
+    "repeat_curated_records": 736
+  },
+  "authorization": {
+    "paid_search_calls": 0,
+    "model_calls": 0
+  }
+}
