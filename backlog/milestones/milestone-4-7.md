@@ -13,7 +13,7 @@ Bridge bounded real Colorado, Utah, and Texas evidence into reproducible transit
 3. Issue #87 — After separate protocol and cost approval, execute bounded OpenAI/Anthropic analysis and route only deterministically valid proposals into human review.
 4. Issue #84 — Validate, reconcile, and record the Milestone 5 entry decision.
 
-Progress: Issue #83 assembled and twice executed the operational corpus. A 25-record live Colorado refresh, 25-record live Texas refresh, and exact four-artifact Utah replay produced 54 immutable artifacts and 736 curated records with zero quarantine. The repeated run retained identical totals. No paid search or model call occurred.
+Progress: Issue #83 assembled and twice executed the operational corpus. A 25-record live Colorado refresh, 25-record live Texas refresh, and exact four-artifact Utah replay produced 54 immutable artifacts and 736 curated records with zero quarantine. The repeated run retained identical totals. Issue #86 then froze one signal-first, business-first, and hybrid case across Colorado, Utah, and Texas: all six public pages were retrieved, exact-excerpt verified, content-hash verified, and retained locally. No paid search or model call occurred. Issue #87 is now separately gated on an explicit protocol and cost approval.
 
 ## Definition of done
 

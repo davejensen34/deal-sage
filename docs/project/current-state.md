@@ -20,6 +20,7 @@ Milestone 4.7 — Live Opportunity Pipeline is active as of September 9, 2026. I
 - Authenticated analysts can accept, correct, reject, or defer immutable model proposals with a rationale and case-local evidence/claim lineage. The Research workspace displays source-linked provider output, safe execution provenance, and the additive human disposition history as visibly separate layers; corrections never rewrite the original proposal.
 - The authorized $5 Utah BEL delivery landed as three immutable private CSV artifacts plus a replayable joined package. It produced 188 businesses and 470 relationship assertions, including 205 explicit owner-role candidates, with clean joins, no quarantine, and aggregate-only analyst reporting. Source roles remain unvalidated ownership assertions.
 - Milestone 4.7 assembles one ignored operational corpus from a new 25-record Colorado refresh, a new 25-record Texas refresh, and the exact four retained Utah delivery artifacts. It contains 54 immutable artifacts and 736 curated records with zero quarantine; an identical repeat retained the same totals without paid search or model calls.
+- A three-state Milestone 4.7 transition cohort is preflighted in the same local corpus. Its six ordinary public pages all passed retrieval, exact-excerpt verification, and SHA-256 artifact verification before model execution; the full frozen packet remains ignored and the repository exposes only aggregate-safe measures.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
 ## Implemented but not fully validated
@@ -57,7 +58,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Preflight reproducible transition packets in Issue #86 using the completed operational corpus. Issue #87 must obtain explicit provider/model/call/cost approval before any paid search or model execution. Do not activate Milestone 5 automatically.
+Define and obtain explicit approval for Issue #87's provider/model/task/call/cost protocol over the completed frozen packets. Do not make paid calls or activate Milestone 5 automatically.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
