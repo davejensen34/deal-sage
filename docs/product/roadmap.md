@@ -36,6 +36,10 @@ Workstreams 4.1–4.4 are implemented and offline validated. The separately appr
 
 Proposed with a narrowed entry gate. Initial work may turn existing reviewed evidence and deterministic state into reproducible scoring features, saved research, dedicated watchlists, and provenance-preserving exports. Live model-derived enrichment, unattended refresh, and alerts based on refreshed evidence require a new governed source-preflight evaluation. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
+### Milestone 4.7 — Live Opportunity Pipeline
+
+Active as of September 9, 2026 and sequenced before Milestone 5. Assemble bounded live Colorado and Texas refreshes and the retained Utah BEL evidence into one operational corpus; preflight reproducible signal-first, business-first, and hybrid transition packets; then, only under separate provider and cost approval, run evidence-bounded model analysis into a human-reviewed queue. The milestone must measure negative and ambiguous outcomes as faithfully as credible opportunities.
+
 ### Subsequent milestones
 
 6. Operational productization: multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.

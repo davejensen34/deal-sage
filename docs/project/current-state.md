@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4 — Intelligent Business Discovery and Analysis is complete with a change decision as of September 8, 2026. Its durable proposal contract, evidence-bounded extraction and ambiguity analysis, dynamic opportunity-research loop, and analyst disposition workflow are implemented and offline validated. The approved live evaluation used three search calls and stopped before model analysis because the frozen evidence packet did not reproduce. No milestone is active; Milestone 5 remains proposed with a narrowed initial scope.
+Milestone 4.7 — Live Opportunity Pipeline is active as of September 9, 2026. It follows Milestone 4's change decision by assembling bounded real Colorado, Utah, and Texas evidence into one operational corpus, preflighting reproducible transition packets, and separately gating model analysis into a human-reviewed queue. Milestone 5 remains proposed and is not active.
 
 ## What works and has been validated
 
@@ -19,6 +19,7 @@ Milestone 4 — Intelligent Business Discovery and Analysis is complete with a c
 - Structured business extraction and ambiguity analysis operate on selected case evidence and claims through the provider-neutral interface. Deterministic post-validation rejects unsupported citations, name-only resolution, relationship/timeline conflicts, and ownership proposals lacking explicit owner-role evidence; invalid output is not retained.
 - Authenticated analysts can accept, correct, reject, or defer immutable model proposals with a rationale and case-local evidence/claim lineage. The Research workspace displays source-linked provider output, safe execution provenance, and the additive human disposition history as visibly separate layers; corrections never rewrite the original proposal.
 - The authorized $5 Utah BEL delivery landed as three immutable private CSV artifacts plus a replayable joined package. It produced 188 businesses and 470 relationship assertions, including 205 explicit owner-role candidates, with clean joins, no quarantine, and aggregate-only analyst reporting. Source roles remain unvalidated ownership assertions.
+- Milestone 4.7 assembles one ignored operational corpus from a new 25-record Colorado refresh, a new 25-record Texas refresh, and the exact four retained Utah delivery artifacts. It contains 54 immutable artifacts and 736 curated records with zero quarantine; an identical repeat retained the same totals without paid search or model calls.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
 
 ## Implemented but not fully validated
@@ -56,7 +57,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Obtain explicit approval before activating the narrowed Milestone 5 scope. Existing reviewed evidence and deterministic state may support scoring, saved research, watchlists, and provenance-preserving exports. Live model-derived enrichment, unattended refresh, and refresh-dependent alerts require a new frozen protocol with retrieval-and-hash source preflight and explicit cost approval.
+Preflight reproducible transition packets in Issue #86 using the completed operational corpus. Issue #87 must obtain explicit provider/model/call/cost approval before any paid search or model execution. Do not activate Milestone 5 automatically.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
