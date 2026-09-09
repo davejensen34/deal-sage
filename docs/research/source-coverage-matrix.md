@@ -1,6 +1,6 @@
 # Source coverage matrix
 
-Last primary-source review: September 4, 2026. Status values: proposed, ready, in_progress, blocked, implemented, validated, deferred, rejected.
+Last primary-source review: September 9, 2026. Status values: proposed, ready, in_progress, blocked, implemented, validated, deferred, rejected.
 
 The registry distinguishes a source's authority from the facts it can support. A filing registry, registered agent, officer, license, or tax account does not by itself prove beneficial ownership. “Ready” authorizes a bounded validation experiment, not unrestricted collection or a production connector.
 
@@ -33,3 +33,7 @@ These sources accept geography, date, or notice-type discovery without a known b
 | Texas | DSHS Vital Statistics | Aggregate trends and restricted named verification/index processes | Dashboard is aggregate; recent certificates are restricted and index acquisition is a separate controlled process | rejected for automated recent discovery |
 
 Local newspapers and funeral homes remain a source family, not an implicitly authorized connector. DealSage may onboard a publisher-provided API, RSS feed, sitemap, or written data agreement source by source; it must not generalize permission from one publisher to another.
+
+## Milestone 4.7 case-specific observations
+
+Six manually qualified ordinary public pages from Alpine Bank, APPS Paramedical, Memorial Mortuaries and Cemeteries, and the Houston Texans reproduced with exact excerpts and content hashes. They validate bounded `case_specific_research`, not persistent connectors or statewide coverage. The Colorado and Texas cases usefully resolved leadership context but did not prove that the transition subject held ownership at the event. The Utah obituary explicitly supported ownership of an APPS Paramedical franchise at the transition, while the legal entity, successor, and current local operation remain unresolved. Only that Utah case entered human review.

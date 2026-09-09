@@ -1,6 +1,6 @@
 # Milestone 5 — Opportunity Intelligence Workflows
 
-Status: proposed with narrowed scope; not active and awaiting explicit approval.
+Status: proposed and entry-eligible with narrowed scope; not active and awaiting explicit approval.
 
 ## Goal
 
@@ -24,7 +24,7 @@ Turn validated evidence and human-reviewed analysis into repeatable analyst work
 
 ## Entry gate
 
-Milestone 4 showed offline that model proposals can be reviewed and dispositioned without bypassing provenance, deterministic validation, or human authority. Its live run stopped at source reproduction before model analysis. Initial Milestone 5 work may therefore use existing reviewed evidence and deterministic state, but live model-derived enrichment, unattended refresh, and refresh-dependent alerts require a newly approved evaluation with retrieval-and-hash preflight for every frozen source.
+Milestone 4.7 subsequently proved the full bridge over bounded real evidence: reproducible preflight, governed provider analysis, deterministic rejection, attributable disposition, and one conservative Utah review candidate. This satisfies entry for deterministic scoring provenance and reviewed-case analyst workflows. It does not establish autonomous opportunity-generation quality or sustainable source refresh. Live enrichment expansions, unattended refresh, and refresh-dependent alerts therefore remain separately gated by reproducible source preflight, measured analyst value, and bounded cost approval.
 
 ## Boundary
 

@@ -32,13 +32,13 @@ Complete with a change decision as of September 8, 2026. Milestone 4 productized
 
 Workstreams 4.1–4.4 are implemented and offline validated. The separately approved 4.5 run stopped after three bounded search calls because the frozen evidence packet did not reproduce; no evidence reached a model and no live quality claim resulted. Closeout therefore permits Milestone 5 to build on existing reviewed evidence and deterministic state, while live model-derived enrichment and unattended refresh remain gated by a new source-preflight evaluation. The durable result is in `backlog/milestones/milestone-4.md`.
 
-### Milestone 5 — Opportunity Intelligence Workflows
-
-Proposed with a narrowed entry gate. Initial work may turn existing reviewed evidence and deterministic state into reproducible scoring features, saved research, dedicated watchlists, and provenance-preserving exports. Live model-derived enrichment, unattended refresh, and alerts based on refreshed evidence require a new governed source-preflight evaluation. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
-
 ### Milestone 4.7 — Live Opportunity Pipeline
 
-Active as of September 9, 2026 and sequenced before Milestone 5. Assemble bounded live Colorado and Texas refreshes and the retained Utah BEL evidence into one operational corpus; preflight reproducible signal-first, business-first, and hybrid transition packets; then, only under separate provider and cost approval, run evidence-bounded model analysis into a human-reviewed queue. The milestone must measure negative and ambiguous outcomes as faithfully as credible opportunities.
+Complete as of September 9, 2026. A bounded operational corpus combined Colorado and Texas refreshes with the retained Utah BEL delivery. Three state-balanced transition packets reproduced before provider execution. Governed OpenAI and Anthropic work cost $0.23 with no search calls and exposed schema, output-limit, provider-disagreement, and cross-subject ownership risks. Deterministic validation rejected unsupported ownership interpretations; attributable review promoted only the evidence-supported Utah case into `needs_review`, with its low confidence and unresolved legal entity, successor, and local operating status preserved.
+
+### Milestone 5 — Opportunity Intelligence Workflows
+
+Proposed and eligible for explicit activation with a narrowed first sequence. Milestone 4.7 proves that reviewed evidence can enter the downstream queue without bypassing provenance or human authority, but one low-confidence case does not validate autonomous opportunity generation. Begin with persisted evidence-derived scoring features and analyst workflow improvements over reviewed cases. Broader live enrichment, unattended refresh, and alerts remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
 ### Subsequent milestones
 
