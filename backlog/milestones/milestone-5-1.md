@@ -8,8 +8,8 @@ Make refresh alerts self-resolving and make the value and limitations of source-
 
 ## Workstreams
 
-- #107 preserves refresh, acquisition, freshness, failure, and aggregate-safe quarantine context in alerts (implemented and validated; PR pending).
-- #108 adds deterministic source-to-disposition effectiveness measures with explicit unattributed counts.
+- #107 preserves refresh, acquisition, freshness, failure, and aggregate-safe quarantine context in alerts (merged in PR #111).
+- #108 adds deterministic source-to-disposition effectiveness measures with explicit unattributed counts (implemented and validated; PR pending).
 - #110 reconciles validation and closes the follow-up.
 
 ## Definition of done

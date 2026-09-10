@@ -22,6 +22,7 @@ from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, par
 from app.research.sources.utah import UTAH_BEL_DEFINITION
 from app.storage.local import LocalEvidenceStorage
 from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_export_csv, candidate_export_record, export_envelope
+from app.services.workflow_effectiveness import workflow_effectiveness
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -280,6 +281,12 @@ def research_case_metrics(db: Session = Depends(get_db)):
         },
         "origin_metrics": origin_metrics,
     }
+
+
+@router.get("/research/workflow-effectiveness")
+def research_workflow_effectiveness(db: Session = Depends(get_db)):
+    """Expose deterministic operational measures without candidate guesswork."""
+    return workflow_effectiveness(db)
 
 
 @router.get("/research/case-narratives")
