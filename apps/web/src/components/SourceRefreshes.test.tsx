@@ -1,6 +1,6 @@
 import {render,screen} from '@testing-library/react';
 import {describe,expect,it} from 'vitest';
-import {RefreshHistory,SourceRefresh} from './SourceRefreshes';
+import {AlertInbox,RefreshHistory,SourceRefresh} from './SourceRefreshes';
 
 describe('RefreshHistory',()=>{
   it('shows bounded outcome, freshness, and cost',()=>{
@@ -11,4 +11,11 @@ describe('RefreshHistory',()=>{
     expect(screen.getByText(/not measurable from record/)).toBeInTheDocument();
     expect(screen.getByText('$0.00')).toBeInTheDocument();
   });
+});
+
+it('renders unread in-app alerts with their safe failure detail',()=>{
+  render(<AlertInbox alerts={[{id:2,source_refresh_id:9,event_type:'refresh_failed',title:'Colorado refresh failed',detail:'Safe failure code: ConnectError.',created_at:'2026-09-10T18:00:00Z'}]}/>);
+  expect(screen.getByText('Colorado refresh failed')).toBeInTheDocument();
+  expect(screen.getByText(/Safe failure code/)).toBeInTheDocument();
+  expect(screen.getByRole('button',{name:'Mark read'})).toBeInTheDocument();
 });

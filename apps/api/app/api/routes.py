@@ -11,9 +11,9 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, SourceRefresh, TransitionSignal, Watchlist, WatchlistEntry
+from app.domain.models import AIExecution, AcquisitionRun, AlertEvent, AlertSubscription, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, SourceRefresh, TransitionSignal, Watchlist, WatchlistEntry
 from app.domain.research import funnel_counts
-from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, SourceRefreshCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
+from app.domain.schemas import AlertSubscriptionCreate, CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, SourceRefreshCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
 from app.research.landing import EvidenceLanding
 from app.research.refresh import RefreshSource, SourceRefreshService
 from app.research.proposal_dispositions import ModelProposalDispositionService
@@ -79,6 +79,65 @@ def refresh_payload(refresh: SourceRefresh) -> dict:
 def source_refreshes(db: Session = Depends(get_db)):
     rows = db.scalars(select(SourceRefresh).order_by(SourceRefresh.created_at.desc()).limit(50)).all()
     return [refresh_payload(row) for row in rows]
+
+
+@router.get("/research/alert-subscriptions")
+def alert_subscriptions(db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    rows = db.scalars(
+        select(AlertSubscription).where(AlertSubscription.owner_key == owner_key(identity)).order_by(AlertSubscription.source_key)
+    ).all()
+    return [{"id": row.id, "source_key": row.source_key, "event_types": row.event_types, "active": row.active} for row in rows]
+
+
+@router.post("/research/alert-subscriptions", status_code=201)
+def create_alert_subscription(payload: AlertSubscriptionCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    key = owner_key(identity)
+    row = db.scalar(select(AlertSubscription).where(AlertSubscription.owner_key == key, AlertSubscription.source_key == payload.source_key))
+    if row is None:
+        row = AlertSubscription(user_id=identity.user_id, owner_key=key, source_key=payload.source_key, event_types=list(dict.fromkeys(payload.event_types)), active=True)
+        db.add(row)
+    else:
+        row.event_types = list(dict.fromkeys(payload.event_types))
+        row.active = True
+    db.commit()
+    db.refresh(row)
+    return {"id": row.id, "source_key": row.source_key, "event_types": row.event_types, "active": row.active}
+
+
+@router.delete("/research/alert-subscriptions/{subscription_id}")
+def disable_alert_subscription(subscription_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    row = db.get(AlertSubscription, subscription_id)
+    if row is None or row.owner_key != owner_key(identity):
+        raise HTTPException(404, "Alert subscription not found")
+    row.active = False
+    db.commit()
+    return {"status": "disabled"}
+
+
+@router.get("/research/alerts")
+def research_alerts(db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    rows = db.scalars(
+        select(AlertEvent)
+        .join(AlertSubscription, AlertSubscription.id == AlertEvent.subscription_id)
+        .where(AlertSubscription.owner_key == owner_key(identity))
+        .order_by(AlertEvent.created_at.desc())
+        .limit(100)
+    ).all()
+    return [{"id": row.id, "source_refresh_id": row.source_refresh_id, "event_type": row.event_type, "title": row.title, "detail": row.detail, "created_at": row.created_at, "read_at": row.read_at} for row in rows]
+
+
+@router.patch("/research/alerts/{alert_id}/read")
+def mark_alert_read(alert_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    row = db.scalar(
+        select(AlertEvent)
+        .join(AlertSubscription, AlertSubscription.id == AlertEvent.subscription_id)
+        .where(AlertEvent.id == alert_id, AlertSubscription.owner_key == owner_key(identity))
+    )
+    if row is None:
+        raise HTTPException(404, "Alert not found")
+    row.read_at = datetime.now(timezone.utc)
+    db.commit()
+    return {"status": "read", "read_at": row.read_at}
 
 
 @router.post("/research/source-refreshes", status_code=201)

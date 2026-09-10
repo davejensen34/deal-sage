@@ -12,6 +12,7 @@
 - `ReviewCase`: assignment, status, decision, reason codes, and currently embedded analyst-note records.
 - `SavedResearch`: analyst-owned, replayable candidate-queue criteria keyed to the stable identity-provider subject; it stores no evidence or inferred facts.
 - `Watchlist` / `WatchlistEntry`: analyst-owned named collections that reference existing `CandidateMatch` rows. Membership rationale and attribution are retained, while additions and removals append candidate audit events.
+- `AlertSubscription` / `AlertEvent`: analyst-owned opt-in rules and immutable in-app outcomes for manual source refresh failures or quarantine. They neither initiate refreshes nor deliver data outside DealSage; successful refreshes intentionally remain quiet.
 - `AuditEvent`: append-oriented record of meaningful system and analyst actions.
 - `AIExecution`: legacy candidate-summary execution metadata; it remains for compatibility while productized research uses evidence-linked proposals.
 - `ModelProposal`: immutable bounded-execution result with case-local evidence/claim lineage, task/provider/model/prompt/schema provenance, structured proposed output, explicit outcome, timing, split tokens, cost, and safe error class.

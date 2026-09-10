@@ -106,6 +106,34 @@ class SourceRefresh(TimestampMixin, Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class AlertSubscription(TimestampMixin, Base):
+    """Opt-in in-app notification rules; subscriptions never initiate refreshes."""
+
+    __tablename__ = "alert_subscriptions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    owner_key: Mapped[str] = mapped_column(String(320), index=True)
+    source_key: Mapped[str] = mapped_column(String(120), index=True)
+    event_types: Mapped[list[str]] = mapped_column(JSON, default=list)
+    active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    __table_args__ = (UniqueConstraint("owner_key", "source_key", name="uq_alert_subscription_owner_source"),)
+
+
+class AlertEvent(Base):
+    """Deterministic in-app outcome emitted from one completed refresh."""
+
+    __tablename__ = "alert_events"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    subscription_id: Mapped[int] = mapped_column(ForeignKey("alert_subscriptions.id"), index=True)
+    source_refresh_id: Mapped[int] = mapped_column(ForeignKey("source_refreshes.id"), index=True)
+    event_type: Mapped[str] = mapped_column(String(60), index=True)
+    title: Mapped[str] = mapped_column(String(200))
+    detail: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    __table_args__ = (UniqueConstraint("subscription_id", "source_refresh_id", "event_type", name="uq_alert_refresh_event"),)
+
+
 class RawArtifact(TimestampMixin, Base):
     """Content-addressed source response; its bytes are immutable in evidence storage."""
     __tablename__ = "raw_artifacts"
