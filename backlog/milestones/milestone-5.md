@@ -24,8 +24,8 @@ Turn validated evidence and human-reviewed analysis into repeatable analyst work
 
 ## GitHub workstreams
 
-- #95 persists reproducible candidate score provenance.
-- #96 productizes saved research and dedicated watchlists.
+- #95 persisted reproducible candidate score provenance (complete).
+- #96 productizes saved research and dedicated watchlists (implemented and validated in PR #102).
 - #97 adds bounded source refresh workflows, subject to source preflight.
 - #98 gates opt-in alerts on trustworthy refresh behavior.
 - #99 adds provenance-preserving exports and integration seams.

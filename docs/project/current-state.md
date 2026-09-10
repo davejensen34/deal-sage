@@ -12,6 +12,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - Candidate detail exposes business/person/signal, three confidence values, rationale, conflicts, gaps, evidence provenance, and audit history.
 - Candidate detail exposes an immutable, versioned score assessment with factor inputs, supporting evidence IDs, the conjunctive formula, and an honest `evidence_derived` or `legacy_demo_import` classification. New reviewed-case promotions create evidence-derived assessments and project their deterministic result onto the queue row.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
+- Authenticated analysts can save and replay named candidate-queue criteria and maintain multiple dedicated watchlists. Watchlists reference existing candidates rather than copying evidence; membership additions and removals are audited.
 - Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
 - Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
 - Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
@@ -39,7 +40,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
 - Job execution has an in-process interface but no persistent `ResearchJob` model or scheduler.
 - Search is portable SQL filtering; FTS5/pg_trgm optimization and a search interface remain deferred.
-- Watchlist status works; a dedicated watchlist page is informational.
+- Candidate `watchlist` status remains a separate review disposition from analyst-owned named watchlist membership.
 - Research and Settings routes accurately describe current limits rather than presenting dead controls.
 
 ## Missing or intentionally deferred
@@ -60,7 +61,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Implement Milestone 5 Issue #95 so displayed opportunity scores carry a versioned calculation, factor inputs, supporting evidence IDs, and an honest provenance classification. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Proceed to Milestone 5 Issue #97: bounded source refresh workflows with explicit initiation, freshness, execution failures, and cost boundaries. This remains gated by reproducible source preflight and does not authorize unattended refresh. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
@@ -69,6 +70,8 @@ Repository documentation was reconciled in Issue #56 before beginning that versi
 The current implementation exercises 168 backend/API tests and five frontend tests. All seventeen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
 
 Milestone 5 Issue #95 adds two backend tests for persisted score provenance and evidence-derived recalculation. All 168 backend tests passed, and migration 17 upgraded, downgraded to the prior head, and re-upgraded on a fresh SQLite database. This work made no live search or model calls and incurred $0 external spend.
+
+Milestone 5 Issue #96 adds two backend workflow tests. All 170 backend tests and five frontend tests passed, the production frontend built with its existing large-chunk warning, and all eighteen migrations upgraded with migration 18 successfully downgraded and re-upgraded on a fresh SQLite database. The rebuilt local Compose stack became healthy, and rendered inspection confirmed both the dedicated Watchlists workspace and replayed Colorado/60% candidate filters. This work made no live search or model calls and incurred $0 external spend.
 
 Milestone 4.7 closeout re-ran all 166 backend tests and five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. All passed; the existing frontend large-chunk warning remains. No closeout UI behavior changed, so the previously rendered application baseline remains applicable.
 
