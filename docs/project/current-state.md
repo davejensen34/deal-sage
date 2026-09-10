@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026. Milestone 5 — Opportunity Intelligence Workflows was explicitly approved and activated on September 10, 2026. GitHub Issues #95–#100 track its work, beginning with persisted candidate score provenance in #95.
+Milestone 5 — Opportunity Intelligence Workflows is complete as of September 10, 2026. GitHub Issues #95–#100 delivered reproducible scoring provenance, saved analyst workflows, bounded refresh, gated in-app alerts, provenance-safe exports, and closeout reconciliation. No milestone is active; Milestones 6 and 7 remain proposed and require explicit approval.
 
 ## What works and has been validated
 
@@ -64,13 +64,13 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Complete validation and the GitHub workflow for Milestone 5 Issue #99, then proceed to Issue #100 milestone reconciliation and closeout. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+No milestone is active. Milestone 6 — Operational Productization is proposed and gated by demonstrated pilot workflow value; beginning it requires explicit approval. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 168 backend/API tests and five frontend tests. All seventeen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+The current implementation exercises 179 backend/API tests and seven frontend tests. All twenty migrations previously upgraded on an empty SQLite database, with each milestone's new head downgrade/re-upgrade validated when introduced; the production frontend builds with its existing large-chunk warning; Compose configuration validates; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local candidate-export workflow. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
 
 Milestone 5 Issue #95 adds two backend tests for persisted score provenance and evidence-derived recalculation. All 168 backend tests passed, and migration 17 upgraded, downgraded to the prior head, and re-upgraded on a fresh SQLite database. This work made no live search or model calls and incurred $0 external spend.
 
