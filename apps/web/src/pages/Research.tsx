@@ -5,6 +5,7 @@ import {ResearchTrailView,Trail} from '../components/ResearchTrail';
 import {SourceOperations,SourceSampleResult} from '../components/SourceOperations';
 import {CaseNarratives,CaseNarrative} from '../components/CaseNarratives';
 import {SourceRefreshes} from '../components/SourceRefreshes';
+import {WorkflowEffectiveness,WorkflowEffectivenessResult} from '../components/WorkflowEffectiveness';
 
 type Source={name:string;publisher:string;jurisdiction:string;landing_url:string;access_method:string;license:string;expected_refresh:string;role_value:string;limitations:string[]};
 type Result={status:string;sample_size:number;selection:string;review_method:string;query_url:string;metrics:Record<string,number>;role_counts:Record<string,number>;recommendation:{decision:string;summary:string;next_step:string}};
@@ -20,6 +21,7 @@ export function Research(){
   const sourceSamples=useQuery({queryKey:['milestone3-source-samples'],queryFn:()=>api<SourceSampleResult>('/research/experiments/milestone3-source-samples')});
   const cases=useQuery({queryKey:['research-case-narratives'],queryFn:()=>api<{cases:CaseNarrative[]}>('/research/case-narratives')});
   const caseMetrics=useQuery({queryKey:['research-case-metrics'],queryFn:()=>api<{origin_metrics:Record<string,OriginMetrics>}>('/research/case-metrics')});
+  const effectiveness=useQuery({queryKey:['workflow-effectiveness'],queryFn:()=>api<WorkflowEffectivenessResult>('/research/workflow-effectiveness')});
   if(sources.isLoading||result.isLoading||funnel.isLoading||trail.isLoading||sourceSamples.isLoading)return <div className="loading">Loading research evidence…</div>;
   if(sources.isError||result.isError||funnel.isError||trail.isError||sourceSamples.isError||!sources.data?.[0]||!result.data||!funnel.data||!trail.data||!sourceSamples.data)return <div className="empty"><AlertTriangle/><h3>Research result unavailable</h3><p>The recorded experiment could not be loaded.</p></div>;
   const source=sources.data[0],data=result.data,metrics=data.metrics;
@@ -33,6 +35,7 @@ export function Research(){
     <CaseNarratives cases={cases.data?.cases||[]}/>
     <SourceOperations result={sourceSamples.data}/>
     <SourceRefreshes/>
+    {effectiveness.data&&<WorkflowEffectiveness result={effectiveness.data}/>}
     <div className="research-grid">
       <section className="panel"><div className="panel-title"><div><h2>Role classification</h2><p>Observed source roles, never inferred ownership.</p></div><span>{data.status}</span></div><div className="role-list">{Object.entries(data.role_counts).map(([role,count])=><div key={role}><span>{role.replaceAll('_',' ')}</span><b>{count}</b></div>)}</div><div className="research-rule"><AlertTriangle/><p><b>Registered agent ≠ owner.</b> A natural-person name or shared address does not change the filed role.</p></div></section>
       <section className="panel source-card"><div className="panel-title"><div><h2>{source.name}</h2><p>{source.publisher}</p></div><span>{source.jurisdiction}</span></div><dl><dt>Access</dt><dd>{source.access_method}</dd><dt>License</dt><dd>{source.license}</dd><dt>Refresh</dt><dd>{source.expected_refresh}</dd><dt>Relationship value</dt><dd>{source.role_value}</dd></dl><a href={source.landing_url} target="_blank" rel="noreferrer">Open official dataset <ExternalLink/></a></section>
