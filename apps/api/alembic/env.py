@@ -6,7 +6,8 @@ from app.core.database import Base
 from app.domain import models  # noqa: F401
 config=context.config
 if config.config_file_name: fileConfig(config.config_file_name)
-config.set_main_option("sqlalchemy.url",get_settings().database_url)
+if not config.attributes.get("database_url_explicit"):
+    config.set_main_option("sqlalchemy.url",get_settings().database_url)
 target_metadata=Base.metadata
 def run_migrations_offline():
     context.configure(url=config.get_main_option("sqlalchemy.url"),target_metadata=target_metadata,literal_binds=True)

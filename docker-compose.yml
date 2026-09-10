@@ -7,6 +7,13 @@ services:
       POSTGRES_PASSWORD: dealsage-local
     volumes: ["postgres-data:/var/lib/postgresql/data"]
     healthcheck: {test: ["CMD-SHELL", "pg_isready -U dealsage"], interval: 5s, timeout: 5s, retries: 10}
+  migrate:
+    build: ./apps/api
+    command: ["python", "-m", "app.ops.schema", "upgrade"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://dealsage:dealsage-local@postgres:5432/dealsage
+      DEMO_MODE: "false"
+    depends_on: {postgres: {condition: service_healthy}}
   api:
     build: ./apps/api
     environment:
@@ -36,7 +43,7 @@ services:
       AI_MAX_CALLS_PER_CASE: ${AI_MAX_CALLS_PER_CASE:-2}
       AI_MAX_COST_CENTS_PER_CASE: ${AI_MAX_COST_CENTS_PER_CASE:-25}
       AI_STORE_PROVIDER_RESPONSES: ${AI_STORE_PROVIDER_RESPONSES:-false}
-    depends_on: {postgres: {condition: service_healthy}}
+    depends_on: {migrate: {condition: service_completed_successfully}}
     volumes: ["evidence-data:/app/data/evidence"]
   web:
     build: ./apps/web

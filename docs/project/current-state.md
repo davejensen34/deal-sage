@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestones 5 and 5.1 are complete. The follow-up closed the post-audit alert-traceability and source-to-disposition measurement gaps under Issues #107, #108, and #110. No milestone is active; Milestones 6 and 7 remain proposed and require explicit approval.
+Milestones 5 and 5.1 are complete. Milestone 6 is active under Issues #114–#119, beginning with deployment-safe database upgrade handling. Milestone 7 remains proposed and requires explicit approval.
 
 ## What works and has been validated
 
@@ -30,11 +30,12 @@ Milestones 5 and 5.1 are complete. The follow-up closed the post-audit alert-tra
 - A three-state Milestone 4.7 transition cohort is preflighted in the same local corpus. Its six ordinary public pages all passed retrieval, exact-excerpt verification, and SHA-256 artifact verification before model execution; the full frozen packet remains ignored and the repository exposes only aggregate-safe measures.
 - The approved Milestone 4.7 AI work made zero search calls and recorded $0.23 aggregate estimated provider cost. Six business extractions completed. The final subject-bound ambiguity contract retained two Utah proposals and one Texas non-owner proposal while deterministically rejecting both Colorado outputs and the Texas Claude output for unsupported ownership interpretation. Dave Jensen deferred Utah/OpenAI, accepted Utah/Claude, and corrected Texas/OpenAI's business status while retaining its non-owner conclusion. Only Utah entered the real `needs_review` queue; Issue #92 tracks the open-ended OpenAI result.
 - Credential-free mode, frontend build/tests, backend/API tests, Compose configuration, and a full Nginx/FastAPI/PostgreSQL stack were exercised during reconciliation.
+- Compose now gates API startup on a one-shot Alembic migration. Empty and versioned databases upgrade normally; the exact additive gaps left by historical `create_all` startup are repaired and verified before stamping, while unknown partial schemas fail closed. Application startup no longer creates or patches schema.
 
 ## Implemented but not fully validated
 
 - OpenAI and Anthropic adapters support bounded summaries and schema-validated extraction behind a provider interface. Both processed the approved public-evidence cohort; the resulting evaluation failures are recorded rather than represented as validation.
-- Alembic has an initial schema revision validated against an empty SQLite database.
+- Alembic's full twenty-revision chain is validated against empty databases, and Compose now applies it before API startup.
 - Responsive styles exist; desktop rendered workflows are the primary validation target.
 
 ## Partial
@@ -44,7 +45,6 @@ Milestones 5 and 5.1 are complete. The follow-up closed the post-audit alert-tra
 - Seed case scores remain curated edge-case fixtures, but their retained component inputs and calculation are now persisted and labeled `legacy_demo_import`; they are not represented as evidence-derived calibration data.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
 - Generic job execution still has only an in-process interface and no scheduler. Source refresh is the intentionally narrow exception, with its own persistent `SourceRefresh` execution record.
-- The long-lived local PostgreSQL volume predates the `CaseEvidence.raw_artifact_id` migration because Compose startup does not currently apply Alembic migrations. Workflow-effectiveness reporting detects that schema capability, exposes attribution as unavailable, and leaves every candidate unattributed rather than guessing. Deployment-safe migration automation belongs in Milestone 6.
 - Search is portable SQL filtering; FTS5/pg_trgm optimization and a search interface remain deferred.
 - Candidate `watchlist` status remains a separate review disposition from analyst-owned named watchlist membership.
 - Research and Settings routes accurately describe current limits rather than presenting dead controls.
@@ -67,13 +67,15 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-No milestone is active. Milestone 6 is the proposed next increment and should include deployment-safe migration automation alongside operational productization, but it requires explicit approval before planning or implementation. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Proceed through Milestone 6 safe upgrades, pilot authorization, recoverability, operational visibility, and measured hardening. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 182 backend/API tests and eight frontend tests. All twenty migrations previously upgraded on an empty SQLite database, with each milestone's new head downgrade/re-upgrade validated when introduced; the production frontend builds with its existing large-chunk warning; Compose configuration validates; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy and rendered the local workflows. The existing PostgreSQL volume has not automatically received the evidence-lineage migration, which the effectiveness contract now reports explicitly. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+The current implementation exercises 185 backend/API tests and eight frontend tests. All twenty migrations upgrade an empty SQLite database, and tests cover verified adoption and refusal of unknown partial unversioned schemas; the production frontend builds with its existing large-chunk warning; and Compose configuration validates. The migration-gated PostgreSQL/FastAPI/Nginx stack adopted the backed-up historical local volume, reached Alembic head, added the missing lineage/access/token columns, started the API only after migration success, returned health, and changed workflow-effectiveness lineage availability from false to true. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+
+Milestone 6 Issue #114 adds three schema-upgrade tests. All 185 backend tests and eight frontend tests passed, the production frontend built, and Compose config passed. Before touching the existing local PostgreSQL volume, a temporary custom-format backup was written to `/private/tmp/dealsage-before-m6.dump`. The first adoption attempt failed closed on unrecognized missing token columns; after those known migration seams were explicitly added to the recognized contract, adoption completed transactionally at revision `c8f6a0b4e3d1`. Read-only verification confirmed the version and every previously missing column, a demo-mode smoke test returned API health and durable lineage availability, and normal configured authentication was restored. No live source, search, or model calls occurred; external spend was $0.
 
 Milestone 5 Issue #95 adds two backend tests for persisted score provenance and evidence-derived recalculation. All 168 backend tests passed, and migration 17 upgraded, downgraded to the prior head, and re-upgraded on a fresh SQLite database. This work made no live search or model calls and incurred $0 external spend.
 

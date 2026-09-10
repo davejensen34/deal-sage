@@ -46,7 +46,10 @@ Complete as of September 10, 2026. This bounded follow-up made refresh alerts se
 
 ### Subsequent milestones
 
-The following milestones remain proposed and require explicit approval:
+### Milestone 6 — Operational Productization
 
-6. Operational productization: deployment-safe migration automation, multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.
-7. Broader transition intelligence: retirement, succession, ownership transfer, founder exit, dissolution, and leadership change. Proposed and gated by validated precision and sustainable source operations.
+Active as of September 10, 2026. Harden the existing single-box pilot through explicit database upgrades, minimal pilot authorization, tested backup/restore, aggregate-safe operational visibility, and measured deployment/performance work. Queues, Kubernetes, vector infrastructure, and other recurring-cost services remain outside scope without measured need and a separate decision.
+
+### Subsequent milestone
+
+Milestone 7 — broader transition intelligence across retirement, succession, ownership transfer, founder exit, dissolution, and leadership change — remains proposed and requires explicit approval. It is gated by validated precision and sustainable source operations.

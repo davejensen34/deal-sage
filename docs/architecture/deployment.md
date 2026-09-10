@@ -8,7 +8,9 @@ Run FastAPI with SQLite and Vite as documented in the README. No model credentia
 
 ## Single Docker host (recommended demo)
 
-Run `docker compose up --build` on one modest Linux host. Compose starts Nginx, FastAPI, and PostgreSQL with durable database/evidence volumes. Put HTTPS at the host boundary and back up both volumes. Keep secrets in host environment configuration.
+Run `docker compose up --build` on one modest Linux host. Compose starts PostgreSQL, runs the one-shot schema migration to completion, and only then starts FastAPI and Nginx. A failed or unrecognized migration prevents application traffic. The migration command supports empty databases, Alembic-versioned databases, and the exact additive gaps left by DealSage's historical `create_all` startup; it refuses incomplete unknown schemas rather than stamping them current. Put HTTPS at the host boundary and back up both durable volumes before upgrades. Keep secrets in host environment configuration.
+
+Direct API development now requires `cd apps/api && alembic upgrade head` before starting Uvicorn. Schema creation is not an application-startup side effect.
 
 ## Future enterprise deployment
 
