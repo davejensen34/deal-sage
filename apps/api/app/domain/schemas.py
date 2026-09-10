@@ -42,6 +42,21 @@ class NoteCreate(BaseModel):
     note: str = Field(min_length=1)
 
 
+class SavedResearchCreate(BaseModel):
+    name: str = Field(min_length=3, max_length=160)
+    criteria: dict[str, Any]
+
+
+class WatchlistCreate(BaseModel):
+    name: str = Field(min_length=3, max_length=160)
+    description: str | None = Field(default=None, max_length=2_000)
+
+
+class WatchlistEntryCreate(BaseModel):
+    candidate_id: int
+    rationale: str | None = Field(default=None, max_length=2_000)
+
+
 class ProposalDispositionCreate(BaseModel):
     decision: Literal["accept", "correct", "reject", "defer"]
     rationale: str = Field(min_length=3, max_length=2_000)

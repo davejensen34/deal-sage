@@ -10,6 +10,8 @@
 - `TransitionSignal`: generalized possible event; Milestone 1 primarily uses `possible_death` and one succession example.
 - `CandidateMatch`: joins the person, business, relationship, signal, independent scores, conflicts, gaps, and recommendation.
 - `ReviewCase`: assignment, status, decision, reason codes, and currently embedded analyst-note records.
+- `SavedResearch`: analyst-owned, replayable candidate-queue criteria keyed to the stable identity-provider subject; it stores no evidence or inferred facts.
+- `Watchlist` / `WatchlistEntry`: analyst-owned named collections that reference existing `CandidateMatch` rows. Membership rationale and attribution are retained, while additions and removals append candidate audit events.
 - `AuditEvent`: append-oriented record of meaningful system and analyst actions.
 - `AIExecution`: legacy candidate-summary execution metadata; it remains for compatibility while productized research uses evidence-linked proposals.
 - `ModelProposal`: immutable bounded-execution result with case-local evidence/claim lineage, task/provider/model/prompt/schema provenance, structured proposed output, explicit outcome, timing, split tokens, cost, and safe error class.

@@ -627,6 +627,43 @@ class User(TimestampMixin, Base):
     __table_args__ = (UniqueConstraint("provider", "subject", name="uq_users_provider_subject"),)
 
 
+class SavedResearch(TimestampMixin, Base):
+    """Analyst-owned queue criteria; this stores no evidence or inferred facts."""
+
+    __tablename__ = "saved_research"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    owner_key: Mapped[str] = mapped_column(String(320), index=True)
+    name: Mapped[str] = mapped_column(String(160))
+    criteria: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+
+
+class Watchlist(TimestampMixin, Base):
+    """An analyst-owned collection referencing existing candidate records."""
+
+    __tablename__ = "watchlists"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    owner_key: Mapped[str] = mapped_column(String(320), index=True)
+    name: Mapped[str] = mapped_column(String(160))
+    description: Mapped[str | None] = mapped_column(Text)
+    entries: Mapped[list[WatchlistEntry]] = relationship(back_populates="watchlist", cascade="all, delete-orphan")
+    __table_args__ = (UniqueConstraint("owner_key", "name", name="uq_watchlists_owner_name"),)
+
+
+class WatchlistEntry(Base):
+    __tablename__ = "watchlist_entries"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    watchlist_id: Mapped[int] = mapped_column(ForeignKey("watchlists.id"), index=True)
+    candidate_id: Mapped[int] = mapped_column(ForeignKey("candidate_matches.id"), index=True)
+    added_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+    rationale: Mapped[str | None] = mapped_column(Text)
+    added_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    watchlist: Mapped[Watchlist] = relationship(back_populates="entries")
+    candidate: Mapped[CandidateMatch] = relationship()
+    __table_args__ = (UniqueConstraint("watchlist_id", "candidate_id", name="uq_watchlist_candidate"),)
+
+
 class AIExecution(Base):
     __tablename__ = "ai_executions"
     id: Mapped[int] = mapped_column(primary_key=True)

@@ -11,9 +11,9 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SignalResolution, SourceCandidate, TransitionSignal
+from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, TransitionSignal, Watchlist, WatchlistEntry
 from app.domain.research import funnel_counts
-from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, StatusUpdate
+from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
 from app.research.proposal_dispositions import ModelProposalDispositionService
 from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
 from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter
@@ -25,6 +25,11 @@ settings = get_settings()
 
 def item(c: CandidateMatch) -> dict:
     return {"id":c.id,"business":c.business.legal_name,"owner":c.person.full_name,"city":c.business.city,"state":c.business.state,"signal_type":c.signal.signal_type,"transition_date":c.signal.possible_transition_date,"owner_business_confidence":c.owner_business_confidence,"signal_identity_confidence":c.signal_identity_confidence,"overall_candidate_confidence":c.overall_candidate_confidence,"status":c.status,"updated_at":c.updated_at}
+
+
+def owner_key(identity: Identity) -> str:
+    """Use the provider subject so ownership survives email or display-name changes."""
+    return f"{identity.provider}:{identity.subject}"
 
 
 @router.get("/health")
@@ -332,6 +337,103 @@ def candidates(q: str|None=None,status: str|None=None,state: str|None=None,signa
     sort_col={"business":Business.legal_name,"owner":Person.last_name,"confidence":CandidateMatch.overall_candidate_confidence,"status":CandidateMatch.status,"updated":CandidateMatch.updated_at}.get(sort,CandidateMatch.updated_at)
     stmt=stmt.order_by(sort_col.asc() if order=="asc" else sort_col.desc()).offset((page-1)*page_size).limit(page_size)
     return {"items":[item(c) for c in db.scalars(stmt).all()],"total":total,"page":page,"page_size":page_size}
+
+
+@router.get("/saved-research")
+def saved_research(db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    rows = db.scalars(
+        select(SavedResearch).where(SavedResearch.owner_key == owner_key(identity)).order_by(SavedResearch.updated_at.desc())
+    ).all()
+    return [{"id": row.id, "name": row.name, "criteria": row.criteria, "created_at": row.created_at, "updated_at": row.updated_at} for row in rows]
+
+
+@router.post("/saved-research", status_code=201)
+def create_saved_research(payload: SavedResearchCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    allowed = {"q", "status", "state", "signal", "min_confidence", "sort", "order"}
+    unknown = set(payload.criteria) - allowed
+    if unknown:
+        raise HTTPException(422, f"Unsupported saved criteria: {', '.join(sorted(unknown))}")
+    row = SavedResearch(user_id=identity.user_id, owner_key=owner_key(identity), name=payload.name.strip(), criteria=payload.criteria)
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return {"id": row.id, "name": row.name, "criteria": row.criteria, "created_at": row.created_at, "updated_at": row.updated_at}
+
+
+@router.delete("/saved-research/{saved_id}")
+def delete_saved_research(saved_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    row = db.get(SavedResearch, saved_id)
+    if row is None or row.owner_key != owner_key(identity):
+        raise HTTPException(404, "Saved research not found")
+    db.delete(row)
+    db.commit()
+    return {"status": "deleted"}
+
+
+def watchlist_payload(row: Watchlist) -> dict:
+    entries = sorted(row.entries, key=lambda entry: entry.added_at, reverse=True)
+    return {
+        "id": row.id,
+        "name": row.name,
+        "description": row.description,
+        "created_at": row.created_at,
+        "updated_at": row.updated_at,
+        "candidates": [{**item(entry.candidate), "rationale": entry.rationale, "added_at": entry.added_at} for entry in entries],
+    }
+
+
+@router.get("/watchlists")
+def watchlists(db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    rows = db.scalars(
+        select(Watchlist)
+        .where(Watchlist.owner_key == owner_key(identity))
+        .options(selectinload(Watchlist.entries).selectinload(WatchlistEntry.candidate).selectinload(CandidateMatch.business), selectinload(Watchlist.entries).selectinload(WatchlistEntry.candidate).selectinload(CandidateMatch.person), selectinload(Watchlist.entries).selectinload(WatchlistEntry.candidate).selectinload(CandidateMatch.signal))
+        .order_by(Watchlist.updated_at.desc())
+    ).all()
+    return [watchlist_payload(row) for row in rows]
+
+
+@router.post("/watchlists", status_code=201)
+def create_watchlist(payload: WatchlistCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    key = owner_key(identity)
+    if db.scalar(select(Watchlist.id).where(Watchlist.owner_key == key, Watchlist.name == payload.name.strip())):
+        raise HTTPException(409, "A watchlist with this name already exists")
+    row = Watchlist(user_id=identity.user_id, owner_key=key, name=payload.name.strip(), description=payload.description)
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return watchlist_payload(row)
+
+
+@router.post("/watchlists/{watchlist_id}/candidates", status_code=201)
+def add_watchlist_candidate(watchlist_id: int, payload: WatchlistEntryCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    row = db.get(Watchlist, watchlist_id)
+    candidate = db.get(CandidateMatch, payload.candidate_id)
+    if row is None or row.owner_key != owner_key(identity):
+        raise HTTPException(404, "Watchlist not found")
+    if candidate is None:
+        raise HTTPException(404, "Candidate not found")
+    if db.scalar(select(WatchlistEntry.id).where(WatchlistEntry.watchlist_id == row.id, WatchlistEntry.candidate_id == candidate.id)):
+        raise HTTPException(409, "Candidate is already on this watchlist")
+    entry = WatchlistEntry(watchlist_id=row.id, candidate_id=candidate.id, added_by_user_id=identity.user_id, rationale=payload.rationale)
+    db.add(entry)
+    db.add(AuditEvent(candidate_id=candidate.id, user_id=identity.user_id, actor=identity.display_name, action="candidate_added_to_watchlist", after_state={"watchlist_id": row.id, "watchlist_name": row.name}, detail=payload.rationale or "Candidate added to analyst watchlist."))
+    db.commit()
+    return {"id": entry.id, "watchlist_id": row.id, "candidate_id": candidate.id}
+
+
+@router.delete("/watchlists/{watchlist_id}/candidates/{candidate_id}")
+def remove_watchlist_candidate(watchlist_id: int, candidate_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    row = db.get(Watchlist, watchlist_id)
+    if row is None or row.owner_key != owner_key(identity):
+        raise HTTPException(404, "Watchlist not found")
+    entry = db.scalar(select(WatchlistEntry).where(WatchlistEntry.watchlist_id == row.id, WatchlistEntry.candidate_id == candidate_id))
+    if entry is None:
+        raise HTTPException(404, "Watchlist candidate not found")
+    db.delete(entry)
+    db.add(AuditEvent(candidate_id=candidate_id, user_id=identity.user_id, actor=identity.display_name, action="candidate_removed_from_watchlist", before_state={"watchlist_id": row.id, "watchlist_name": row.name}, detail="Candidate removed from analyst watchlist."))
+    db.commit()
+    return {"status": "deleted"}
 
 
 def load_candidate(candidate_id: int, db: Session) -> CandidateMatch:
