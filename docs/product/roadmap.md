@@ -38,7 +38,7 @@ Complete as of September 9, 2026. A bounded operational corpus combined Colorado
 
 ### Milestone 5 — Opportunity Intelligence Workflows
 
-Active as of September 10, 2026, with GitHub Issues #95–#100. Persisted score provenance, saved research/watchlists, manual bounded refresh, and opt-in in-app refresh-issue alerts are implemented. Alerts consume completed manual refresh outcomes and cannot initiate acquisition. Broader live enrichment, unattended refresh, and external notification delivery remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
+Active as of September 10, 2026, with GitHub Issues #95–#100. Persisted score provenance, saved research/watchlists, manual bounded refresh, opt-in in-app refresh-issue alerts, and versioned candidate exports are implemented. Exports preserve public evidence references and confidence boundaries without copying retained source content or analyst notes. Alerts consume completed manual refresh outcomes and cannot initiate acquisition. Broader live enrichment, unattended refresh, and external notification delivery remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
 ### Subsequent milestones
 

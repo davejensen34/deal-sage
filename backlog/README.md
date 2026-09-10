@@ -14,7 +14,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 4 is complete with a change decision. Its proposal, evidence-bounded analysis, research-loop, and analyst-disposition contracts are validated offline; its governed live run stopped before model analysis when the frozen evidence packet did not reproduce. The negative result is preserved and narrows Milestone 5 rather than becoming a quality claim.
 - Milestone 4.7 — Live Opportunity Pipeline is complete. It bridged bounded real three-state evidence through source preflight, governed model analysis, attributable disposition, and one conservative Utah review candidate.
 - Issue #92 preserves the deferred Utah/OpenAI ambiguity follow-up; it does not block the accepted Utah case from remaining in human review.
-- Milestone 5 is active as of September 10, 2026. Issues #95–#100 track deterministic score provenance, reviewed-case workflows, bounded refresh, gated alerts, exports, and closeout; autonomous enrichment remains gated.
+- Milestone 5 is active as of September 10, 2026. Issues #95–#100 track deterministic score provenance, reviewed-case workflows, bounded refresh, gated alerts, exports, and closeout. The first five workstreams are implemented, with Issue #99 validation and PR completion in progress; autonomous enrichment remains gated.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence

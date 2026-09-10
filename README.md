@@ -62,6 +62,10 @@ Dynamic discovery has a separate `WEB_SEARCH_PROVIDER` gate and remains `disable
 
 Local development defaults to `AUTH_MODE=demo`. Google OIDC has been validated locally. To use it, configure OIDC credentials, a unique session secret, and an email/domain allowlist as described in the [pilot authentication guide](docs/deployment/pilot-authentication.md). Local HTTP validation uses an explicitly documented insecure-cookie exception; deployed environments require HTTPS and secure cookies.
 
+## Candidate exports
+
+The candidate queue offers bounded JSON and CSV downloads using the same search, status, state, and confidence filters visible to the analyst. Export schema `dealsage-candidate-export-v1` retains public source references, recorded relationship semantics, deterministic score provenance, freshness, and analyst disposition. It deliberately omits retained evidence content, analyst notes, model payloads, and request metadata. See the [contract boundary](packages/contracts/README.md).
+
 ## Tests
 
 ```bash

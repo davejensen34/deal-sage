@@ -6,6 +6,15 @@ from pydantic import BaseModel, ConfigDict, Field
 Status = Literal["new", "researching", "needs_review", "validated", "rejected", "watchlist"]
 
 
+class CandidateExportCreate(BaseModel):
+    format: Literal["json", "csv"] = "json"
+    q: str | None = Field(default=None, max_length=200)
+    status: Status | None = None
+    state: str | None = Field(default=None, min_length=2, max_length=2)
+    min_confidence: int = Field(default=0, ge=0, le=100)
+    limit: int = Field(default=100, ge=1, le=100)
+
+
 class ORMModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
