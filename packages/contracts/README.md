@@ -1,3 +1,5 @@
 # Shared contracts
 
 Reserved for generated OpenAPI-derived TypeScript contracts when the API stabilizes. The frontend currently keeps explicit TypeScript response types beside its API consumers; no generation step or shared contract package is part of the build. Introduce code generation only when contract churn and duplication justify the maintenance cost.
+
+The first explicitly versioned integration contract is the candidate export at `POST /api/exports/candidates`. Its `dealsage-candidate-export-v1` JSON and CSV representations preserve public source references, relationship semantics, deterministic score method/provenance, freshness, and analyst disposition. They intentionally exclude raw artifacts, extracted evidence text, normalized facts, analyst notes, model payloads, source request metadata, and URL query parameters. Requests are authenticated and limited to 100 candidates; supported filters are search text, candidate status, two-letter state, and minimum confidence. Each included candidate receives an audit event.

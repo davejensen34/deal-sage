@@ -28,7 +28,7 @@ Turn validated evidence and human-reviewed analysis into repeatable analyst work
 - #96 productizes saved research and dedicated watchlists (implemented and validated in PR #102).
 - #97 adds bounded source refresh workflows, subject to source preflight (implemented and live-validated in PR #103).
 - #98 gates opt-in alerts on trustworthy refresh behavior (implemented and validated in PR #104).
-- #99 adds provenance-preserving exports and integration seams.
+- #99 adds provenance-preserving exports and integration seams (implemented and validated; PR pending).
 - #100 reconciles documentation, validation, and closeout state.
 
 ## Entry gate

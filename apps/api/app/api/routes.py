@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 from time import perf_counter
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 from app.ai.providers.anthropic import AnthropicProvider
@@ -13,7 +13,7 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.domain.models import AIExecution, AcquisitionRun, AlertEvent, AlertSubscription, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, SourceRefresh, TransitionSignal, Watchlist, WatchlistEntry
 from app.domain.research import funnel_counts
-from app.domain.schemas import AlertSubscriptionCreate, CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, SourceRefreshCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
+from app.domain.schemas import AlertSubscriptionCreate, CandidateExportCreate, CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, SourceRefreshCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
 from app.research.landing import EvidenceLanding
 from app.research.refresh import RefreshSource, SourceRefreshService
 from app.research.proposal_dispositions import ModelProposalDispositionService
@@ -21,6 +21,7 @@ from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter, parse
 from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, parse_curated_record as parse_texas
 from app.research.sources.utah import UTAH_BEL_DEFINITION
 from app.storage.local import LocalEvidenceStorage
+from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_export_csv, candidate_export_record, export_envelope
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -452,6 +453,52 @@ def candidates(q: str|None=None,status: str|None=None,state: str|None=None,signa
     sort_col={"business":Business.legal_name,"owner":Person.last_name,"confidence":CandidateMatch.overall_candidate_confidence,"status":CandidateMatch.status,"updated":CandidateMatch.updated_at}.get(sort,CandidateMatch.updated_at)
     stmt=stmt.order_by(sort_col.asc() if order=="asc" else sort_col.desc()).offset((page-1)*page_size).limit(page_size)
     return {"items":[item(c) for c in db.scalars(stmt).all()],"total":total,"page":page,"page_size":page_size}
+
+
+@router.post("/exports/candidates")
+def export_candidates(payload: CandidateExportCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    """Export a bounded queue slice through a stable, provenance-safe contract."""
+    stmt = (
+        select(CandidateMatch)
+        .join(CandidateMatch.business)
+        .join(CandidateMatch.person)
+        .options(
+            selectinload(CandidateMatch.business),
+            selectinload(CandidateMatch.person),
+            selectinload(CandidateMatch.relationship_record),
+            selectinload(CandidateMatch.signal).selectinload(TransitionSignal.source),
+            selectinload(CandidateMatch.evidence).selectinload(Evidence.source),
+            selectinload(CandidateMatch.score_assessments),
+        )
+    )
+    if payload.q:
+        stmt = stmt.where(or_(Business.legal_name.ilike(f"%{payload.q}%"), Person.first_name.ilike(f"%{payload.q}%"), Person.last_name.ilike(f"%{payload.q}%")))
+    if payload.status:
+        stmt = stmt.where(CandidateMatch.status == payload.status)
+    if payload.state:
+        stmt = stmt.where(Business.state == payload.state.upper())
+    stmt = stmt.where(CandidateMatch.overall_candidate_confidence >= payload.min_confidence)
+    candidates_to_export = db.scalars(stmt.order_by(CandidateMatch.id).limit(payload.limit)).all()
+    candidate_ids = [candidate.id for candidate in candidates_to_export]
+    reviews = db.scalars(select(ReviewCase).where(ReviewCase.candidate_id.in_(candidate_ids))).all() if candidate_ids else []
+    reviews_by_candidate = {review.candidate_id: review for review in reviews}
+    records = []
+    for candidate in candidates_to_export:
+        assessment = max(candidate.score_assessments, key=lambda item: item.id) if candidate.score_assessments else None
+        records.append(candidate_export_record(candidate, assessment, reviews_by_candidate.get(candidate.id)))
+        db.add(AuditEvent(candidate_id=candidate.id, user_id=identity.user_id, actor=identity.display_name, action="candidate_exported", after_state={"format": payload.format, "schema_version": EXPORT_SCHEMA_VERSION}, detail="Candidate exported through the provenance-safe integration contract."))
+    db.commit()
+    if payload.format == "csv":
+        return Response(
+            candidate_export_csv(records),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": 'attachment; filename="dealsage-candidates.csv"',
+                "X-DealSage-Schema-Version": EXPORT_SCHEMA_VERSION,
+                "X-DealSage-Record-Count": str(len(records)),
+            },
+        )
+    return export_envelope(records, identity.display_name)
 
 
 @router.get("/saved-research")
