@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.domain.models import (AuditEvent, Business, BusinessRelationship, CandidateMatch,
     Evidence, Person, ResearchStage, ResearchTrail, ReviewCase, Source, TargetProfile, TransitionSignal)
 from app.domain.research import owner_readiness
+from app.services.candidate_scoring import ensure_score_assessments
 
 CASES = [
  ("Alder Ridge Toolworks", "Eleanor", "Mae", "Voss", "Fort Collins", "CO", "validated", 93, 91, "owner", [], "Very strong match", ["owner_filing","exact_full_name","same_city","company_in_signal","independent_source","age_aligns","timeline_aligns"]),
@@ -61,6 +62,7 @@ def seed_missing_research_trails(db: Session) -> None:
 def seed_database(db: Session) -> None:
     if db.scalar(select(Business.id).limit(1)):
         seed_missing_research_trails(db)
+        ensure_score_assessments(db)
         return
     now = datetime.now(timezone.utc)
     profile = TargetProfile(name="Demo lower-middle-market businesses", criteria={"geography":"United States","employee_range":"11–50 (estimate)","status":"active"}, provenance={"type":"fictional_demo","note":"Estimates are not registry facts."})
@@ -103,3 +105,4 @@ def seed_database(db: Session) -> None:
         db.add(ReviewCase(candidate_id=candidate.id, assigned_user="Morgan Lee", status="closed" if status in {"validated","rejected"} else "open", decision=status if status in {"validated","rejected"} else None, analyst_notes=[], decision_reason_codes=[]))
         db.add(AuditEvent(candidate_id=candidate.id,actor="DealSage demo seeder",action="candidate_created",after_state={"status":status},detail="Fictional demo candidate created."))
     db.commit()
+    ensure_score_assessments(db)

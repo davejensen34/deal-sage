@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import select
 
-from app.domain.models import AuditEvent, Evidence, ReviewCase, Source
+from app.domain.models import AuditEvent, CandidateScoreAssessment, Evidence, ReviewCase, Source
 from app.research.cases import ResearchCaseService
 from app.research.model_proposals import ModelProposalService
 from app.research.proposal_dispositions import ModelProposalDispositionService
@@ -101,6 +101,9 @@ def test_only_accepted_same_subject_owner_case_enters_review_queue(override_db_s
     assert case.candidate_match_id == candidate.id
     assert override_db_session.scalar(select(ReviewCase).where(ReviewCase.candidate_id == candidate.id)).status == "open"
     assert len(override_db_session.scalars(select(Evidence).where(Evidence.candidate_id == candidate.id)).all()) == 2
+    score = override_db_session.scalar(select(CandidateScoreAssessment).where(CandidateScoreAssessment.candidate_id == candidate.id))
+    assert score.provenance_classification == "evidence_derived"
+    assert score.supporting_evidence_ids == [item.id for item in candidate.evidence]
     assert all(not source.is_demo for source in override_db_session.scalars(select(Source).where(Source.id.in_([item.source_id for item in candidate.evidence]))).all())
     assert override_db_session.scalar(select(AuditEvent).where(AuditEvent.candidate_id == candidate.id)).actor == "Test Analyst"
 
