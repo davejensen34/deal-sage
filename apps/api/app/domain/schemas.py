@@ -63,6 +63,11 @@ class SourceRefreshCreate(BaseModel):
     approved_cost_usd: float = Field(default=0, ge=0, le=1)
 
 
+class AlertSubscriptionCreate(BaseModel):
+    source_key: Literal["colorado_business_entities", "texas_active_franchise_taxpayers"]
+    event_types: list[Literal["refresh_failed", "quarantine_detected"]] = Field(min_length=1)
+
+
 class ProposalDispositionCreate(BaseModel):
     decision: Literal["accept", "correct", "reject", "defer"]
     rationale: str = Field(min_length=3, max_length=2_000)

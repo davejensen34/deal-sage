@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.models import AcquisitionRun, SourceRefresh
 from app.research.ingestion import acquire_and_land_sample
+from app.research.alerts import evaluate_refresh_alerts
 from app.research.landing import EvidenceLanding, Parser
 from app.research.sources.base import SourceAdapter
 
@@ -98,4 +99,5 @@ class SourceRefreshService:
         refresh.finished_at = datetime.now(timezone.utc)
         self.db.commit()
         self.db.refresh(refresh)
+        evaluate_refresh_alerts(self.db, refresh)
         return refresh

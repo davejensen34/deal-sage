@@ -14,6 +14,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
 - Authenticated analysts can save and replay named candidate-queue criteria and maintain multiple dedicated watchlists. Watchlists reference existing candidates rather than copying evidence; membership additions and removals are audited.
 - Authenticated analysts can explicitly initiate a bounded 1–100 record refresh of the approved free Colorado and Texas sources. Each durable refresh records attribution, contract fingerprint, acquisition-run linkage, aggregate results, actual/approved cost, freshness limitations, and a safe failure code; Utah remains delivery-based and no scheduler is active.
+- Analysts may opt into in-app alerts for refresh failure and quarantine on each approved source. Successful refreshes remain quiet, delivery never leaves DealSage, subscriptions never initiate acquisition, and disabling a subscription preserves its prior alert history.
 - Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
 - Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
 - Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
@@ -62,7 +63,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Proceed to Milestone 5 Issue #98: gate opt-in analyst alerts on trustworthy refresh outcomes. Alert implementation must remain user-controlled and cannot convert refresh into unattended acquisition without a separate decision. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Proceed to Milestone 5 Issue #99: provenance-preserving exports and integration seams. Exported records must retain evidence references, inference and score provenance, freshness, and analyst disposition without exposing stored secrets or raw private evidence. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
@@ -75,6 +76,8 @@ Milestone 5 Issue #95 adds two backend tests for persisted score provenance and 
 Milestone 5 Issue #96 adds two backend workflow tests. All 170 backend tests and five frontend tests passed, the production frontend built with its existing large-chunk warning, and all eighteen migrations upgraded with migration 18 successfully downgraded and re-upgraded on a fresh SQLite database. The rebuilt local Compose stack became healthy, and rendered inspection confirmed both the dedicated Watchlists workspace and replayed Colorado/60% candidate filters. This work made no live search or model calls and incurred $0 external spend.
 
 Milestone 5 Issue #97 adds three backend tests and one frontend presentation test. All 173 backend tests and six frontend tests passed, and the production frontend built with its existing large-chunk warning. Two explicitly approved five-record live refreshes then succeeded at $0: Colorado retrieved five records and curated ten subjects including five registered-agent assertions; Texas retrieved and curated five entity records. Both had zero quarantine and zero ownership-supported assertions. Both honestly reported that freshness is not measurable from individual records. No search or model calls occurred.
+
+Milestone 5 Issue #98 adds three backend alert tests and one frontend presentation test. All 176 backend tests and seven frontend tests passed, and the production frontend built with its existing large-chunk warning. Tests cover opt-in scoping, safe failure detail, quarantine triggers, idempotency, read state, disabling without history loss, rejected success noise, and rejected Utah subscriptions. No live source, search, model, email, SMS, or webhook calls occurred; external spend was $0.
 
 Milestone 4.7 closeout re-ran all 166 backend tests and five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. All passed; the existing frontend large-chunk warning remains. No closeout UI behavior changed, so the previously rendered application baseline remains applicable.
 
