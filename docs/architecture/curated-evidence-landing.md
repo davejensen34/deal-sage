@@ -26,4 +26,4 @@ Raw artifacts are retained as evidence while any curated record, research trail,
 
 ## API boundary
 
-`GET /api/research/acquisition-runs` exposes operational counts and status only. Detailed raw evidence access and analyst quarantine resolution remain deferred until authorization, redaction, and retention rules are implemented.
+`GET /api/research/acquisition-runs` exposes operational counts and status only. Milestone 5 adds `SourceRefresh` as a durable orchestration record above the same acquisition and landing path: an authenticated analyst may explicitly run only the approved Colorado or Texas adapter, with a 1–100 record limit and an approved cost ceiling. The record retains attribution, contract fingerprint, linked acquisition run, aggregate outcome, freshness limitation, safe failure code, and actual cost. It does not store response bodies, add a scheduler, or allow dynamic Utah BEL retrieval. Detailed raw evidence access and analyst quarantine resolution remain deferred until authorization, redaction, and retention rules are implemented.

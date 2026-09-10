@@ -13,6 +13,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - Candidate detail exposes an immutable, versioned score assessment with factor inputs, supporting evidence IDs, the conjunctive formula, and an honest `evidence_derived` or `legacy_demo_import` classification. New reviewed-case promotions create evidence-derived assessments and project their deterministic result onto the queue row.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
 - Authenticated analysts can save and replay named candidate-queue criteria and maintain multiple dedicated watchlists. Watchlists reference existing candidates rather than copying evidence; membership additions and removals are audited.
+- Authenticated analysts can explicitly initiate a bounded 1–100 record refresh of the approved free Colorado and Texas sources. Each durable refresh records attribution, contract fingerprint, acquisition-run linkage, aggregate results, actual/approved cost, freshness limitations, and a safe failure code; Utah remains delivery-based and no scheduler is active.
 - Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
 - Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
 - Real Google authentication was validated end to end on localhost: discovery and token exchange succeeded, a verified Google identity created an active JIT user, the signed session loaded the protected workspace, and an authenticated candidate view produced a user-linked audit event.
@@ -38,7 +39,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - Acquisition-run summaries are available through the authenticated API; detailed raw evidence review and quarantine resolution UI remain deferred.
 - Seed case scores remain curated edge-case fixtures, but their retained component inputs and calculation are now persisted and labeled `legacy_demo_import`; they are not represented as evidence-derived calibration data.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
-- Job execution has an in-process interface but no persistent `ResearchJob` model or scheduler.
+- Generic job execution still has only an in-process interface and no scheduler. Source refresh is the intentionally narrow exception, with its own persistent `SourceRefresh` execution record.
 - Search is portable SQL filtering; FTS5/pg_trgm optimization and a search interface remain deferred.
 - Candidate `watchlist` status remains a separate review disposition from analyst-owned named watchlist membership.
 - Research and Settings routes accurately describe current limits rather than presenting dead controls.
@@ -61,7 +62,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Proceed to Milestone 5 Issue #97: bounded source refresh workflows with explicit initiation, freshness, execution failures, and cost boundaries. This remains gated by reproducible source preflight and does not authorize unattended refresh. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Proceed to Milestone 5 Issue #98: gate opt-in analyst alerts on trustworthy refresh outcomes. Alert implementation must remain user-controlled and cannot convert refresh into unattended acquisition without a separate decision. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
@@ -72,6 +73,8 @@ The current implementation exercises 168 backend/API tests and five frontend tes
 Milestone 5 Issue #95 adds two backend tests for persisted score provenance and evidence-derived recalculation. All 168 backend tests passed, and migration 17 upgraded, downgraded to the prior head, and re-upgraded on a fresh SQLite database. This work made no live search or model calls and incurred $0 external spend.
 
 Milestone 5 Issue #96 adds two backend workflow tests. All 170 backend tests and five frontend tests passed, the production frontend built with its existing large-chunk warning, and all eighteen migrations upgraded with migration 18 successfully downgraded and re-upgraded on a fresh SQLite database. The rebuilt local Compose stack became healthy, and rendered inspection confirmed both the dedicated Watchlists workspace and replayed Colorado/60% candidate filters. This work made no live search or model calls and incurred $0 external spend.
+
+Milestone 5 Issue #97 adds three backend tests and one frontend presentation test. All 173 backend tests and six frontend tests passed, and the production frontend built with its existing large-chunk warning. Two explicitly approved five-record live refreshes then succeeded at $0: Colorado retrieved five records and curated ten subjects including five registered-agent assertions; Texas retrieved and curated five entity records. Both had zero quarantine and zero ownership-supported assertions. Both honestly reported that freshness is not measurable from individual records. No search or model calls occurred.
 
 Milestone 4.7 closeout re-ran all 166 backend tests and five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. All passed; the existing frontend large-chunk warning remains. No closeout UI behavior changed, so the previously rendered application baseline remains applicable.
 

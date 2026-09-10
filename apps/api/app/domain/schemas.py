@@ -57,6 +57,12 @@ class WatchlistEntryCreate(BaseModel):
     rationale: str | None = Field(default=None, max_length=2_000)
 
 
+class SourceRefreshCreate(BaseModel):
+    source_key: Literal["colorado_business_entities", "texas_active_franchise_taxpayers"]
+    record_limit: int = Field(default=25, ge=1, le=100)
+    approved_cost_usd: float = Field(default=0, ge=0, le=1)
+
+
 class ProposalDispositionCreate(BaseModel):
     decision: Literal["accept", "correct", "reject", "defer"]
     rationale: str = Field(min_length=3, max_length=2_000)

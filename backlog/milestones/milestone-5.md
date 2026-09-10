@@ -26,7 +26,7 @@ Turn validated evidence and human-reviewed analysis into repeatable analyst work
 
 - #95 persisted reproducible candidate score provenance (complete).
 - #96 productizes saved research and dedicated watchlists (implemented and validated in PR #102).
-- #97 adds bounded source refresh workflows, subject to source preflight.
+- #97 adds bounded source refresh workflows, subject to source preflight (implemented and live-validated in PR #103).
 - #98 gates opt-in alerts on trustworthy refresh behavior.
 - #99 adds provenance-preserving exports and integration seams.
 - #100 reconciles documentation, validation, and closeout state.
