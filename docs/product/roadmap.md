@@ -38,7 +38,7 @@ Complete as of September 9, 2026. A bounded operational corpus combined Colorado
 
 ### Milestone 5 — Opportunity Intelligence Workflows
 
-Proposed and eligible for explicit activation with a narrowed first sequence. Milestone 4.7 proves that reviewed evidence can enter the downstream queue without bypassing provenance or human authority, but one low-confidence case does not validate autonomous opportunity generation. Begin with persisted evidence-derived scoring features and analyst workflow improvements over reviewed cases. Broader live enrichment, unattended refresh, and alerts remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
+Active as of September 10, 2026, with GitHub Issues #95–#100. Milestone 4.7 proves that reviewed evidence can enter the downstream queue without bypassing provenance or human authority, but one low-confidence case does not validate autonomous opportunity generation. Work begins with persisted, versioned candidate score provenance and analyst workflow improvements over reviewed cases. Broader live enrichment, unattended refresh, and alerts remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
 ### Subsequent milestones
 

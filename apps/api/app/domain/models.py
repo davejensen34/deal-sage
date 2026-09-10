@@ -545,6 +545,9 @@ class CandidateMatch(TimestampMixin, Base):
     relationship_record: Mapped[BusinessRelationship] = relationship()
     signal: Mapped[TransitionSignal] = relationship()
     evidence: Mapped[list[Evidence]] = relationship(back_populates="candidate", cascade="all, delete-orphan")
+    score_assessments: Mapped[list[CandidateScoreAssessment]] = relationship(
+        back_populates="candidate", cascade="all, delete-orphan"
+    )
 
 
 class Evidence(Base):
@@ -565,6 +568,25 @@ class Evidence(Base):
     classification: Mapped[str] = mapped_column(String(30), default="source_fact")
     candidate: Mapped[CandidateMatch] = relationship(back_populates="evidence")
     source: Mapped[Source] = relationship()
+
+
+class CandidateScoreAssessment(Base):
+    """Immutable inputs and result for one deterministic candidate score run."""
+
+    __tablename__ = "candidate_score_assessments"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    candidate_id: Mapped[int] = mapped_column(ForeignKey("candidate_matches.id"), index=True)
+    method_version: Mapped[str] = mapped_column(String(60), index=True)
+    provenance_classification: Mapped[str] = mapped_column(String(40), index=True)
+    owner_business_confidence: Mapped[int] = mapped_column(Integer)
+    signal_identity_confidence: Mapped[int] = mapped_column(Integer)
+    contradiction_penalty: Mapped[int] = mapped_column(Integer, default=0)
+    overall_candidate_confidence: Mapped[int] = mapped_column(Integer)
+    factors: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    supporting_evidence_ids: Mapped[list[int]] = mapped_column(JSON, default=list)
+    calculation: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    candidate: Mapped[CandidateMatch] = relationship(back_populates="score_assessments")
 
 
 class ReviewCase(TimestampMixin, Base):

@@ -22,7 +22,7 @@ from app.domain.models import (
     Source,
     TransitionSignal,
 )
-from app.domain.scoring import combine_scores
+from app.services.candidate_scoring import record_score_assessment
 
 
 AUTHORITY_MULTIPLIERS = {
@@ -120,7 +120,7 @@ class ResearchReviewQueueService:
             signal_id=signal.id,
             owner_business_confidence=owner_score,
             signal_identity_confidence=signal_score,
-            overall_candidate_confidence=combine_scores(owner_score, signal_score),
+            overall_candidate_confidence=min(owner_score, signal_score),
             status="needs_review",
             match_explanation=(
                 "An analyst accepted explicit source-reported ownership at the transition. "
@@ -137,12 +137,12 @@ class ResearchReviewQueueService:
         )
         self.db.add(candidate)
         self.db.flush()
+        copied_evidence = []
         for evidence in self.db.scalars(
             select(CaseEvidence).where(CaseEvidence.case_id == case.id).order_by(CaseEvidence.id)
         ).all():
             source = signal_source if evidence.id == transition_claim.evidence_id else self._source_for_evidence(evidence, spec.state)
-            self.db.add(
-                Evidence(
+            copied = Evidence(
                     candidate_id=candidate.id,
                     evidence_type=evidence.source_type,
                     source_id=source.id,
@@ -156,7 +156,20 @@ class ResearchReviewQueueService:
                     explanation="Source evidence copied from the immutable research case; model output is not source fact.",
                     classification=evidence.classification,
                 )
-            )
+            self.db.add(copied)
+            copied_evidence.append(copied)
+        self.db.flush()
+        record_score_assessment(
+            self.db,
+            candidate,
+            owner_score=owner_score,
+            signal_score=signal_score,
+            factors=[
+                {"axis": "owner_business", "feature": "accepted_owner_claim", "impact": owner_score, "claim_id": owner_claim.id},
+                {"axis": "signal_identity", "feature": "transition_identity_claim", "impact": signal_score, "claim_id": transition_claim.id},
+            ],
+            evidence_ids=[evidence.id for evidence in copied_evidence],
+        )
         self.db.add(
             ReviewCase(
                 candidate_id=candidate.id,

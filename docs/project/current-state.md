@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026. No milestone is active. Milestone 5 is entry-eligible with a narrowed deterministic-scoring and reviewed-workflow start, but it remains proposed until explicitly approved.
+Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026. Milestone 5 — Opportunity Intelligence Workflows was explicitly approved and activated on September 10, 2026. GitHub Issues #95–#100 track its work, beginning with persisted candidate score provenance in #95.
 
 ## What works and has been validated
 
@@ -10,6 +10,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 - SQLite startup auto-creates and seeds 18 fictional candidates and 36 evidence items.
 - Search, status/state/confidence filters, pagination, and API sorting work.
 - Candidate detail exposes business/person/signal, three confidence values, rationale, conflicts, gaps, evidence provenance, and audit history.
+- Candidate detail exposes an immutable, versioned score assessment with factor inputs, supporting evidence IDs, the conjunctive formula, and an honest `evidence_derived` or `legacy_demo_import` classification. New reviewed-case promotions create evidence-derived assessments and project their deterministic result onto the queue row.
 - Validate/reject/watchlist/more-research actions and analyst notes persist and create audit events.
 - Persisted research trails represent target, discovery, authoritative anchor, business/web validation, person discovery, relationship validation, and owner readiness with actual funnel counts.
 - Demo identity remains credential-free; provider-neutral OIDC, Google discovery, subject-keyed JIT users, allowlists, sessions, logout, and user-linked audit attribution are implemented and integration-tested.
@@ -34,7 +35,7 @@ Milestone 4.7 — Live Opportunity Pipeline is complete as of September 9, 2026.
 
 - The Milestone 3 landing models and service preserve acquisition runs, immutable content-addressed artifacts, versioned curated subjects, field lineage, replay, and quarantine. Colorado, Utah, and Texas bounded live sources were exercised successfully; none provides comprehensive statewide beneficial-ownership truth.
 - Acquisition-run summaries are available through the authenticated API; detailed raw evidence review and quarantine resolution UI remain deferred.
-- Seed case scores are curated persisted fixtures; deterministic scoring functions are tested but feature observations are not yet persisted/recalculated from evidence.
+- Seed case scores remain curated edge-case fixtures, but their retained component inputs and calculation are now persisted and labeled `legacy_demo_import`; they are not represented as evidence-derived calibration data.
 - Analyst notes are structured JSON in `ReviewCase`, not a first-class table.
 - Job execution has an in-process interface but no persistent `ResearchJob` model or scheduler.
 - Search is portable SQL filtering; FTS5/pg_trgm optimization and a search interface remain deferred.
@@ -59,13 +60,15 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Await explicit direction on Milestone 5. The recommended first workstream is persisted evidence-derived scoring features so displayed opportunity scores reproduce from source claims. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Implement Milestone 5 Issue #95 so displayed opportunity scores carry a versioned calculation, factor inputs, supporting evidence IDs, and an honest provenance classification. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
 
-The current implementation exercises 166 backend/API tests and five frontend tests. All sixteen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+The current implementation exercises 168 backend/API tests and five frontend tests. All seventeen migrations upgraded, downgraded, and re-upgraded on an empty SQLite database; the production frontend built with its existing large-chunk warning; Compose configuration validated; and a rebuilt PostgreSQL/FastAPI/Nginx stack became healthy, returned `/api/health`, and rendered the local dashboard. The bounded Utah delivery achieved 100% ingestion success across 188 entities, 188 BUSINFO rows, and 470 PRINCIPAL rows; all joins resolved without duplicate keys, orphan rows, or quarantine, and an identical repeat added no artifacts. The optional-provider API image builds with both SDKs. The version-two replacement and Milestone 4.1–4.4 contracts remain validated against fictional fixtures and adapter mocks. The Issue #71 run added three OpenAI web-search calls at a conservative estimated cost of $0.06, landed three immutable artifacts that failed exact-excerpt qualification, and made zero model-analysis calls.
+
+Milestone 5 Issue #95 adds two backend tests for persisted score provenance and evidence-derived recalculation. All 168 backend tests passed, and migration 17 upgraded, downgraded to the prior head, and re-upgraded on a fresh SQLite database. This work made no live search or model calls and incurred $0 external spend.
 
 Milestone 4.7 closeout re-ran all 166 backend tests and five frontend tests, the production frontend build, Compose configuration, and all sixteen migrations through upgrade, downgrade, and re-upgrade on a fresh SQLite database. All passed; the existing frontend large-chunk warning remains. No closeout UI behavior changed, so the previously rendered application baseline remains applicable.
 
