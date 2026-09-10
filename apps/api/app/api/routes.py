@@ -11,13 +11,16 @@ from app.ai.providers.openai import OpenAIProvider
 from app.auth.service import Identity, current_identity
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, TransitionSignal, Watchlist, WatchlistEntry
+from app.domain.models import AIExecution, AcquisitionRun, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, SourceRefresh, TransitionSignal, Watchlist, WatchlistEntry
 from app.domain.research import funnel_counts
-from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
+from app.domain.schemas import CandidatePage, NoteCreate, ProposalDispositionCreate, SavedResearchCreate, SourceRefreshCreate, StatusUpdate, WatchlistCreate, WatchlistEntryCreate
+from app.research.landing import EvidenceLanding
+from app.research.refresh import RefreshSource, SourceRefreshService
 from app.research.proposal_dispositions import ModelProposalDispositionService
-from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter
-from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter
+from app.research.sources.colorado import ColoradoBusinessEntitiesAdapter, parse_curated_record as parse_colorado
+from app.research.sources.texas import TexasActiveFranchiseTaxpayersAdapter, parse_curated_record as parse_texas
 from app.research.sources.utah import UTAH_BEL_DEFINITION
+from app.storage.local import LocalEvidenceStorage
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -41,6 +44,59 @@ def research_sources():
     """Expose source contracts without initiating network acquisition."""
     definitions=(ColoradoBusinessEntitiesAdapter.definition,TexasActiveFranchiseTaxpayersAdapter.definition,UTAH_BEL_DEFINITION)
     return [{**asdict(definition),"contract_fingerprint":definition.contract_fingerprint} for definition in definitions]
+
+
+def refresh_sources() -> dict[str, RefreshSource]:
+    """Return only sources approved for bounded, unauthenticated refresh."""
+    return {
+        "colorado_business_entities": RefreshSource(ColoradoBusinessEntitiesAdapter(), parse_colorado, "colorado-entity-v1"),
+        "texas_active_franchise_taxpayers": RefreshSource(TexasActiveFranchiseTaxpayersAdapter(), parse_texas, "texas-taxpayer-v1"),
+    }
+
+
+def refresh_payload(refresh: SourceRefresh) -> dict:
+    return {
+        "id": refresh.id,
+        "source_key": refresh.source_key,
+        "jurisdiction": refresh.jurisdiction,
+        "requested_by": refresh.requested_by_name,
+        "status": refresh.status,
+        "record_limit": refresh.record_limit,
+        "approved_cost_usd": refresh.approved_cost_usd,
+        "actual_cost_usd": refresh.actual_cost_usd,
+        "contract_fingerprint": refresh.contract_fingerprint,
+        "acquisition_run_id": refresh.acquisition_run_id,
+        "freshness_status": refresh.freshness_status,
+        "freshness_reason": refresh.freshness_reason,
+        "result_summary": refresh.result_summary,
+        "error_code": refresh.error_code,
+        "started_at": refresh.started_at,
+        "finished_at": refresh.finished_at,
+    }
+
+
+@router.get("/research/source-refreshes")
+def source_refreshes(db: Session = Depends(get_db)):
+    rows = db.scalars(select(SourceRefresh).order_by(SourceRefresh.created_at.desc()).limit(50)).all()
+    return [refresh_payload(row) for row in rows]
+
+
+@router.post("/research/source-refreshes", status_code=201)
+async def create_source_refresh(payload: SourceRefreshCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+    source = refresh_sources()[payload.source_key]
+    service = SourceRefreshService(db, EvidenceLanding(db, LocalEvidenceStorage(settings.evidence_storage_path)))
+    try:
+        refresh = await service.run(
+            source,
+            record_limit=payload.record_limit,
+            approved_cost_usd=payload.approved_cost_usd,
+            requested_by_user_id=identity.user_id,
+            requested_by_key=owner_key(identity),
+            requested_by_name=identity.display_name,
+        )
+    except ValueError as error:
+        raise HTTPException(409, str(error)) from error
+    return refresh_payload(refresh)
 
 
 @router.get("/research/acquisition-runs")

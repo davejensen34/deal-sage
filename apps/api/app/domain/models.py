@@ -82,6 +82,30 @@ class AcquisitionRun(TimestampMixin, Base):
     error: Mapped[str | None] = mapped_column(Text)
 
 
+class SourceRefresh(TimestampMixin, Base):
+    """One explicitly initiated, cost-bounded refresh of an approved source."""
+
+    __tablename__ = "source_refreshes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    source_key: Mapped[str] = mapped_column(String(120), index=True)
+    jurisdiction: Mapped[str] = mapped_column(String(80), index=True)
+    requested_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), index=True)
+    requested_by_key: Mapped[str] = mapped_column(String(320))
+    requested_by_name: Mapped[str] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(30), index=True)
+    record_limit: Mapped[int] = mapped_column(Integer)
+    approved_cost_usd: Mapped[float] = mapped_column(Float, default=0)
+    actual_cost_usd: Mapped[float] = mapped_column(Float, default=0)
+    contract_fingerprint: Mapped[str] = mapped_column(String(64))
+    acquisition_run_id: Mapped[int | None] = mapped_column(ForeignKey("acquisition_runs.id"), index=True)
+    freshness_status: Mapped[str] = mapped_column(String(60), default="not_yet_observed")
+    freshness_reason: Mapped[str | None] = mapped_column(Text)
+    result_summary: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    error_code: Mapped[str | None] = mapped_column(String(120))
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
 class RawArtifact(TimestampMixin, Base):
     """Content-addressed source response; its bytes are immutable in evidence storage."""
     __tablename__ = "raw_artifacts"

@@ -4,6 +4,7 @@ import {api} from '../api/client';
 import {ResearchTrailView,Trail} from '../components/ResearchTrail';
 import {SourceOperations,SourceSampleResult} from '../components/SourceOperations';
 import {CaseNarratives,CaseNarrative} from '../components/CaseNarratives';
+import {SourceRefreshes} from '../components/SourceRefreshes';
 
 type Source={name:string;publisher:string;jurisdiction:string;landing_url:string;access_method:string;license:string;expected_refresh:string;role_value:string;limitations:string[]};
 type Result={status:string;sample_size:number;selection:string;review_method:string;query_url:string;metrics:Record<string,number>;role_counts:Record<string,number>;recommendation:{decision:string;summary:string;next_step:string}};
@@ -31,6 +32,7 @@ export function Research(){
     <section className="panel origin-metrics"><div className="panel-title"><div><p className="eyebrow">Measured by entry strategy</p><h2>Convergence activity</h2><p>Observed persisted counts only; no conversion rate is projected.</p></div></div><div>{['signal_first','business_first','hybrid'].map(origin=>{const metric=caseMetrics.data?.origin_metrics[origin];return <article key={origin}><b>{origin.replaceAll('_',' ')}</b><strong>{metric?.cases||0} cases</strong><small>{metric?.evidence_items||0} evidence · {metric?.claims||0} claims · {metric?.research_steps||0} steps</small></article>})}</div></section>
     <CaseNarratives cases={cases.data?.cases||[]}/>
     <SourceOperations result={sourceSamples.data}/>
+    <SourceRefreshes/>
     <div className="research-grid">
       <section className="panel"><div className="panel-title"><div><h2>Role classification</h2><p>Observed source roles, never inferred ownership.</p></div><span>{data.status}</span></div><div className="role-list">{Object.entries(data.role_counts).map(([role,count])=><div key={role}><span>{role.replaceAll('_',' ')}</span><b>{count}</b></div>)}</div><div className="research-rule"><AlertTriangle/><p><b>Registered agent ≠ owner.</b> A natural-person name or shared address does not change the filed role.</p></div></section>
       <section className="panel source-card"><div className="panel-title"><div><h2>{source.name}</h2><p>{source.publisher}</p></div><span>{source.jurisdiction}</span></div><dl><dt>Access</dt><dd>{source.access_method}</dd><dt>License</dt><dd>{source.license}</dd><dt>Refresh</dt><dd>{source.expected_refresh}</dd><dt>Relationship value</dt><dd>{source.role_value}</dd></dl><a href={source.landing_url} target="_blank" rel="noreferrer">Open official dataset <ExternalLink/></a></section>
