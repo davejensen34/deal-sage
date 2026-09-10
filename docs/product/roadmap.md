@@ -42,11 +42,11 @@ Complete as of September 10, 2026. GitHub Issues #95–#100 delivered persisted 
 
 ### Milestone 5.1 — Workflow Traceability and Effectiveness
 
-Active as of September 10, 2026. This bounded follow-up makes refresh alerts self-resolving and adds deterministic source-to-disposition measures with explicit unattributed counts. It does not reopen Milestone 5 or authorize autonomous acquisition, paid calls, scheduling, or external delivery.
+Complete as of September 10, 2026. This bounded follow-up made refresh alerts self-resolving and added deterministic source-to-disposition measures with explicit unattributed counts. Validation also exposed that the long-lived local PostgreSQL database has not received the evidence-lineage migration; reporting handles that state honestly, while deployment-safe migration automation remains proposed Milestone 6 work. The follow-up did not reopen Milestone 5 or authorize autonomous acquisition, paid calls, scheduling, or external delivery.
 
 ### Subsequent milestones
 
 The following milestones remain proposed and require explicit approval:
 
-6. Operational productization: multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.
+6. Operational productization: deployment-safe migration automation, multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.
 7. Broader transition intelligence: retirement, succession, ownership transfer, founder exit, dissolution, and leadership change. Proposed and gated by validated precision and sustainable source operations.
