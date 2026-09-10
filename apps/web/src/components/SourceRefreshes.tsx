@@ -4,20 +4,20 @@ import {api} from '../api/client';
 import {fmt} from './Status';
 import '../source-refresh.css';
 
-export type SourceRefresh={id:number;source_key:string;jurisdiction:string;requested_by:string;status:string;record_limit:number;approved_cost_usd:number;actual_cost_usd:number;freshness_status:string;freshness_reason?:string;error_code?:string;started_at:string;finished_at?:string;result_summary:Record<string,any>};
+export type SourceRefresh={id:number;source_key:string;jurisdiction:string;requested_by:string;status:string;record_limit:number;approved_cost_usd:number;actual_cost_usd:number;freshness_status:string;freshness_reason?:string;error_code?:string;acquisition_run_id?:number;started_at:string;finished_at?:string;result_summary:Record<string,any>};
 type Subscription={id:number;source_key:string;event_types:string[];active:boolean};
-export type RefreshAlert={id:number;source_refresh_id:number;event_type:string;title:string;detail:string;created_at:string;read_at?:string};
+export type RefreshAlert={id:number;source_refresh_id:number;event_type:string;title:string;detail:string;created_at:string;read_at?:string;trigger?:SourceRefresh&{quarantine_references:{count:number;curated_record_ids:number[];contains_record_content:boolean}}};
 
 const label=(value:string)=>value.replaceAll('_',' ');
 
 export function RefreshHistory({rows}:{rows:SourceRefresh[]}){
   if(!rows.length)return <p className="muted">No analyst-initiated refresh has run yet.</p>;
-  return <div className="refresh-history">{rows.map(row=><article key={row.id}><div className={`refresh-state ${row.status}`}>{row.status==='succeeded'?<CheckCircle2/>:row.status==='failed'?<AlertTriangle/>:<Clock3/>}</div><div><b>{row.jurisdiction} · {label(row.status)}</b><span>{row.requested_by} · {row.record_limit} record limit · {fmt(row.started_at)}</span><small>{label(row.freshness_status)}{row.freshness_reason&&` — ${row.freshness_reason}`}</small></div><dl><dt>Retrieved</dt><dd>{row.result_summary.retrieved??'—'}</dd><dt>Curated</dt><dd>{row.result_summary.curated??'—'}</dd><dt>Cost</dt><dd>${row.actual_cost_usd.toFixed(2)}</dd></dl></article>)}</div>
+  return <div className="refresh-history">{rows.map(row=><article id={`refresh-${row.id}`} key={row.id}><div className={`refresh-state ${row.status}`}>{row.status==='succeeded'?<CheckCircle2/>:row.status==='failed'?<AlertTriangle/>:<Clock3/>}</div><div><b>{row.jurisdiction} · {label(row.status)}</b><span>Refresh #{row.id} · {row.requested_by} · {row.record_limit} record limit · {fmt(row.started_at)}</span><small>{label(row.freshness_status)}{row.freshness_reason&&` — ${row.freshness_reason}`}</small></div><dl><dt>Retrieved</dt><dd>{row.result_summary.retrieved??'—'}</dd><dt>Curated</dt><dd>{row.result_summary.curated??'—'}</dd><dt>Cost</dt><dd>${row.actual_cost_usd.toFixed(2)}</dd></dl></article>)}</div>
 }
 
 export function AlertInbox({alerts,onRead}:{alerts:RefreshAlert[];onRead?:(id:number)=>void}){
   if(!alerts.length)return <p className="muted">No subscribed refresh issue has been detected.</p>;
-  return <div className="alert-inbox">{alerts.map(alert=><article className={alert.read_at?'read':'unread'} key={alert.id}><AlertTriangle/><div><b>{alert.title}</b><span>{alert.detail}</span><small>{label(alert.event_type)} · {fmt(alert.created_at)}</small></div>{!alert.read_at&&<button onClick={()=>onRead?.(alert.id)}>Mark read</button>}</article>)}</div>
+  return <div className="alert-inbox">{alerts.map(alert=><article className={alert.read_at?'read':'unread'} key={alert.id}><AlertTriangle/><div><b>{alert.title}</b><span>{alert.detail}</span>{alert.trigger&&<><small>{alert.trigger.source_key.replaceAll('_',' ')} · {label(alert.trigger.freshness_status)} · acquisition run {alert.trigger.acquisition_run_id??'unavailable'}</small><small>{alert.trigger.quarantine_references.count} quarantined · safe record references {alert.trigger.quarantine_references.curated_record_ids.join(', ')||'none'}</small><a href={`#refresh-${alert.source_refresh_id}`}>View refresh #{alert.source_refresh_id} context</a></>}<small>{label(alert.event_type)} · {fmt(alert.created_at)}</small></div>{!alert.read_at&&<button onClick={()=>onRead?.(alert.id)}>Mark read</button>}</article>)}</div>
 }
 
 export function SourceRefreshes(){

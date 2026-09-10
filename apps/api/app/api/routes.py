@@ -76,10 +76,42 @@ def refresh_payload(refresh: SourceRefresh) -> dict:
     }
 
 
+def quarantine_references(refresh: SourceRefresh, db: Session) -> list[int]:
+    """Return stable internal references, never quarantined record contents."""
+    if refresh.acquisition_run_id is None:
+        return []
+    artifact_ids = select(RunArtifact.artifact_id).where(RunArtifact.run_id == refresh.acquisition_run_id)
+    return list(db.scalars(
+        select(CuratedRecord.id)
+        .where(CuratedRecord.artifact_id.in_(artifact_ids), CuratedRecord.status == "quarantined")
+        .order_by(CuratedRecord.id)
+    ).all())
+
+
+def refresh_trace_payload(refresh: SourceRefresh, db: Session) -> dict:
+    """Resolve the durable lineage needed to understand an alert or refresh."""
+    return {
+        **refresh_payload(refresh),
+        "quarantine_references": {
+            "count": refresh.result_summary.get("quarantined", 0),
+            "curated_record_ids": quarantine_references(refresh, db),
+            "contains_record_content": False,
+        },
+    }
+
+
 @router.get("/research/source-refreshes")
 def source_refreshes(db: Session = Depends(get_db)):
     rows = db.scalars(select(SourceRefresh).order_by(SourceRefresh.created_at.desc()).limit(50)).all()
     return [refresh_payload(row) for row in rows]
+
+
+@router.get("/research/source-refreshes/{refresh_id}")
+def source_refresh_detail(refresh_id: int, db: Session = Depends(get_db)):
+    refresh = db.get(SourceRefresh, refresh_id)
+    if refresh is None:
+        raise HTTPException(404, "Source refresh not found")
+    return refresh_trace_payload(refresh, db)
 
 
 @router.get("/research/alert-subscriptions")
@@ -124,7 +156,14 @@ def research_alerts(db: Session = Depends(get_db), identity: Identity = Depends(
         .order_by(AlertEvent.created_at.desc())
         .limit(100)
     ).all()
-    return [{"id": row.id, "source_refresh_id": row.source_refresh_id, "event_type": row.event_type, "title": row.title, "detail": row.detail, "created_at": row.created_at, "read_at": row.read_at} for row in rows]
+    result = []
+    for row in rows:
+        refresh = db.get(SourceRefresh, row.source_refresh_id)
+        # The foreign key should make this unreachable; keeping the explicit
+        # state avoids inventing trigger context if legacy data is damaged.
+        trigger = refresh_trace_payload(refresh, db) if refresh else None
+        result.append({"id": row.id, "source_refresh_id": row.source_refresh_id, "event_type": row.event_type, "title": row.title, "detail": row.detail, "trigger": trigger, "created_at": row.created_at, "read_at": row.read_at})
+    return result
 
 
 @router.patch("/research/alerts/{alert_id}/read")
