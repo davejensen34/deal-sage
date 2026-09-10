@@ -50,6 +50,8 @@ cp .env.example .env
 docker compose up --build
 ```
 
+Compose applies the database migration as a one-shot prerequisite before the API starts. Existing early DealSage volumes are adopted only when their tables and missing columns match the recognized additive legacy shape; unknown partial schemas fail closed. Back up the database and evidence volume before any pilot upgrade.
+
 Open `http://localhost:3000`. Everything runs on one host; no managed service is required.
 
 ## Optional AI summary

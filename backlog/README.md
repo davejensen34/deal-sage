@@ -16,7 +16,8 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Issue #92 preserves the deferred Utah/OpenAI ambiguity follow-up; it does not block the accepted Utah case from remaining in human review.
 - Milestone 5 — Opportunity Intelligence Workflows is complete as of September 10, 2026. Issues #95–#100 delivered deterministic score provenance, saved research and watchlists, bounded manual refresh, gated in-app alerts, provenance-safe exports, and reconciled closeout. Autonomous enrichment remains gated.
 - Milestone 5.1 — Workflow Traceability and Effectiveness is complete as of September 10, 2026. Issues #107, #108, and #110 closed the two post-audit gaps without rewriting Milestone 5 history or activating Milestone 6.
-- No milestone is active. Milestones 6 and 7 remain proposed and require explicit approval.
+- Milestone 6 — Operational Productization is active as of September 10, 2026 under Issues #114–#119.
+- Milestone 7 remains proposed and requires explicit approval.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence
