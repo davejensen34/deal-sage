@@ -40,9 +40,13 @@ Complete as of September 9, 2026. A bounded operational corpus combined Colorado
 
 Complete as of September 10, 2026. GitHub Issues #95–#100 delivered persisted score provenance, saved research/watchlists, manual bounded refresh, opt-in in-app refresh-issue alerts, and versioned candidate exports. Exports preserve public evidence references and confidence boundaries without copying retained source content or analyst notes. Alerts consume completed manual refresh outcomes and cannot initiate acquisition. Broader live enrichment, unattended refresh, and external notification delivery remain gated by reproducible sources, measured analyst value, and their own bounded execution decisions. Milestone 5 consumes the acquisition and analysis foundations; it does not introduce an independent evidence path.
 
+### Milestone 5.1 — Workflow Traceability and Effectiveness
+
+Active as of September 10, 2026. This bounded follow-up makes refresh alerts self-resolving and adds deterministic source-to-disposition measures with explicit unattributed counts. It does not reopen Milestone 5 or authorize autonomous acquisition, paid calls, scheduling, or external delivery.
+
 ### Subsequent milestones
 
-No milestone is active after Milestone 5. The following milestones remain proposed and require explicit approval:
+The following milestones remain proposed and require explicit approval:
 
 6. Operational productization: multi-user controls, backups, monitoring, cost visibility, deployment hardening, and measured performance work. Proposed and gated by demonstrated pilot value.
 7. Broader transition intelligence: retirement, succession, ownership transfer, founder exit, dissolution, and leadership change. Proposed and gated by validated precision and sustainable source operations.

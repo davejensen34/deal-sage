@@ -13,9 +13,11 @@ describe('RefreshHistory',()=>{
   });
 });
 
-it('renders unread in-app alerts with their safe failure detail',()=>{
-  render(<AlertInbox alerts={[{id:2,source_refresh_id:9,event_type:'refresh_failed',title:'Colorado refresh failed',detail:'Safe failure code: ConnectError.',created_at:'2026-09-10T18:00:00Z'}]}/>);
+it('renders unread in-app alerts with self-resolving trigger context',()=>{
+  render(<AlertInbox alerts={[{id:2,source_refresh_id:9,event_type:'refresh_failed',title:'Colorado refresh failed',detail:'Safe failure code: ConnectError.',created_at:'2026-09-10T18:00:00Z',trigger:{id:9,source_key:'colorado_business_entities',jurisdiction:'Colorado',requested_by:'Morgan Lee',status:'failed',record_limit:25,approved_cost_usd:0,actual_cost_usd:0,freshness_status:'refresh_failed',freshness_reason:'Prior evidence unchanged.',error_code:'ConnectError',started_at:'2026-09-10T18:00:00Z',result_summary:{},acquisition_run_id:44,quarantine_references:{count:0,curated_record_ids:[],contains_record_content:false}}}]}/>);
   expect(screen.getByText('Colorado refresh failed')).toBeInTheDocument();
   expect(screen.getByText(/Safe failure code/)).toBeInTheDocument();
+  expect(screen.getByText(/acquisition run 44/)).toBeInTheDocument();
+  expect(screen.getByRole('link',{name:'View refresh #9 context'})).toHaveAttribute('href','#refresh-9');
   expect(screen.getByRole('button',{name:'Mark read'})).toBeInTheDocument();
 });

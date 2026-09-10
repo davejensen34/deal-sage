@@ -15,7 +15,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 4.7 — Live Opportunity Pipeline is complete. It bridged bounded real three-state evidence through source preflight, governed model analysis, attributable disposition, and one conservative Utah review candidate.
 - Issue #92 preserves the deferred Utah/OpenAI ambiguity follow-up; it does not block the accepted Utah case from remaining in human review.
 - Milestone 5 — Opportunity Intelligence Workflows is complete as of September 10, 2026. Issues #95–#100 delivered deterministic score provenance, saved research and watchlists, bounded manual refresh, gated in-app alerts, provenance-safe exports, and reconciled closeout. Autonomous enrichment remains gated.
-- No milestone is active. Milestones 6 and 7 remain proposed and require explicit approval.
+- Milestone 5.1 — Workflow Traceability and Effectiveness is active as of September 10, 2026. Issues #107, #108, and #110 close two post-audit gaps without rewriting Milestone 5 history or activating Milestone 6.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence
@@ -25,8 +25,9 @@ Priority order is research correctness and provenance; owner-discovery and ident
 3. Milestone 4 productizes a dynamic, evidence-backed opportunity-research loop, analyst disposition, and a separately approved end-to-end live quality evaluation.
 4. Milestone 4.7 proves the operational bridge from bounded live state evidence to preflighted, reviewed opportunity candidates.
 5. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
-6. Milestone 6 hardens a proven pilot for dependable multi-user operation without assuming distributed infrastructure.
-7. Milestone 7 broadens transition intelligence beyond the initial mortality-related signal after precision and source sustainability are demonstrated.
+6. Milestone 5.1 completes alert traceability and workflow-effectiveness measurement found missing in the Milestone 5 audit.
+7. Milestone 6 hardens a proven pilot for dependable multi-user operation without assuming distributed infrastructure.
+8. Milestone 7 broadens transition intelligence beyond the initial mortality-related signal after precision and source sustainability are demonstrated.
 
 This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 

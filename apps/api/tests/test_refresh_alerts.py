@@ -32,6 +32,15 @@ def test_alerts_require_opt_in_and_are_scoped_to_refresh_outcomes(client, monkey
     assert alerts[0]["event_type"] == "refresh_failed"
     assert alerts[0]["source_refresh_id"] == refresh.json()["id"]
     assert "untrusted provider detail" not in str(alerts)
+    assert alerts[0]["trigger"]["source_key"] == DEFINITION.key
+    assert alerts[0]["trigger"]["freshness_status"] == "refresh_failed"
+    assert alerts[0]["trigger"]["error_code"] == "ConnectionError"
+    assert alerts[0]["trigger"]["quarantine_references"] == {
+        "count": 0, "curated_record_ids": [], "contains_record_content": False,
+    }
+    trace = client.get(f"/api/research/source-refreshes/{refresh.json()['id']}")
+    assert trace.status_code == 200
+    assert trace.json()["id"] == refresh.json()["id"]
     marked = client.patch(f"/api/research/alerts/{alerts[0]['id']}/read")
     assert marked.json()["status"] == "read"
 
@@ -70,3 +79,6 @@ def test_quarantine_alert_is_deterministic(client, override_db_session):
     assert "1 curated outcome entered quarantine" in created[0].detail
     evaluate_refresh_alerts(override_db_session, refresh)
     assert override_db_session.query(AlertEvent).filter_by(source_refresh_id=refresh.id).count() == 1
+    alert = client.get("/api/research/alerts").json()[0]
+    assert alert["trigger"]["quarantine_references"]["count"] == 1
+    assert alert["trigger"]["quarantine_references"]["contains_record_content"] is False
