@@ -152,6 +152,9 @@ class ResearchCaseService:
             raise ValueError("Claim confidence must be between 0 and 1")
         if predicate == "relationship" and relationship_semantics not in RELATIONSHIP_SEMANTICS:
             raise ValueError("Relationship claims require precise supported semantics")
+        if predicate == "transition" and "signal_type" in object_value:
+            from app.research.transitions import validate_typed_transition
+            validate_typed_transition(subject_type, object_value)
         claim = EvidenceClaim(
             case_id=case_id,
             evidence_id=evidence_id,

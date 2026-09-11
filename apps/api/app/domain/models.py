@@ -511,7 +511,7 @@ class BusinessRelationship(Base):
     relationship_type: Mapped[str] = mapped_column(String(50))
     start_date: Mapped[date | None] = mapped_column(Date)
     end_date: Mapped[date | None] = mapped_column(Date)
-    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    active: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     confidence: Mapped[float] = mapped_column(Float, default=0)
     evidence_refs: Mapped[list[int]] = mapped_column(JSON, default=list)
 
