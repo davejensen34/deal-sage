@@ -1,0 +1,23 @@
+services:
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a unique URL-safe pilot database password}
+  migrate:
+    environment:
+      DATABASE_URL: postgresql+psycopg://dealsage:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/dealsage
+  api:
+    environment:
+      DATABASE_URL: postgresql+psycopg://dealsage:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/dealsage
+      DEPLOYMENT_ENVIRONMENT: pilot
+      DEMO_MODE: "false"
+      AUTH_MODE: oidc
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:?Set the Google OAuth client ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:?Set the Google OAuth client secret}
+      SESSION_SECRET: ${SESSION_SECRET:?Set a unique 32+ character SESSION_SECRET}
+      SESSION_COOKIE_SECURE: "true"
+      WEB_APP_URL: ${WEB_APP_URL:?Set the HTTPS pilot URL}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:?Set the HTTPS Google callback URL}
+      CORS_ORIGINS: ${WEB_APP_URL:?Set the HTTPS pilot URL}
+      # Retain the explicit loopback/service hosts used by container health and
+      # proxy traffic while requiring the operator's public pilot hostname.
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:?Set the public pilot hostname},api,127.0.0.1

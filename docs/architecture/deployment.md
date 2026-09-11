@@ -12,6 +12,8 @@ Run `docker compose up --build` on one modest Linux host. Compose starts Postgre
 
 Direct API development now requires `cd apps/api && alembic upgrade head` before starting Uvicorn. Schema creation is not an application-startup side effect.
 
+The base Compose file deliberately retains local-development defaults. A pilot uses `docker-compose.pilot.yml`, whose required secrets and HTTPS/host settings are independently enforced by application startup. Security headers, trusted-proxy boundaries, container health checks, dynamic internal DNS, CI stack boot, vulnerability checks, and measured performance budgets are documented in `docs/deployment/pilot-hardening.md`.
+
 Process liveness is available without authentication at `/live`. Detailed database, schema, evidence-storage, recent failure/cost, and audit readiness is restricted to operator and administrator roles and documented in `docs/deployment/pilot-operations.md`. These local aggregates introduce no telemetry vendor or recurring service.
 
 ## Future enterprise deployment

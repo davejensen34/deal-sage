@@ -18,6 +18,7 @@ services:
     build: ./apps/api
     environment:
       DATABASE_URL: postgresql+psycopg://dealsage:dealsage-local@postgres:5432/dealsage
+      DEPLOYMENT_ENVIRONMENT: ${DEPLOYMENT_ENVIRONMENT:-development}
       DEMO_MODE: "true"
       AUTH_MODE: ${AUTH_MODE:-demo}
       SESSION_SECRET: ${SESSION_SECRET:-development-only-compose-session-secret}
@@ -30,6 +31,8 @@ services:
       ALLOWED_EMAILS: ${ALLOWED_EMAILS:-}
       ALLOWED_DOMAINS: ${ALLOWED_DOMAINS:-}
       CORS_ORIGINS: http://localhost:3000
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,api,testserver}
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-*}
       MODEL_PROVIDER: ${MODEL_PROVIDER:-disabled}
       WEB_SEARCH_PROVIDER: ${WEB_SEARCH_PROVIDER:-disabled}
       WEB_SEARCH_MAX_RESULTS: ${WEB_SEARCH_MAX_RESULTS:-5}
@@ -45,8 +48,10 @@ services:
       AI_STORE_PROVIDER_RESPONSES: ${AI_STORE_PROVIDER_RESPONSES:-false}
     depends_on: {migrate: {condition: service_completed_successfully}}
     volumes: ["evidence-data:/app/data/evidence"]
+    healthcheck: {test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/live', timeout=2)"], interval: 5s, timeout: 3s, retries: 10, start_period: 5s}
   web:
     build: ./apps/web
     ports: ["3000:80"]
-    depends_on: [api]
+    depends_on: {api: {condition: service_healthy}}
+    healthcheck: {test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/live"], interval: 5s, timeout: 3s, retries: 10, start_period: 5s}
 volumes: {postgres-data: {}, evidence-data: {}}

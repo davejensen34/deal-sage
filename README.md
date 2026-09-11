@@ -59,6 +59,8 @@ The [pilot recovery guide](docs/deployment/pilot-recovery.md) provides consisten
 
 Open `http://localhost:3000`. Everything runs on one host; no managed service is required.
 
+The base stack is for local development. Before a pilot deployment, use the required-secret and HTTPS validation overlay described in the [pilot hardening guide](docs/deployment/pilot-hardening.md).
+
 ## Optional AI summary
 
 Set either `MODEL_PROVIDER=openai` with `OPENAI_API_KEY`, or `MODEL_PROVIDER=anthropic` with `ANTHROPIC_API_KEY`. Models and strict request, output, call, and cost ceilings are configurable in the root `.env`. DealSage works with `MODEL_PROVIDER=disabled`, and AI never determines authoritative scores or workflow state. Live calls are explicit and are never part of the automated test suite; see the [AI strategy](docs/architecture/ai-strategy.md).

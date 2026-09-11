@@ -2,6 +2,7 @@ import logging, uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app.auth.routes import router as auth_router
 from app.api.routes import router
 from app.core.config import get_settings
@@ -13,6 +14,7 @@ logging.basicConfig(level=logging.INFO, format='{"level":"%(levelname)s","messag
 settings=get_settings(); app=FastAPI(title="DealSage API",version="0.1.0",description="Evidence-backed ownership transition research")
 app.add_middleware(SessionMiddleware,secret_key=settings.session_secret,session_cookie="dealsage_session",same_site="lax",https_only=settings.session_cookie_secure,max_age=60*60*12)
 app.add_middleware(CORSMiddleware,allow_origins=settings.cors_origin_list,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(settings.allowed_host_set))
 
 
 @app.get("/live", include_in_schema=False)
