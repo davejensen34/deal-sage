@@ -60,3 +60,5 @@ Before closing a milestone:
 5. Ensure the closing pull request links its GitHub Issue and includes the documentation changes, then close the GitHub milestone only after the pull request passes validation and merges.
 
 CI can validate repository contents, but it cannot prove that narrative product status and GitHub milestone state are semantically aligned. The engineer or agent closing the milestone owns that reconciliation.
+
+Issue #130: the approved three-call analysis attempt stopped at the provider input-count gate before generation. Zero model analyses or promotions occurred; the failure and five-cent reservation are retained. All 295 backend/API tests pass for the one-shot execution increment. Live quality and human value remain unmeasured; another attempt requires a new recorded decision.
