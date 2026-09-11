@@ -12,6 +12,8 @@ Run `docker compose up --build` on one modest Linux host. Compose starts Postgre
 
 Direct API development now requires `cd apps/api && alembic upgrade head` before starting Uvicorn. Schema creation is not an application-startup side effect.
 
+Process liveness is available without authentication at `/live`. Detailed database, schema, evidence-storage, recent failure/cost, and audit readiness is restricted to operator and administrator roles and documented in `docs/deployment/pilot-operations.md`. These local aggregates introduce no telemetry vendor or recurring service.
+
 ## Future enterprise deployment
 
 The same components can move to Azure, AWS, or GCP with managed PostgreSQL, S3-compatible storage, another standards-compliant OIDC provider, split workers, and OpenTelemetry export. Add autoscaling or Kubernetes only in response to measured demand.

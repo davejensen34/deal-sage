@@ -23,6 +23,7 @@ from app.research.sources.utah import UTAH_BEL_DEFINITION
 from app.storage.local import LocalEvidenceStorage
 from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_export_csv, candidate_export_record, export_envelope
 from app.services.workflow_effectiveness import workflow_effectiveness
+from app.ops.health import operational_readiness
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -39,6 +40,14 @@ def owner_key(identity: Identity) -> str:
 
 @router.get("/health")
 def health(): return {"status":"ok"}
+
+
+@router.get("/operations/readiness")
+def readiness(
+    db: Session = Depends(get_db),
+    _identity: Identity = Depends(require_permission("view_operations")),
+):
+    return operational_readiness(db, settings)
 
 
 @router.get("/research/sources")

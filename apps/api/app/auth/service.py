@@ -24,10 +24,10 @@ class Identity:
 ROLE_PERMISSIONS = {
     "viewer": frozenset(),
     "analyst": frozenset({"personalize", "review", "export"}),
-    "operator": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai"}),
-    "administrator": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai", "administer_users"}),
+    "operator": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai", "view_operations"}),
+    "administrator": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai", "view_operations", "administer_users"}),
     # Demo is visibly non-production but retains the complete local product tour.
-    "demo": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai", "administer_users"}),
+    "demo": frozenset({"personalize", "review", "export", "operate_sources", "execute_ai", "view_operations", "administer_users"}),
 }
 
 

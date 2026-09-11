@@ -7,11 +7,18 @@ from app.api.routes import router
 from app.core.config import get_settings
 from app.core.database import SessionLocal
 from app.services.seed import seed_database
+import app.ops.telemetry  # noqa: F401 -- registers audit rollback instrumentation.
 
 logging.basicConfig(level=logging.INFO, format='{"level":"%(levelname)s","message":"%(message)s"}')
 settings=get_settings(); app=FastAPI(title="DealSage API",version="0.1.0",description="Evidence-backed ownership transition research")
 app.add_middleware(SessionMiddleware,secret_key=settings.session_secret,session_cookie="dealsage_session",same_site="lax",https_only=settings.session_cookie_secure,max_age=60*60*12)
 app.add_middleware(CORSMiddleware,allow_origins=settings.cors_origin_list,allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+
+
+@app.get("/live", include_in_schema=False)
+def live():
+    """Process liveness intentionally reveals no dependency or configuration state."""
+    return {"status": "alive"}
 
 @app.middleware("http")
 async def request_context(request:Request,call_next):

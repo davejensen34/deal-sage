@@ -18,6 +18,7 @@ DealSage is an open-source, evidence-backed business ownership intelligence and 
 - Signal-first, business-first, and hybrid research cases with traceable evidence, claims, inferences, contradictions, frontier questions, budgets, and stop reasons
 - Replayable raw-to-curated acquisition with field lineage, quarantine, and bounded Colorado and Texas source adapters
 - Credential-free demo identity plus provider-neutral pilot OIDC with Google as the initial provider
+- Public process liveness plus role-limited aggregate pilot readiness, cost, failure, storage, and audit visibility
 - OpenAPI at `http://localhost:8000/docs`
 
 ## Run locally (SQLite)
@@ -53,6 +54,8 @@ docker compose up --build
 Compose applies the database migration as a one-shot prerequisite before the API starts. Existing early DealSage volumes are adopted only when their tables and missing columns match the recognized additive legacy shape; unknown partial schemas fail closed. Back up the database and evidence volume before any pilot upgrade.
 
 The [pilot recovery guide](docs/deployment/pilot-recovery.md) provides consistent backup and isolated restore verification for both durable stores. A backup is not considered usable until every restored database-to-artifact reference passes its byte-size and SHA-256 checks.
+
+`GET /live` provides content-free process liveness. Operators and administrators can inspect aggregate dependency, failure, recorded-cost, and audit readiness in Settings; see the [pilot operations guide](docs/deployment/pilot-operations.md).
 
 Open `http://localhost:3000`. Everything runs on one host; no managed service is required.
 
