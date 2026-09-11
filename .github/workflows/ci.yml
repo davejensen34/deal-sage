@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12", cache: pip}
-      - run: pip install -e '.[dev]'
+      - run: pip install -e '.[dev,ai]'
       - run: pytest -q
       - name: Validate migrations from empty database
         env: {DATABASE_URL: "sqlite:///./ci-migration.db", DEMO_MODE: "false"}
