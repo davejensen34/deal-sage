@@ -70,14 +70,14 @@ jobs:
       # which Compose otherwise uses to derive image names.
       - run: docker build -t dealsage-api:audit apps/api
       - run: docker build -t dealsage-web:audit apps/web
-      - uses: aquasecurity/trivy-action@0.33.1
+      - uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: dealsage-api:audit
           format: table
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           exit-code: "1"
-      - uses: aquasecurity/trivy-action@0.33.1
+      - uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: dealsage-web:audit
           format: table
