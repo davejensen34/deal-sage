@@ -46,9 +46,9 @@ All 272 backend/API tests passed. Tests include arithmetic with false positives/
 
 The small, constructed cohort validates engineering behavior. It is neither a representative sample nor calibrated live precision. Prior negative live results and deferred Issue #92 remain unchanged.
 
-## Proposed source preflight — approval required
+## Approved source preflight — September 11, 2026
 
-Protocol ID: `m7-source-preflight-v1`. This is a proposal, not approval or an executable unattended job. Approval would authorize only the following initial discovery/preflight envelope, not model analysis or candidate promotion.
+Protocol ID: `m7-source-preflight-v1`. Dave Jensen explicitly approved this source-preflight envelope in the current development conversation after PR #133. Approval covers only the following initial discovery/preflight envelope, not model analysis or candidate promotion.
 
 | Slot | State | Signal | Origin | Initial query |
 | --- | --- | --- | --- | --- |
@@ -71,6 +71,35 @@ Stop when the ceilings are reached, a cost cannot be bounded, access restriction
 
 Only after preflight: freeze exact packets, expected assessment dimensions, proposed provider/model versions, token/call/cost ceilings and a fresh approval identifier before any model-analysis evaluation. That second phase requires separate approval. Record each human disposition and measured analyst time; do not infer trust or usefulness from a model score. A representative precision claim requires a larger approved sampling design beyond these eight exploratory slots.
 
+## Source-preflight outcome — September 11, 2026
+
+The approved run stopped after 11 successful web-search requests and 11 HTTP requests, including six robots checks and five page requests. Four pages landed with matching stored SHA-256 hashes and reproducible local text extraction. One was subsequently excluded for an unresolved publisher-access contract. Three packets remain eligible for consideration in a separately approved analysis phase; this is not three qualified opportunities. No registry requests, Utah BEL lookup, separate model-analysis calls, candidate promotions or external messages occurred. All eight research cases were stopped and the local runner was closed against further calls.
+
+| Slot | Searches | HTTP requests | Observed result and remaining uncertainty |
+| --- | ---: | ---: | --- |
+| CO possible death | 1 | 2 | A publisher-hosted obituary landed, but its retained content identified a Legacy-powered page. The hostname-only exclusion missed that publisher relationship. Excluded from further evaluation pending access review; no replacement search or analysis. |
+| UT retirement | 2 | 2 | Initial results focused on retirement benefits. One publisher refinement found an executive retirement clue; retrieval failed the capability-field content guard. The clue remains useful discovery metadata, not verified ownership evidence. |
+| UT succession | 2 | 2 | A company announcement describes CEO retirement and succession at a privately held family business. It reports over 4,000 team members, a useful size clue, but not audited fit. Named executives are not established owners. The June 2024 announcement is old; follow-up discovery found later leadership sources but they were not retrieved. |
+| CO ownership transfer | 1 | 0 | Statutes, filing forms and regulatory guidance; no specific business transaction established. |
+| TX founder exit | 1 | 2 | A reported founder/executive departure is a real transition clue, but the retained article explicitly describes a publicly traded company. Texas operations do not establish a local private-business target. |
+| UT dissolution | 2 | 0 | Statutes and a public-notice portal remained non-entity results after one refinement. Administrative login was not accessed. |
+| TX restructuring | 1 | 1 | Company announcement discovered; robots disallowed retrieval. No content retained and no access workaround attempted. |
+| CO leadership change | 1 | 2 | A company announcement describes a conditional CEO transition and lists a North Carolina address. Colorado fit is not established; neither executive ownership nor completion of the transition is proven. |
+
+The three refinements were limited to retained clues: a Utah publisher for an owner-retirement announcement, the Utah public-notice portal for a named dissolution, and the succession company's later leadership status. Queries, returned ranks, skip rationales, access failures and packet references are retained locally. Unused request allowances were not spent to fill the quota or replace misses. No official registry request was justified for the retained unresolved/out-of-fit packets; absence of a lookup is not a negative registry finding.
+
+Search-associated provider usage estimates total **$0.153653**. Conservative reservations totaled **$1.32**, with at most $0.24 reserved in any slot, beneath the $2 / $0.25 ceilings. Reservations were persisted before each request and never released. The returned search model was `gpt-5-mini-2025-08-07`; each request disabled SDK retries and bounded tool calls and output. Estimates use reported input/output tokens and one web-search fee per request at the [model rates](https://developers.openai.com/api/docs/models/gpt-5-mini) and [tool pricing](https://developers.openai.com/api/docs/pricing) checked September 11. Actual invoiced spend is unavailable; reservations and estimates are not billing statements.
+
+The ignored Windows packet record is `.local-validation/m7-preflight/packets.json`, SHA-256 `ae00203633d2f5e7bcf35c9160d44da814ea0f0f6949b79e9ac0296ad3032eb9`. It references exact raw-artifact and extracted-text hashes, case/evidence lineage, observed publication/event dates, retrieval timestamps, parser version and separately labeled agent interpretations. Raw pages, local database IDs, personal source details and credentials are not published in this repository. This Windows corpus remains separate from the historical Mac corpus.
+
+Two acquisition limitations remain explicit under #130: hostname matching alone did not identify a white-label publisher, and robots response bytes were not retained, so those access decisions cannot be fully replayed offline. The retirement page also demonstrates that a whole-response capability-field rejection can prevent use of otherwise useful article content. These are access/sanitation gaps, not reasons to label the discovered business clues false. Source-policy review and safe extraction need a separate implementation decision before another acquisition run.
+
+## Proposed next analysis envelope — not authorized
+
+Use only the three frozen eligible packets above, retaining the public-company and geographic mismatch cases as negative controls. Suggested scope: one evidence-bounded evaluation per packet using OpenAI `gpt-5-mini-2025-08-07`, three calls total, no tools/search/retrieval, no retries, at most 20,000 input tokens and 2,000 output tokens per call, at most $0.05 per packet / $0.15 total reserved before execution. Fail before a call if its full serialized input cannot fit the bounds. No automatic promotion or authoritative score changes.
+
+The expected dimensions are origin, entity identity, relationship semantics, relationship timing, operating status, contradictions and research disposition, plus explicit state/private-business fit and source age. Agent preflight expectations are separate from source assertions and are not human usefulness labels: the succession packet supports management succession but leaves ownership unresolved; the founder-exit packet fails private-company fit; the leadership packet does not establish Colorado fit. Models should extract useful clues and missing corroboration while retaining these limits. Ownership, financial attractiveness and present operating status must not be invented. The exact serialized requests, versioned evaluation contract and fresh approval identifier still must be frozen before execution. Human disposition and time measurement remain separate later observations.
+
 ## Milestone decision still needed
 
-The offline implementation and metrics are validated. Live precision, reproducible coverage and observed analyst value are not. Issue #130 and Milestone 7 stay open until the user approves the next bounded evaluation or explicitly accepts an offline-foundation closeout with these limitations. This record does not silently waive those gates.
+The offline implementation and metrics are validated, and the approved source preflight is complete. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open; a later model-analysis phase, acquisition fixes or a scope-closeout decision require explicit direction. This record does not silently waive those gates.
