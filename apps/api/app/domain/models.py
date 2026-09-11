@@ -674,6 +674,7 @@ class User(TimestampMixin, Base):
     email: Mapped[str | None] = mapped_column(String(320))
     display_name: Mapped[str] = mapped_column(String(160))
     avatar_url: Mapped[str | None] = mapped_column(String(500))
+    role: Mapped[str] = mapped_column(String(30), default="viewer", index=True)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
     last_login_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     __table_args__ = (UniqueConstraint("provider", "subject", name="uq_users_provider_subject"),)

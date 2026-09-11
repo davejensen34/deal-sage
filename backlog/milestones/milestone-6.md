@@ -8,11 +8,11 @@ Harden the single-box product for dependable multi-user pilot operation without 
 
 ## Workstreams
 
-- #114 makes database upgrades explicit and safe for empty, versioned, and recognized legacy deployments (implemented and validated; PR pending).
-- #115 enforces a minimal single-organization pilot role model at privileged API boundaries.
-- #116 proves database and evidence backup/restore procedures and retention guidance.
-- #117 exposes aggregate-safe schema, storage, audit, source/model health, and cost visibility.
-- #118 establishes a measured single-host deployment and performance baseline.
+- #114 makes database upgrades explicit and safe for empty, versioned, and recognized legacy deployments (merged in PR #120).
+- #115 enforces viewer/analyst/operator/administrator permissions, audited denials, explicit user lifecycle changes, and same-origin mutation protection (implemented and validated; PR pending).
+- #116 proves database/evidence backup and separate-target restore, then records retention/deletion, RPO/RTO, secret rotation, access recovery, and release rollback boundaries.
+- #117 separates liveness/readiness and exposes role-limited, aggregate-safe schema, storage, audit, failure, source/model health, and cost visibility.
+- #118 removes insecure pilot defaults, hardens proxy/headers/dependency health, boots the full stack in CI, records bounded vulnerability checks, and establishes a measured performance baseline.
 - #119 reconciles validation and closes the milestone.
 
 ## Definition of done

@@ -27,6 +27,16 @@ Use either or both allowlist settings. Leaving both empty permits any identity a
 
 Login starts at `/api/auth/login`; the callback validates the provider response, creates or refreshes a DealSage user by `(provider, subject)`, and establishes a 12-hour server-signed session. Logout clears the DealSage session. Provider tokens are not persisted, and DealSage requests no Google API permissions.
 
+New OIDC users start with read-only `viewer` access even when their identity is allowlisted. From the API container, a local operator may grant the smallest required role by stable provider subject:
+
+```bash
+python -m app.ops.users --provider google --subject GOOGLE_SUBJECT --role analyst
+```
+
+Available persisted roles are `viewer`, `analyst`, `operator`, and `administrator`; their permission contract is recorded in `docs/decisions/ADR-012-single-organization-pilot-authorization.md`. The same command supports `--deactivate` and `--activate`, and every access change is audited. Keep at least one tested administrator recovery path through local host access; DealSage intentionally has no public role-administration endpoint.
+
+Cookie-authenticated `POST`, `PUT`, `PATCH`, and `DELETE` requests require the `X-DealSage-CSRF: 1` custom header. The bundled web client supplies it. API clients must do the same; this header is not a secret and does not replace the deployment origin allowlist.
+
 OIDC startup fails closed when client credentials or a unique session secret are missing. Authentication errors return a branded, non-sensitive login message. Google behavior is covered by integration tests and was validated against the live provider on localhost on September 4, 2026. Every deployed callback host still requires its own provider-console configuration and live smoke test.
 
 ## Local Google validation with Docker Compose
