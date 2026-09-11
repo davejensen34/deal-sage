@@ -17,7 +17,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 - Milestone 5 — Opportunity Intelligence Workflows is complete as of September 10, 2026. Issues #95–#100 delivered deterministic score provenance, saved research and watchlists, bounded manual refresh, gated in-app alerts, provenance-safe exports, and reconciled closeout. Autonomous enrichment remains gated.
 - Milestone 5.1 — Workflow Traceability and Effectiveness is complete as of September 10, 2026. Issues #107, #108, and #110 closed the two post-audit gaps without rewriting Milestone 5 history or activating Milestone 6.
 - Milestone 6 — Operational Productization is complete as of September 11, 2026. Issues #114–#119 delivered safe schema upgrades, bounded pilot authorization, proven recovery, aggregate operational visibility, and measured deployment hardening.
-- No milestone is active. Milestone 7 remains proposed and requires explicit approval.
+- The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented and undergoing retrospective process repair and PR review in Issue #126. See `milestones/milestone-6.1.md`. No new GitHub milestone is active; Milestone 7 remains proposed and requires explicit approval.
 - `docs/project/current-state.md` is the detailed implementation and validation handoff.
 
 ## Forward sequence

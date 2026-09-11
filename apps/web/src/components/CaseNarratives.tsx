@@ -1,5 +1,6 @@
 import {AlertTriangle, CheckCircle2, Search} from 'lucide-react';
 import {ModelProposal,ProposalReview} from './ProposalReview';
+import {DiscoveryLead,DiscoveryLeads} from './DiscoveryLeads';
 
 export type CaseNarrative={
   id:number;origin_strategy:string;status:string;stop_reason:string|null;
@@ -12,6 +13,7 @@ export type CaseNarrative={
   steps:{number:number;action:string;provider:string|null;model:string|null;status:string;cost_cents:number}[];
   conclusion:{analyst:string;outcome:string;statement:string;status:string}|null;
   model_proposals:ModelProposal[];
+  discovery_leads?:DiscoveryLead[];
 };
 
 const label=(value:string)=>value.replaceAll('_',' ');
@@ -26,6 +28,8 @@ export function CaseNarratives({cases}:{cases:CaseNarrative[]}){
           {item.hypothesis&&<p><b>Hypothesis:</b> {item.hypothesis.subject} → {item.hypothesis.candidate} ({label(item.hypothesis.direction)})</p>}
           {item.confidence&&<div className="case-scores">{[['Business identity',item.confidence.business_identity],['Owner relationship',item.confidence.owner_relationship],['Transition identity',item.confidence.transition_identity],['Operating status',item.confidence.operating_status]].map(([name,value])=><span key={name as string}><small>{name}</small><b>{value}%</b></span>)}</div>}
           <p><b>Research activity:</b> {item.searches.length} searches · {item.evidence.length} evidence items · {item.steps.length} bounded steps · {item.frontier.length} frontier questions</p>
+          {!!item.discovery_leads?.length&&<DiscoveryLeads caseId={item.id} open={item.status==='open'} leads={item.discovery_leads}/>}
+          {item.frontier.length>0&&<section><h3>Follow-up questions</h3>{item.frontier.map((question,index)=><p key={index}><b>{question.question}</b> · priority {question.priority} · {label(question.status)}<br/>{question.rationale}</p>)}</section>}
           {item.conflicts.map((conflict,index)=><p className="case-conflict" key={`${conflict.type}-${index}`}><AlertTriangle/>{conflict.rationale}</p>)}
           {item.model_proposals.length>0&&<div className="proposal-list"><h3>Model proposals requiring human judgment</h3>{item.model_proposals.map(proposal=><ProposalReview proposal={proposal} key={proposal.id}/>)}</div>}
           {item.conclusion?<div className="case-conclusion"><CheckCircle2/><div><b>Analyst · {label(item.conclusion.outcome)}</b><p>{item.conclusion.statement}</p><small>{item.conclusion.analyst} · {item.conclusion.status}</small></div></div>:<p className="muted">No analyst conclusion recorded. A DealSage score is not a human decision.</p>}

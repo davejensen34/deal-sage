@@ -2,7 +2,13 @@
 
 ## Milestone status
 
-Milestones 5, 5.1, and 6 are complete. No milestone is active. Milestone 7 remains proposed and requires explicit approval.
+Milestones 5, 5.1, and 6 are complete. The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented and undergoing process repair and PR review in Issue #126. No new GitHub milestone has been activated. Milestone 7 remains proposed and requires explicit approval.
+
+## Milestone 6.1 local implementation
+
+Research cases expose retained search clues with attributed relevance, discovery queries, evidence references, access state, deterministic research-priority factors, and next questions. Unverified clues remain useful without being counted as established ownership or opportunity confidence. Analysts can queue an audited question into the existing frontier; this performs no external call, source-access approval, proposal acceptance, or candidate promotion. Stopped cases remain stopped. This is an actionable discovery layer, not a validated autonomous recommendation engine.
+
+The Windows six-slot exercise made 13 searches and 10 model calls at approximately $0.23 estimated cost; nine web documents were retained and no opportunity was promoted. The follow-up implementation makes no additional paid calls. Connector write access is restored; Issue #126 explicitly records that local implementation preceded Issue creation and requires PR validation before closure. The scope and validation record is `backlog/milestones/milestone-6.1.md`. The historical Mac corpus remains separate from these local Windows cases.
 
 ## What works and has been validated
 
@@ -69,7 +75,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Await explicit product direction before activating Milestone 7. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+Finish publication/review of the approved Milestone 6.1 follow-up before considering Milestone 7. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 

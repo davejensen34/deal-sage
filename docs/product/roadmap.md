@@ -50,6 +50,10 @@ Complete as of September 10, 2026. This bounded follow-up made refresh alerts se
 
 Complete as of September 11, 2026. The single-box pilot now gates startup on explicit schema upgrades, enforces viewer/analyst/operator/administrator permissions, proves coupled database/evidence recovery in an isolated target, exposes role-limited aggregate readiness, and fails closed on insecure pilot configuration. CI boots the full stack and blocks known fixed high/critical dependency or container findings. Measured representative operations remain far inside generous pilot regression budgets, so no queue, cache, vector store, Kubernetes, or other distributed infrastructure was introduced.
 
+### Milestone 6.1 — Discovery lead prioritization
+
+Approved September 11, 2026 as a bounded follow-up to Milestone 6; "6.1" is an agent-assigned working label, not a separately approved GitHub milestone. Expose uncertain search clues, explain research priority separately from opportunity confidence, and let analysts queue attributed follow-up questions through the existing planner. Issue #126 records the retrospective workflow repair and PR review of the already-existing local implementation. This does not reopen Milestone 6 or activate broader transition families. Financial enrichment, calibrated recommendation quality and autonomous execution remain future work.
+
 ### Subsequent milestone
 
 Milestone 7 — broader transition intelligence across retirement, succession, ownership transfer, founder exit, dissolution, and leadership change — remains proposed and requires explicit approval. It is gated by validated precision and sustainable source operations.
