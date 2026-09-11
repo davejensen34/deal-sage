@@ -24,6 +24,10 @@ GitHub Issue creation was attempted before implementation and denied with `403 R
 
 Observed limitation: the current OpenAI search adapter supplies generic relevance and `other` source type for the retained cohort. Discovery-query context remains useful, but this heuristic cannot meaningfully rank business attractiveness or semantic relevance from metadata the adapter does not retain. Model-assisted clue enrichment and evidence-backed recommendation quality remain separate work, not implied by passing plumbing tests. Retrieval failures from the operational script are retained in its private report; application access approval alone does not prove successful retrieval.
 
-## Deferred
+## Publication and review record
+
+[PR #127](https://github.com/davejensen34/deal-sage/pull/127) publishes the feature and corrected process record. The implementing agent's self-review checked authorization, same-case lineage, stopped-case refusal, serialized repeat selection, atomic audit/frontier persistence and absence of external dispatch or authoritative acceptance. This is not independent reviewer approval. GitHub Actions on the PR is the authoritative record for backend, frontend, Compose, dependency-audit and container-audit validation; merge remains conditional on all required checks succeeding. The Issue closes through the PR merge, never by retroactively asserting that the original workflow was followed.
+
+## Deferred scope
 
 This slice makes clues actionable within the planner; it does not deliver autonomous execution, proven recommendation precision, financial enrichment, or database-configurable acquisition limits. Those require separate bounded work. The generalized ResearchCase remains suitable for future use cases without weakening its evidence boundaries.

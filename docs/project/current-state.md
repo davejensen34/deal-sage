@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestones 5, 5.1, and 6 are complete. The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented and undergoing process repair and PR review in Issue #126. No new GitHub milestone has been activated. Milestone 7 remains proposed and requires explicit approval.
+Milestones 5, 5.1, and 6 are complete. The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented in PR #127, tracked by retrospective Issue #126. No new GitHub milestone has been activated. Milestone 7 remains proposed and requires explicit approval.
 
 ## Milestone 6.1 local implementation
 
@@ -75,7 +75,7 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Finish publication/review of the approved Milestone 6.1 follow-up before considering Milestone 7. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+PR #127 and Issue #126 record the discovery follow-up and its process repair. Await further product direction before expanding its scope or activating Milestone 7. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
