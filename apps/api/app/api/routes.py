@@ -24,6 +24,7 @@ from app.storage.local import LocalEvidenceStorage
 from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_export_csv, candidate_export_record, export_envelope
 from app.services.workflow_effectiveness import workflow_effectiveness
 from app.ops.health import operational_readiness
+from app.research.leads import discovery_leads, queue_lead
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -345,6 +346,7 @@ def research_case_narratives(db: Session = Depends(get_db)):
             "origin_strategy": case.origin_strategy,
             "status": case.status,
             "stop_reason": case.stop_reason,
+            "discovery_leads": discovery_leads(db, case.id),
             "hypothesis": {
                 "direction": resolution.direction,
                 "subject": resolution.subject_value,
@@ -391,6 +393,18 @@ def research_case_narratives(db: Session = Depends(get_db)):
             } if conclusion else None,
         })
     return {"cases": narratives}
+
+
+@router.post("/research/cases/{case_id}/discovery-leads/{candidate_id}/follow-up")
+def queue_discovery_followup(
+    case_id: int, candidate_id: int, db: Session = Depends(get_db),
+    identity: Identity = Depends(require_permission("review")),
+):
+    try:
+        item = queue_lead(db, case_id, candidate_id, user_id=identity.user_id, actor=identity.display_name)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return {"frontier_id": item.id, "status": item.status, "external_calls": 0}
 
 
 @router.post("/research/model-proposals/{proposal_id}/dispositions")

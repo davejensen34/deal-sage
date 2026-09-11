@@ -58,7 +58,7 @@ def test_retrieval_failure_is_recorded_without_sensitive_detail(override_db_sess
 def test_local_evidence_storage_refuses_conflicting_rewrite(tmp_path:Path):
     storage=LocalEvidenceStorage(tmp_path)
     storage.save("raw/key",b"original")
-    assert storage.save("raw/key",b"original").endswith("raw/key")
+    assert Path(storage.save("raw/key",b"original")) == tmp_path / "raw" / "key"
     try:
         storage.save("raw/key",b"changed")
     except ValueError as exc:
