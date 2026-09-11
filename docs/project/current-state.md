@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Milestones 5, 5.1, and 6 are complete. The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented in PR #127, tracked by retrospective Issue #126. No new GitHub milestone has been activated. Milestone 7 remains proposed and requires explicit approval.
+Milestones 5, 5.1, and 6 are complete. The approved discovery lead prioritization follow-up (working label Milestone 6.1) is implemented in PR #127, tracked by retrospective Issue #126. Milestone 7 was explicitly approved September 11, 2026 and is in progress under GitHub milestone 12 and Issues #128–#130. Its first increment provides versioned transition research policies through an authenticated read-only API. Typed promotion and analyst UI integration remain Issue #129; comparative evaluation and closeout remain Issue #130. Approval does not establish live precision or authorize new external calls.
 
 ## Milestone 6.1 local implementation
 
