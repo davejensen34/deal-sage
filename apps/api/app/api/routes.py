@@ -26,6 +26,7 @@ from app.services.workflow_effectiveness import workflow_effectiveness
 from app.ops.health import operational_readiness
 from app.research.leads import discovery_leads, queue_lead
 from app.domain.transition_policies import transition_policy_catalog
+from app.research.transitions import case_transitions
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -354,6 +355,7 @@ def research_case_narratives(db: Session = Depends(get_db)):
             "status": case.status,
             "stop_reason": case.stop_reason,
             "discovery_leads": discovery_leads(db, case.id),
+            "transitions": case_transitions(db, case.id),
             "hypothesis": {
                 "direction": resolution.direction,
                 "subject": resolution.subject_value,

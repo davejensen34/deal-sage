@@ -37,10 +37,12 @@ New signal types must enter the existing evidence and case-resolution path. They
 
 ## First increment and remaining gaps
 
-Issue #128 provides `transition-policy-v1` research guidance at `GET /api/research/transition-policies`. The catalog does not yet enforce promotion policy or add source integrations. Existing stored signal values remain unchanged; unknown values do not silently resolve to a death policy. `ownership_change` is the canonical transfer type from ADR-004. Estate transition and other future types need their own reviewed policies.
+Issue #128 provides `transition-policy-v1` research guidance at `GET /api/research/transition-policies`. Issue #129 integrates the catalog into typed claims, case narratives and promotion guards; no new source integrations are added. Existing stored signal values remain unchanged; unknown values do not silently resolve to a death policy. `ownership_change` is the canonical transfer type from ADR-004. Estate transition and other future types need their own reviewed policies.
 
-The existing queue bridge still assumes mortality, former ownership and Utah-specific follow-up. Issue #129 owns its replacement. Live sources, calibrated recommendation quality, comprehensive ownership coverage, and automated acquisition are not delivered by the catalog. Issue #92 remains deferred; prior research history and negative results are preserved.
+Issue #129 replaces mortality-only and Utah-specific promotion assumptions with typed evidence and unknown current activity. Latest analyst acceptance, same-case lineage and non-name identity anchors are required; unresolved entity/owner cases and contradictions remain in research. Live sources, calibrated recommendation quality, comprehensive ownership coverage, and automated acquisition are not delivered by the catalog. Issue #92 remains deferred; prior research history and negative results are preserved.
 
 ## Observed validation
 
 Issue #128: Windows backend/API suite passed with 222 tests, run from `apps/api`. The catalog's immutable guidance, unknown-type rejection, read-only route and OIDC authentication boundary were exercised offline. No UI changed and no external research/model calls were made. CI and merge evidence belong to the linked PR; this does not close Milestone 7.
+
+Issue #129: 265 backend/API tests and 14 frontend tests passed on Windows. The production build passed with its existing large-chunk warning. A separate fictional SQLite database was migrated and served with providers disabled for rendered browser inspection of leadership-change evidence, event/publication timing, ownership limitations, and model/analyst separation. Migration tests preserved historical activity values and refused a downgrade that would erase unknowns. No existing research database was used for fixture validation; external research/model spend was $0. Issue #130 evaluation and milestone closeout remain open.

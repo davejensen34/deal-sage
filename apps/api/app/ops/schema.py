@@ -124,6 +124,11 @@ def upgrade_database(database_url: str) -> str:
             detail = ", ".join(f"{table}.{column}" for table, column in sorted(unexpected))
             raise LegacySchemaError(f"Unrecognized missing columns; refusing to stamp schema: {detail}")
         _repair_recognized_legacy_columns(connection, missing)
+        # Legacy schemas also need the explicit unknown-activity state from M7.
+        active = next(c for c in inspect(connection).get_columns("business_relationships") if c["name"] == "active")
+        if not active["nullable"]:
+            with Operations(MigrationContext.configure(connection)).batch_alter_table("business_relationships") as batch:
+                batch.alter_column("active", existing_type=sa.Boolean(), nullable=True)
         remaining = missing_model_columns(connection)
         if remaining:
             detail = ", ".join(f"{table}.{column}" for table, column in sorted(remaining))

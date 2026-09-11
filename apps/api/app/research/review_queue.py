@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.domain.models import (
@@ -12,6 +12,7 @@ from app.domain.models import (
     BusinessRelationship,
     CandidateMatch,
     CaseEvidence,
+    ClaimContradiction,
     Evidence,
     EvidenceClaim,
     ModelProposal,
@@ -23,6 +24,8 @@ from app.domain.models import (
     TransitionSignal,
 )
 from app.services.candidate_scoring import record_score_assessment
+from app.domain.transition_policies import POLICY_VERSION, transition_policy
+from app.research.transitions import event_date_for, signal_type_for, transition_view, validate_typed_transition
 
 
 AUTHORITY_MULTIPLIERS = {
@@ -54,29 +57,82 @@ class ResearchReviewQueueService:
     def __init__(self, db: Session):
         self.db = db
 
-    def promote(self, spec: ReviewQueueSpec, *, analyst_name: str) -> CandidateMatch:
+    def promote(self, spec: ReviewQueueSpec, *, analyst_name: str, user_id: int | None = None) -> CandidateMatch:
+        if not analyst_name.strip():
+            raise ValueError("Queue promotion requires an attributed analyst")
+        # Serialize promotions on SQLite and PostgreSQL without changing the case.
+        self.db.execute(update(ResearchCase).where(ResearchCase.id == spec.case_id)
+                        .values(status=ResearchCase.status))
         case = self.db.get(ResearchCase, spec.case_id)
+        if case is not None:
+            self.db.refresh(case)
         proposal = self.db.get(ModelProposal, spec.accepted_proposal_id)
         if case is None or proposal is None or proposal.case_id != case.id:
             raise ValueError("Queue promotion requires a same-case proposal")
         accepted = self.db.scalar(
             select(ModelProposalDisposition).where(
                 ModelProposalDisposition.proposal_id == proposal.id,
-                ModelProposalDisposition.decision == "accept",
-            )
+            ).order_by(ModelProposalDisposition.id.desc())
         )
-        if accepted is None or proposal.execution_outcome != "completed":
+        if accepted is None or accepted.decision != "accept" or proposal.execution_outcome != "completed":
             raise ValueError("Queue promotion requires an accepted completed proposal")
         if case.candidate_match_id:
             return self.db.get(CandidateMatch, case.candidate_match_id)
+        if case.status != "open":
+            raise ValueError("Queue promotion requires an open research case")
 
         owner_claim = self._claim(case.id, spec.owner_claim_id)
         transition_claim = self._claim(case.id, spec.transition_claim_id)
         subject_name = str(proposal.proposed_output.get("subject_name", "")).strip()
-        if not self._claim_names(owner_claim, subject_name) or not self._claim_names(transition_claim, subject_name):
-            raise ValueError("Queue proposal and source claims must identify the same person")
-        if owner_claim.relationship_semantics not in {"owner", "co_owner"}:
+        policy = transition_policy(signal_type_for(transition_claim))
+        if "signal_type" in transition_claim.object_value:
+            validate_typed_transition(transition_claim.subject_type, transition_claim.object_value)
+        if transition_claim.predicate != "transition" or transition_claim.subject_type != policy.subject_type:
+            raise ValueError("Queue transition claim must match its signal policy")
+        if owner_claim.predicate != "relationship" or owner_claim.relationship_semantics not in {"owner", "co_owner"}:
             raise ValueError("Queue promotion requires explicit owner-role source evidence")
+        if not self._claim_names(owner_claim, subject_name):
+            raise ValueError("Queue proposal and source claims must identify the same person")
+        if policy.subject_type != "business" and not self._claim_names(transition_claim, subject_name):
+            raise ValueError("Queue proposal and source claims must identify the same person")
+        business_name = str(owner_claim.object_value.get("business", "")).strip()
+        if not business_name or business_name.casefold() not in {spec.business_label.strip().casefold(), spec.doing_business_as.strip().casefold()}:
+            raise ValueError("Queue business must match the explicit owner claim")
+        owner_evidence = self.db.get(CaseEvidence, owner_claim.evidence_id)
+        transition_evidence = self.db.get(CaseEvidence, transition_claim.evidence_id)
+        for claim, evidence in ((owner_claim, owner_evidence), (transition_claim, transition_evidence)):
+            if evidence is None or evidence.case_id != case.id or claim.status != "asserted":
+                raise ValueError("Queue requires asserted same-case evidence claims")
+            if claim.id not in proposal.supported_claim_ids or evidence.id not in proposal.supported_evidence_ids:
+                raise ValueError("Queue claims and evidence must be retained in the accepted proposal")
+        # Co-located explicit role and event claims provide a business relationship
+        # anchor beyond a name. Across documents require the same business plus a
+        # non-name identifier. Entity events always need that explicit entity anchor.
+        same_business = str(transition_claim.object_value.get("business", "")).strip().casefold() == business_name.casefold()
+        if transition_claim.object_value.get("business") and not same_business:
+            raise ValueError("Transition evidence names a different business")
+        shared_identifier = any(
+            isinstance(owner_claim.object_value.get(key), str)
+            and owner_claim.object_value[key].strip()
+            and owner_claim.object_value[key].strip().casefold() == str(transition_claim.object_value.get(key, "")).strip().casefold()
+            for key in ("registration_number", "address")
+        )
+        same_document = owner_evidence.id == transition_evidence.id
+        if policy.subject_type == "business":
+            anchored = same_business and shared_identifier
+        else:
+            anchored = same_document or (same_business and shared_identifier)
+        if not anchored:
+            raise ValueError("Name-only matching is insufficient; retain a business and identity anchor")
+        conflicts = self.db.scalars(select(ClaimContradiction).where(
+            ClaimContradiction.case_id == case.id, ClaimContradiction.status == "open",
+        )).all()
+        if conflicts:
+            raise ValueError("Open contradictions require review; evidence remains investigable in the case")
+        view = transition_view(transition_claim, transition_evidence)
+        if view["event_status"] == "cancelled":
+            raise ValueError("Cancelled events remain research evidence, not transition candidates")
+        event_date = event_date_for(transition_claim)
 
         first_name, last_name = _split_person_name(subject_name)
         person = Person(first_name=first_name, last_name=last_name, aliases=[], state=spec.state)
@@ -86,7 +142,7 @@ class ResearchReviewQueueService:
             status="unknown",
             state=spec.state,
             jurisdiction=spec.state,
-            ownership_type="privately held; source-reported franchise ownership",
+            ownership_type="source-reported ownership; legal control unverified",
         )
         self.db.add_all([person, business])
         self.db.flush()
@@ -94,15 +150,17 @@ class ResearchReviewQueueService:
         relationship = BusinessRelationship(
             person_id=person.id,
             business_id=business.id,
-            relationship_type="former_owner",
-            active=False,
+            relationship_type=owner_claim.relationship_semantics,
+            active=None,
             confidence=_claim_score(owner_claim, 75) / 100,
             evidence_refs=[owner_claim.evidence_id],
         )
-        signal_source = self._source_for_evidence(self.db.get(CaseEvidence, transition_claim.evidence_id), spec.state)
+        signal_source = self._source_for_evidence(transition_evidence, spec.state)
         signal = TransitionSignal(
-            signal_type="possible_death",
-            published_name=subject_name,
+            signal_type=policy.signal_type,
+            published_name=business_name if policy.subject_type == "business" else subject_name,
+            possible_transition_date=event_date,
+            publication_date=transition_evidence.published_at.date() if transition_evidence.published_at else None,
             state=spec.state,
             business_clues=[spec.doing_business_as],
             source_id=signal_source.id,
@@ -123,16 +181,16 @@ class ResearchReviewQueueService:
             overall_candidate_confidence=min(owner_score, signal_score),
             status="needs_review",
             match_explanation=(
-                "An analyst accepted explicit source-reported ownership at the transition. "
-                "The local legal entity, successor, and current operating status remain unresolved."
+                f"An analyst accepted source-reported ownership and a {policy.label.lower()} clue. "
+                "This is a research candidate; current control, event completion and operating status require review."
             ),
             positive_signals=[
                 {"label": "Explicit owner statement", "impact": owner_score},
                 {"label": "Transition subject identified", "impact": signal_score},
             ],
             conflicting_signals=[],
-            missing_evidence=spec.missing_evidence,
-            recommended_next_action="Resolve the Utah legal entity, successor, and current local operating status.",
+            missing_evidence=list(dict.fromkeys(spec.missing_evidence + view["uncertainties"] + ["Current relationship activity is unknown."])),
+            recommended_next_action=" ".join(policy.review_questions + policy.temporal_questions + policy.ownership_limitations),
             last_researched_at=datetime.now(timezone.utc),
         )
         self.db.add(candidate)
@@ -176,9 +234,9 @@ class ResearchReviewQueueService:
                 assigned_user=analyst_name,
                 status="open",
                 analyst_notes=[{
-                    "note": "Promoted after accepted Milestone 4.7 proposal; unresolved fields remain explicit.",
+                    "note": f"Promoted under {POLICY_VERSION}; current activity remains unknown. Event status: {view['event_status']}.",
                     "author": analyst_name,
-                    "user_id": None,
+                    "user_id": user_id,
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 }],
                 decision_reason_codes=["accepted_evidence_bounded_proposal"],
@@ -193,14 +251,21 @@ class ResearchReviewQueueService:
             AuditEvent(
                 candidate_id=candidate.id,
                 actor=analyst_name,
+                user_id=user_id,
                 action="candidate_created_from_research",
                 after_state={
                     "status": candidate.status,
                     "research_case_id": case.id,
                     "proposal_id": proposal.id,
                     "disposition_id": accepted.id,
+                    "policy_version": POLICY_VERSION,
+                    "signal_type": policy.signal_type,
+                    "subject_type": policy.subject_type,
+                    "event_status": view["event_status"],
+                    "transition_claim_id": transition_claim.id,
+                    "owner_claim_id": owner_claim.id,
                 },
-                detail="Evidence-backed Utah case entered human review; no validation decision was made.",
+                detail="Evidence-backed transition entered human review; no validation decision was made.",
             )
         )
         self.db.commit()
