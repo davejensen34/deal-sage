@@ -15,3 +15,4 @@ coverage/
 apps/web/vite.config.js
 apps/web/vite.config.d.ts
 .local-validation/
+backups/
