@@ -41,3 +41,46 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker compose config --quiet
+      - run: docker compose up --build -d --wait
+      - name: Verify migration-gated stack
+        run: |
+          curl -fsS http://localhost:3000/live | jq -e '.status == "alive"'
+          curl -fsS http://localhost:3000/api/operations/readiness | jq -e '.status == "ready" and .dependencies.schema.at_head == true'
+      - if: always()
+        run: docker compose down -v
+
+  dependency-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: pip install -e 'apps/api[ai]' pip-audit
+      - run: pip-audit --local
+      - uses: actions/setup-node@v4
+        with: {node-version: "20", cache: npm, cache-dependency-path: apps/web/package-lock.json}
+      - working-directory: apps/web
+        run: npm audit --omit=dev --audit-level=high
+
+  container-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Explicit tags keep scanner inputs independent of the checkout folder,
+      # which Compose otherwise uses to derive image names.
+      - run: docker build -t dealsage-api:audit apps/api
+      - run: docker build -t dealsage-web:audit apps/web
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: dealsage-api:audit
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: dealsage-web:audit
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

@@ -5,6 +5,11 @@ RUN npm install
 COPY . .
 ARG VITE_API_URL=/api
 RUN npm run build
-FROM nginx:1.27-alpine
+FROM nginx:stable-alpine
+RUN apk upgrade --no-cache
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# The official entrypoint discovers resolvers from /etc/resolv.conf. Restrict
+# substitution to that value so native Nginx variables remain intact.
+ENV NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+ENV NGINX_ENVSUBST_FILTER=NGINX_LOCAL_RESOLVERS
+COPY nginx.conf /etc/nginx/templates/default.conf.template

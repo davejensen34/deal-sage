@@ -2,12 +2,13 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     app_name: str = "DealSage"
+    deployment_environment: Literal["development", "pilot"] = "development"
     database_url: str = "sqlite:///./dealsage.db"
     demo_mode: bool = True
     demo_analyst_name: str = "Morgan Lee"
@@ -22,6 +23,7 @@ class Settings(BaseSettings):
     allowed_domains: str = ""
     web_app_url: str = "http://localhost:3000"
     cors_origins: str = "http://localhost:5173"
+    allowed_hosts: str = "localhost,127.0.0.1,api,testserver"
     evidence_storage_path: Path = Path("./data/evidence")
     model_provider: Literal["disabled", "openai", "anthropic"] = "disabled"
     web_search_provider: Literal["disabled", "openai"] = "disabled"
@@ -46,6 +48,28 @@ class Settings(BaseSettings):
             raise ValueError("provider-side AI response storage must remain disabled")
         return value
 
+    @model_validator(mode="after")
+    def require_secure_pilot_configuration(self):
+        """Fail closed when a deployment claims pilot posture with dev settings."""
+        if self.deployment_environment != "pilot":
+            return self
+        if self.demo_mode or self.auth_mode != "oidc":
+            raise ValueError("pilot deployments require OIDC and DEMO_MODE=false")
+        if len(self.session_secret) < 32 or self.session_secret.startswith("development-only"):
+            raise ValueError("pilot deployments require a unique 32+ character session secret")
+        if not self.session_cookie_secure:
+            raise ValueError("pilot deployments require secure session cookies")
+        urls = [self.web_app_url, self.google_redirect_uri, *self.cors_origin_list]
+        if any(not value.startswith("https://") for value in urls):
+            raise ValueError("pilot web, redirect, and CORS origins must use HTTPS")
+        if "dealsage-local" in self.database_url:
+            raise ValueError("pilot deployments cannot use the development database password")
+        if not self.allowed_host_set or "*" in self.allowed_host_set:
+            raise ValueError("pilot deployments require explicit allowed hosts")
+        if not self.allowed_email_set and not self.allowed_domain_set:
+            raise ValueError("pilot deployments require an explicit email or domain allowlist")
+        return self
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [item.strip() for item in self.cors_origins.split(",")]
@@ -57,6 +81,10 @@ class Settings(BaseSettings):
     @property
     def allowed_domain_set(self) -> set[str]:
         return {item.strip().lower() for item in self.allowed_domains.split(",") if item.strip()}
+
+    @property
+    def allowed_host_set(self) -> set[str]:
+        return {item.strip().lower() for item in self.allowed_hosts.split(",") if item.strip()}
 
     def build_search_provider(self):
         """Construct an explicitly enabled provider without making a network call."""
