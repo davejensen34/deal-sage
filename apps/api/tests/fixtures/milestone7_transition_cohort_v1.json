@@ -1,0 +1,1864 @@
+{
+  "version": "m7-transition-cohort-v1",
+  "fictional": true,
+  "as_of": "2026-09-11",
+  "evaluation_target": "eligibility for human review, not validated opportunity",
+  "cases": [
+    {
+      "id": "possible_death-supported",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "possible_death-unknown_date",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "possible_death-executive",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "possible_death-registered_agent",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "possible_death-name_only",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "possible_death-cross_business",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "possible_death-conflict",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "possible_death-cancelled",
+      "signal_type": "possible_death",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "possible_death",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported the death of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-supported",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "retirement-unknown_date",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "retirement-executive",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-registered_agent",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-name_only",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-cross_business",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-conflict",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "retirement-cancelled",
+      "signal_type": "retirement",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "retirement",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced retirement for Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-supported",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "succession-unknown_date",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "succession-executive",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-registered_agent",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-name_only",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-cross_business",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-conflict",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "succession-cancelled",
+      "signal_type": "succession",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "succession",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a succession plan involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-supported",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "ownership_change-unknown_date",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "ownership_change-executive",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-registered_agent",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-name_only",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-cross_business",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-conflict",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "ownership_change-cancelled",
+      "signal_type": "ownership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "ownership_change",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a proposed ownership transfer involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-supported",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "founder_exit-unknown_date",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "founder_exit-executive",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-registered_agent",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-name_only",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-cross_business",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-conflict",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "founder_exit-cancelled",
+      "signal_type": "founder_exit",
+      "subject_type": "person",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "founder_exit",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced the founder departure of Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-supported",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "dissolution-unknown_date",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "dissolution-executive",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-registered_agent",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-name_only",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-cross_business",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-conflict",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "dissolution-cancelled",
+      "signal_type": "dissolution",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "dissolution",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice reported a dissolution filing involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-supported",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "restructuring-unknown_date",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "restructuring-executive",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-registered_agent",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-name_only",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-cross_business",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-conflict",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "restructuring-cancelled",
+      "signal_type": "restructuring",
+      "subject_type": "business",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "restructuring",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a restructuring involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-supported",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "supported",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "leadership_change-unknown_date",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "unknown_date",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": null,
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: unknown. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": true,
+      "label_rationale": "Explicit source role and non-name entity anchor support human review; unknown timing must remain visible."
+    },
+    {
+      "id": "leadership_change-executive",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "executive",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "executive"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as executive of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-registered_agent",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "registered_agent",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "registered_agent"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as registered_agent of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-name_only",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "name_only",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": null,
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: not supplied. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-cross_business",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "hybrid",
+      "state": "TX",
+      "scenario": "cross_business",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Cedar Works",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Cedar Works. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-conflict",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "signal_first",
+      "state": "CO",
+      "scenario": "conflict",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "reported"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: reported. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": true,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    },
+    {
+      "id": "leadership_change-cancelled",
+      "signal_type": "leadership_change",
+      "subject_type": "person_business_relationship",
+      "origin": "business_first",
+      "state": "UT",
+      "scenario": "cancelled",
+      "owner": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "role": "owner"
+      },
+      "transition": {
+        "person": "Jordan Example",
+        "business": "Fictional Juniper Tools",
+        "registration_number": "FICTIONAL-ENTITY-001",
+        "signal_type": "leadership_change",
+        "event_date": "2026-08-20",
+        "event_status": "cancelled"
+      },
+      "owner_excerpt": "FICTIONAL FIXTURE: Jordan Example is recorded as owner of Fictional Juniper Tools, entity FICTIONAL-ENTITY-001. This is not a real business record.",
+      "transition_excerpt": "FICTIONAL FIXTURE: A notice announced a leadership change involving Jordan Example in connection with Fictional Juniper Tools. Entity identifier: FICTIONAL-ENTITY-001. Event date: 2026-08-20. Event status: cancelled. This is not a real public notice.",
+      "published_date": "2026-09-01",
+      "retrieved_date": "2026-09-11",
+      "conflict": false,
+      "expected_promotion": false,
+      "label_rationale": "Retain for research: a misleading role, absent identity anchor, conflicting business, open contradiction or cancelled event prevents promotion."
+    }
+  ]
+}
