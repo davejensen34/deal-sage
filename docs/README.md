@@ -14,7 +14,7 @@ This directory contains living product and engineering specifications plus histo
 
 - `product/` defines the vision, users, principles, and roadmap.
 - `architecture/` defines current technical contracts for data, confidence, AI, model evaluation, evidence landing, and deployment. The version-two provider comparison contract is in [`architecture/model-evaluation.md`](architecture/model-evaluation.md).
-- `deployment/` contains operator setup that supplements the root README, including [pilot authentication](deployment/pilot-authentication.md) and [backup/recovery](deployment/pilot-recovery.md).
+- `deployment/` contains operator setup that supplements the root README, including [pilot authentication](deployment/pilot-authentication.md), [backup/recovery](deployment/pilot-recovery.md), and [operational health](deployment/pilot-operations.md).
 - `governance/` contains rules that apply to every source, model, and analyst workflow.
 - `research/` records source assessments, experiments, protocols, and observed results. These are dated evidence records, not blanket permission to collect from a source.
 - `decisions/` contains immutable architecture decision records (ADRs). Supersede an ADR with a new decision; do not silently make an old decision read as though it were made later.
