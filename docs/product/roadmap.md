@@ -42,13 +42,13 @@ Complete as of September 10, 2026. GitHub Issues #95–#100 delivered persisted 
 
 ### Milestone 5.1 — Workflow Traceability and Effectiveness
 
-Complete as of September 10, 2026. This bounded follow-up made refresh alerts self-resolving and added deterministic source-to-disposition measures with explicit unattributed counts. Validation also exposed that the long-lived local PostgreSQL database has not received the evidence-lineage migration; reporting handles that state honestly, while deployment-safe migration automation remains proposed Milestone 6 work. The follow-up did not reopen Milestone 5 or authorize autonomous acquisition, paid calls, scheduling, or external delivery.
+Complete as of September 10, 2026. This bounded follow-up made refresh alerts self-resolving and added deterministic source-to-disposition measures with explicit unattributed counts. Validation exposed that the long-lived local PostgreSQL database had not received the evidence-lineage migration; reporting handled that state honestly, and Milestone 6 subsequently adopted and upgraded the recognized legacy schema. The follow-up did not reopen Milestone 5 or authorize autonomous acquisition, paid calls, scheduling, or external delivery.
 
 ### Subsequent milestones
 
 ### Milestone 6 — Operational Productization
 
-Active as of September 10, 2026. Harden the existing single-box pilot through explicit database upgrades, minimal pilot authorization, tested backup/restore, aggregate-safe operational visibility, and measured deployment/performance work. Queues, Kubernetes, vector infrastructure, and other recurring-cost services remain outside scope without measured need and a separate decision.
+Complete as of September 11, 2026. The single-box pilot now gates startup on explicit schema upgrades, enforces viewer/analyst/operator/administrator permissions, proves coupled database/evidence recovery in an isolated target, exposes role-limited aggregate readiness, and fails closed on insecure pilot configuration. CI boots the full stack and blocks known fixed high/critical dependency or container findings. Measured representative operations remain far inside generous pilot regression budgets, so no queue, cache, vector store, Kubernetes, or other distributed infrastructure was introduced.
 
 ### Subsequent milestone
 
