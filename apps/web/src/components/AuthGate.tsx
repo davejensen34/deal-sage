@@ -3,7 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import {Navigate} from 'react-router-dom';
 import {api} from '../api/client';
 
-export type Identity={user_id:number|null;provider:string;subject:string;email:string|null;display_name:string;avatar_url:string|null};
+export type Identity={user_id:number|null;provider:string;subject:string;email:string|null;display_name:string;avatar_url:string|null;role:'viewer'|'analyst'|'operator'|'administrator'|'demo'};
 const IdentityContext=createContext<Identity|null>(null);
 export const useIdentity=()=>useContext(IdentityContext);
 

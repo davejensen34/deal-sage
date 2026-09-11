@@ -16,7 +16,7 @@ def test_upgrade_builds_empty_database_from_migrations(tmp_path):
         tables = set(sa.inspect(connection).get_table_names())
         version = connection.execute(sa.text("SELECT version_num FROM alembic_version")).scalar_one()
     assert set(Base.metadata.tables).issubset(tables)
-    assert version == "c8f6a0b4e3d1"
+    assert version == "d6f2a9c4e810"
 
 
 def test_upgrade_adopts_verified_unversioned_current_schema(tmp_path):
@@ -26,7 +26,7 @@ def test_upgrade_adopts_verified_unversioned_current_schema(tmp_path):
     assert upgrade_database(url) == "adopted_legacy"
     with engine.connect() as connection:
         version = connection.execute(sa.text("SELECT version_num FROM alembic_version")).scalar_one()
-    assert version == "c8f6a0b4e3d1"
+    assert version == "d6f2a9c4e810"
 
 
 def test_upgrade_refuses_partial_unversioned_database(tmp_path):

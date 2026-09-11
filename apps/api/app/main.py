@@ -18,6 +18,20 @@ async def request_context(request:Request,call_next):
     request_id=request.headers.get("x-request-id",str(uuid.uuid4())); response=await call_next(request); response.headers["x-request-id"]=request_id
     logging.info("request_id=%s method=%s path=%s status=%s",request_id,request.method,request.url.path,response.status_code); return response
 
+
+@app.middleware("http")
+async def same_origin_mutation_signal(request: Request, call_next):
+    """Require a non-form custom header on cookie-authenticated mutations."""
+    if (
+        settings.auth_mode == "oidc"
+        and request.url.path.startswith("/api/")
+        and request.method in {"POST", "PUT", "PATCH", "DELETE"}
+        and request.headers.get("x-dealsage-csrf") != "1"
+    ):
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"detail": "Missing same-origin mutation signal"}, status_code=403)
+    return await call_next(request)
+
 @app.on_event("startup")
 def startup():
     if settings.auth_mode == "oidc" and (settings.session_secret == "development-only-change-me" or not settings.google_client_id or not settings.google_client_secret):

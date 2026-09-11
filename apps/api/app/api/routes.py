@@ -8,7 +8,7 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 from app.ai.providers.anthropic import AnthropicProvider
 from app.ai.providers.openai import OpenAIProvider
-from app.auth.service import Identity, current_identity
+from app.auth.service import Identity, current_identity, require_permission
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.domain.models import AIExecution, AcquisitionRun, AlertEvent, AlertSubscription, AnalystConclusion, AuditEvent, Business, CandidateMatch, CaseEvidence, ClaimContradiction, ConfidenceAssessment, CuratedRecord, Evidence, EvidenceClaim, IdentityResolution, ModelProposal, ModelProposalDisposition, Person, RawArtifact, ResearchCase, ResearchFrontierItem, ResearchInference, ResearchQuery, ResearchStage, ResearchStep, ResearchTrail, ReviewCase, RunArtifact, SavedResearch, SignalResolution, SourceCandidate, SourceRefresh, TransitionSignal, Watchlist, WatchlistEntry
@@ -124,7 +124,7 @@ def alert_subscriptions(db: Session = Depends(get_db), identity: Identity = Depe
 
 
 @router.post("/research/alert-subscriptions", status_code=201)
-def create_alert_subscription(payload: AlertSubscriptionCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def create_alert_subscription(payload: AlertSubscriptionCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     key = owner_key(identity)
     row = db.scalar(select(AlertSubscription).where(AlertSubscription.owner_key == key, AlertSubscription.source_key == payload.source_key))
     if row is None:
@@ -139,7 +139,7 @@ def create_alert_subscription(payload: AlertSubscriptionCreate, db: Session = De
 
 
 @router.delete("/research/alert-subscriptions/{subscription_id}")
-def disable_alert_subscription(subscription_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def disable_alert_subscription(subscription_id: int, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     row = db.get(AlertSubscription, subscription_id)
     if row is None or row.owner_key != owner_key(identity):
         raise HTTPException(404, "Alert subscription not found")
@@ -168,7 +168,7 @@ def research_alerts(db: Session = Depends(get_db), identity: Identity = Depends(
 
 
 @router.patch("/research/alerts/{alert_id}/read")
-def mark_alert_read(alert_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def mark_alert_read(alert_id: int, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     row = db.scalar(
         select(AlertEvent)
         .join(AlertSubscription, AlertSubscription.id == AlertEvent.subscription_id)
@@ -182,7 +182,7 @@ def mark_alert_read(alert_id: int, db: Session = Depends(get_db), identity: Iden
 
 
 @router.post("/research/source-refreshes", status_code=201)
-async def create_source_refresh(payload: SourceRefreshCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+async def create_source_refresh(payload: SourceRefreshCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("operate_sources"))):
     source = refresh_sources()[payload.source_key]
     service = SourceRefreshService(db, EvidenceLanding(db, LocalEvidenceStorage(settings.evidence_storage_path)))
     try:
@@ -389,7 +389,7 @@ def dispose_model_proposal(
     proposal_id: int,
     payload: ProposalDispositionCreate,
     db: Session = Depends(get_db),
-    identity: Identity = Depends(current_identity),
+    identity: Identity = Depends(require_permission("review")),
 ):
     try:
         disposition = ModelProposalDispositionService(db).add(
@@ -502,7 +502,7 @@ def candidates(q: str|None=None,status: str|None=None,state: str|None=None,signa
 
 
 @router.post("/exports/candidates")
-def export_candidates(payload: CandidateExportCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def export_candidates(payload: CandidateExportCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("export"))):
     """Export a bounded queue slice through a stable, provenance-safe contract."""
     stmt = (
         select(CandidateMatch)
@@ -556,7 +556,7 @@ def saved_research(db: Session = Depends(get_db), identity: Identity = Depends(c
 
 
 @router.post("/saved-research", status_code=201)
-def create_saved_research(payload: SavedResearchCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def create_saved_research(payload: SavedResearchCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     allowed = {"q", "status", "state", "signal", "min_confidence", "sort", "order"}
     unknown = set(payload.criteria) - allowed
     if unknown:
@@ -569,7 +569,7 @@ def create_saved_research(payload: SavedResearchCreate, db: Session = Depends(ge
 
 
 @router.delete("/saved-research/{saved_id}")
-def delete_saved_research(saved_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def delete_saved_research(saved_id: int, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     row = db.get(SavedResearch, saved_id)
     if row is None or row.owner_key != owner_key(identity):
         raise HTTPException(404, "Saved research not found")
@@ -602,7 +602,7 @@ def watchlists(db: Session = Depends(get_db), identity: Identity = Depends(curre
 
 
 @router.post("/watchlists", status_code=201)
-def create_watchlist(payload: WatchlistCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def create_watchlist(payload: WatchlistCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     key = owner_key(identity)
     if db.scalar(select(Watchlist.id).where(Watchlist.owner_key == key, Watchlist.name == payload.name.strip())):
         raise HTTPException(409, "A watchlist with this name already exists")
@@ -614,7 +614,7 @@ def create_watchlist(payload: WatchlistCreate, db: Session = Depends(get_db), id
 
 
 @router.post("/watchlists/{watchlist_id}/candidates", status_code=201)
-def add_watchlist_candidate(watchlist_id: int, payload: WatchlistEntryCreate, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def add_watchlist_candidate(watchlist_id: int, payload: WatchlistEntryCreate, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     row = db.get(Watchlist, watchlist_id)
     candidate = db.get(CandidateMatch, payload.candidate_id)
     if row is None or row.owner_key != owner_key(identity):
@@ -631,7 +631,7 @@ def add_watchlist_candidate(watchlist_id: int, payload: WatchlistEntryCreate, db
 
 
 @router.delete("/watchlists/{watchlist_id}/candidates/{candidate_id}")
-def remove_watchlist_candidate(watchlist_id: int, candidate_id: int, db: Session = Depends(get_db), identity: Identity = Depends(current_identity)):
+def remove_watchlist_candidate(watchlist_id: int, candidate_id: int, db: Session = Depends(get_db), identity: Identity = Depends(require_permission("personalize"))):
     row = db.get(Watchlist, watchlist_id)
     if row is None or row.owner_key != owner_key(identity):
         raise HTTPException(404, "Watchlist not found")
@@ -663,7 +663,7 @@ def detail(candidate_id:int,db:Session=Depends(get_db),identity:Identity=Depends
 
 
 @router.patch("/candidates/{candidate_id}/status")
-def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_db),identity:Identity=Depends(current_identity)):
+def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_db),identity:Identity=Depends(require_permission("review"))):
     c=load_candidate(candidate_id,db); before=c.status; c.status=payload.status
     review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
     if review:
@@ -673,7 +673,7 @@ def update_status(candidate_id:int,payload:StatusUpdate,db:Session=Depends(get_d
 
 
 @router.post("/candidates/{candidate_id}/notes")
-def add_note(candidate_id:int,payload:NoteCreate,db:Session=Depends(get_db),identity:Identity=Depends(current_identity)):
+def add_note(candidate_id:int,payload:NoteCreate,db:Session=Depends(get_db),identity:Identity=Depends(require_permission("review"))):
     load_candidate(candidate_id,db); review=db.scalar(select(ReviewCase).where(ReviewCase.candidate_id==candidate_id)); now=datetime.now(timezone.utc)
     note={"note":payload.note,"author":identity.display_name,"user_id":identity.user_id,"timestamp":now.isoformat()}; review.analyst_notes=[*(review.analyst_notes or []),note]
     db.add(AuditEvent(candidate_id=candidate_id,user_id=identity.user_id,actor=identity.display_name,action="analyst_note_added",after_state=note,detail=payload.note)); db.commit(); return note
@@ -690,7 +690,7 @@ def activity(db:Session=Depends(get_db)): return [{"id":a.id,"candidate_id":a.ca
 
 
 @router.post("/candidates/{candidate_id}/ai-summary")
-async def ai_summary(candidate_id:int,db:Session=Depends(get_db)):
+async def ai_summary(candidate_id:int,db:Session=Depends(get_db),_identity:Identity=Depends(require_permission("execute_ai"))):
     c=load_candidate(candidate_id,db); provider=None
     provider_options={"max_output_tokens":settings.ai_max_output_tokens,"timeout_seconds":settings.ai_request_timeout_seconds}
     if settings.model_provider=="openai" and settings.openai_api_key: provider=OpenAIProvider(settings.openai_api_key,settings.openai_model,**provider_options); model=settings.openai_model
