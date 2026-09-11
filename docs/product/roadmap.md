@@ -56,4 +56,4 @@ Approved September 11, 2026 as a bounded follow-up to Milestone 6; "6.1" is an a
 
 ### Subsequent milestone
 
-Milestone 7 — broader transition intelligence across retirement, succession, ownership transfer, founder exit, dissolution, and leadership change — remains proposed and requires explicit approval. It is gated by validated precision and sustainable source operations.
+Milestone 7 — broader transition intelligence across retirement, succession, ownership transfer, founder exit, dissolution, restructuring, and leadership change — was approved September 11, 2026 and is in progress (GitHub milestone 12, Issues #128–#130). The first increment defines versioned evidence and review policies; subsequent work integrates the existing case path and evaluates comparative outcomes. Live activation and quality claims remain gated by validated precision, reproducible sources, sustainable operations and separately bounded execution approval.

@@ -25,6 +25,7 @@ from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_expo
 from app.services.workflow_effectiveness import workflow_effectiveness
 from app.ops.health import operational_readiness
 from app.research.leads import discovery_leads, queue_lead
+from app.domain.transition_policies import transition_policy_catalog
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -56,6 +57,12 @@ def research_sources():
     """Expose source contracts without initiating network acquisition."""
     definitions=(ColoradoBusinessEntitiesAdapter.definition,TexasActiveFranchiseTaxpayersAdapter.definition,UTAH_BEL_DEFINITION)
     return [{**asdict(definition),"contract_fingerprint":definition.contract_fingerprint} for definition in definitions]
+
+
+@router.get("/research/transition-policies")
+def research_transition_policies():
+    """Read-only guidance; does not enable acquisition or candidate promotion."""
+    return transition_policy_catalog()
 
 
 def refresh_sources() -> dict[str, RefreshSource]:
