@@ -100,6 +100,22 @@ Use only the three frozen eligible packets above, retaining the public-company a
 
 The expected dimensions are origin, entity identity, relationship semantics, relationship timing, operating status, contradictions and research disposition, plus explicit state/private-business fit and source age. Agent preflight expectations are separate from source assertions and are not human usefulness labels: the succession packet supports management succession but leaves ownership unresolved; the founder-exit packet fails private-company fit; the leadership packet does not establish Colorado fit. Models should extract useful clues and missing corroboration while retaining these limits. Ownership, financial attractiveness and present operating status must not be invented. The exact serialized requests, versioned evaluation contract and fresh approval identifier still must be frozen before execution. Human disposition and time measurement remain separate later observations.
 
+## Offline analysis preparation — September 11, 2026
+
+Issue #130 adds `scripts/prepare_milestone7_analysis.py`. It has no credentials, network client, live mode or database mutation path. It opens SQLite read-only, verifies case/evidence/artifact lineage and byte counts against the pinned preflight manifest, checks raw and extracted-text hashes, and reproduces the original parser. It refuses excluded, duplicate or substituted packets, escaped file paths, oversized requests and output overwrites. The existing parser is reproduced for integrity; this does not resolve its acquisition limitations.
+
+From `apps/api` on Windows:
+
+```powershell
+.venv/Scripts/python.exe scripts/prepare_milestone7_analysis.py --manifest ../../.local-validation/m7-preflight/packets.json --database dealsage.db --evidence-dir data/evidence --output ../../.local-validation/m7-preflight/analysis-requests-v1.json
+```
+
+This command prepared three requests without modifying the corpus. The ignored bundle SHA-256 is `5142f997f0f29192f8ca9bd4b47e68b4532ce3e611aa4d1bea5aceecfcaeb08e`. It freezes the model, instructions, source inputs, structured-output schema, individual request hashes and proposed limits. Agent expectations remain outside each provider request. Publication age is computed offline from explicitly observed dates; missing dates stay missing. The observation contract extends the existing seven dimensions with independent state/private-company fit. Candidate-supported observations require both fits supported; uncertainty keeps an otherwise eligible observation in research. This validator does not change application promotion or claim policy.
+
+All 286 backend/API tests passed, including nine preparation tests for offline operation, answer isolation, hash drift, excluded/duplicate packets, size bounds, path containment, target-fit consistency and read-only database lineage. No UI changed; no research, search or model calls were made, and external spend was $0.
+
+The bundle is explicitly `not_authorized`. Its 16,000-byte serialized-request screen is conservative preparation, not measured provider token usage. A separately approved executor must check the full request against the 20,000 input-token ceiling, reserve cost durably before calls, disable retries, enforce single execution and reverify the bundle hash. It must preserve refusal/incomplete/invalid/failure outcomes and model/usage provenance. The [official model page](https://developers.openai.com/api/docs/models/gpt-5-mini) lists the requested snapshot and structured-output support, but marks the snapshot deprecated; account availability has not been tested. Do not silently substitute another model. No live executor is added by this increment.
+
 ## Milestone decision still needed
 
 The offline implementation and metrics are validated, and the approved source preflight is complete. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open; a later model-analysis phase, acquisition fixes or a scope-closeout decision require explicit direction. This record does not silently waive those gates.
