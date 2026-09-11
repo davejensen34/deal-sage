@@ -37,3 +37,7 @@ Input, output, and total tokens remain separate when the provider reports them. 
 ## Live-call gate
 
 Automated tests use adapter mocks and never call a provider. The runner accepts only a version-two manifest and requires both `--confirm-live-calls` and an exact `--protocol-decision` value recorded in that manifest. The original seven-case cohort exhausted its approved call ceiling; this contract does not authorize a rerun or any new live cohort.
+
+## Broader transition review evaluation
+
+Issue #130 adds the separate `m7-transition-evaluation-v1` contract in `app/research/transition_evaluation.py`. It tests the real review bridge against a hash-pinned, pre-normalized fictional cohort and does not call a model. `scripts/evaluate_milestone7_offline.py` uses disposable in-memory stores, ignores `.env`, and has no live mode. Precision, recall, fixture agreement, abstention and coverage carry explicit denominators; failures, missing dates/costs, actual human judgments and analyst time are separately reported. Passing this contract cannot set `live_precision_validated` or `source_coverage_validated` to true. See `docs/research/milestone7-evaluation.md` for the observed result and proposed source-preflight approval boundary.
