@@ -163,6 +163,9 @@ class ResearchPlanner:
             raise ValueError("Model analysis requires provider, model, and prompt version")
         if action_type != "model_analysis" and any((model, prompt_version)):
             raise ValueError("Model provenance is only valid for model analysis")
+        if action_type == "model_analysis":
+            from app.research.signal_freshness import require_recent_signal
+            require_recent_signal(self.db, case_id)
         stop_reason = self._action_budget_stop(case, action_type)
         if stop_reason:
             self._stop(case, stop_reason)

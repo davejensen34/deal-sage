@@ -208,6 +208,7 @@ class ResearchCase(TimestampMixin, Base):
     transition_signal_id: Mapped[int | None] = mapped_column(ForeignKey("transition_signals.id"), index=True)
     candidate_match_id: Mapped[int | None] = mapped_column(ForeignKey("candidate_matches.id"), index=True)
     research_budget: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    signal_intake_policy: Mapped[dict[str, Any] | None] = mapped_column(JSON(none_as_null=True))
     confidence: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
     stop_reason: Mapped[str | None] = mapped_column(String(60), index=True)
     stopped_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

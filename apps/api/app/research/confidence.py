@@ -216,6 +216,8 @@ class ConfidenceService:
 
 
 def _recency_multiplier(evidence: CaseEvidence) -> float:
+    # Historical evidence weighting only. Event freshness is separately routed
+    # by signal_freshness; retrieval time cannot qualify a recent signal there.
     observed = evidence.published_at or evidence.retrieved_at
     if observed.tzinfo is None:
         observed = observed.replace(tzinfo=timezone.utc)

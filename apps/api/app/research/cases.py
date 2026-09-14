@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.models import CaseEvidence, EvidenceClaim, RawArtifact, ResearchCase, ResearchInference, Source
 from app.research.ingestion import assert_safe_source_content
+from app.research.signal_freshness import validate_policy
 
 
 ORIGIN_STRATEGIES = frozenset({"signal_first", "business_first", "hybrid"})
@@ -47,7 +48,8 @@ class ResearchCaseService:
         self.db = db
 
     def create_case(
-        self, origin_strategy: str, research_budget: dict[str, Any] | None = None
+        self, origin_strategy: str, research_budget: dict[str, Any] | None = None,
+        *, signal_intake_policy: dict[str, Any] | None = None,
     ) -> ResearchCase:
         if origin_strategy not in ORIGIN_STRATEGIES:
             raise ValueError("Unsupported research-case origin strategy")
@@ -57,7 +59,8 @@ class ResearchCaseService:
         budget = {**DEFAULT_RESEARCH_BUDGET, **(research_budget or {})}
         if any(not isinstance(value, int) or value < 0 for value in budget.values()):
             raise ValueError("Research budget values must be non-negative integers")
-        case = ResearchCase(origin_strategy=origin_strategy, research_budget=budget)
+        policy = validate_policy(signal_intake_policy) if signal_intake_policy is not None else None
+        case = ResearchCase(origin_strategy=origin_strategy, research_budget=budget, signal_intake_policy=policy)
         self.db.add(case)
         self.db.commit()
         self.db.refresh(case)

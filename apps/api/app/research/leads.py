@@ -34,6 +34,8 @@ def discovery_leads(db: Session, case_id: int) -> list[dict]:
     conflicts = db.scalars(select(ClaimContradiction).where(
         ClaimContradiction.case_id == case_id, ClaimContradiction.status == "open")).all()
     rows = []
+    from app.research.signal_freshness import case_signal_intake
+    intake = case_signal_intake(db, case_id)
     for candidate in candidates:
         evidence_ids = sorted(e.id for e in evidence if e.provenance.get("candidate_id") == candidate.id
                               or e.canonical_url == candidate.canonical_url)
@@ -55,6 +57,11 @@ def discovery_leads(db: Session, case_id: int) -> list[dict]:
         elif not evidence_ids and candidate.access_decision == "approved":
             action = "retrieve_if_permitted"
         marker = f"Discovery lead #{candidate.id}: "
+        freshness = [row for row in intake["signals"] if row["evidence_id"] in evidence_ids] if intake else []
+        if any(row["eligible"] for row in freshness):
+            factors.append({"reason": "Cited recent signal warrants investigation, not proof of opportunity", "points": 20})
+        elif freshness and all(row["route"] == "background" for row in freshness):
+            factors.append({"reason": "Historical signal remains available as background", "points": -15})
         queued = next((f for f in frontier if f.question.startswith(marker)), None)
         rows.append({
             "id": candidate.id, "url": candidate.canonical_url, "publisher": candidate.publisher or candidate.domain,
@@ -64,10 +71,11 @@ def discovery_leads(db: Session, case_id: int) -> list[dict]:
             "discovery_queries": [queries[qid] for qid in sorted({qid for cid, qid in discoveries if cid == candidate.id}) if qid in queries],
             "evidence_ids": evidence_ids, "access": candidate.access_decision,
             "access_reason": candidate.access_decision_reason,
-            "priority": sum(f["points"] for f in factors), "method": METHOD, "factors": factors,
+            "priority": sum(f["points"] for f in factors), "method": "discovery-priority-v2" if intake else METHOD, "factors": factors,
             "next_action": action, "question_type": question_type, "question": question,
             "frontier_id": queued.id if queued else None,
             "frontier_status": queued.status if queued else None,
+            "signal_freshness": freshness,
         })
     return sorted(rows, key=lambda row: (-row["priority"], row["id"]))
 
@@ -95,7 +103,7 @@ def queue_lead(db: Session, case_id: int, candidate_id: int, *, user_id: int | N
     item = ResearchFrontierItem(
         case_id=case_id, question_type=lead["question_type"],
         question=f"Discovery lead #{candidate_id}: {lead['question']}",
-        rationale=f"Untrusted discovery clue; {METHOD} priority {lead['priority']}. Next action: {lead['next_action']}. No fact acceptance or tool execution authorized.",
+        rationale=f"Untrusted discovery clue; {lead['method']} priority {lead['priority']}. Next action: {lead['next_action']}. No fact acceptance or tool execution authorized.",
         priority=lead["priority"], supporting_claim_ids=[], max_attempts=2,
     )
     db.add(item)
@@ -103,7 +111,7 @@ def queue_lead(db: Session, case_id: int, candidate_id: int, *, user_id: int | N
     db.add(AuditEvent(user_id=user_id, actor=actor, action="discovery_followup_queued",
                       detail="Analyst selected an untrusted clue for bounded follow-up; no external call.",
                       after_state={"case_id": case_id, "candidate_id": candidate_id,
-                                   "frontier_id": item.id, "method": METHOD,
+                                   "frontier_id": item.id, "method": lead["method"],
                                    "priority": lead["priority"], "factors": lead["factors"],
                                    "evidence_ids": lead["evidence_ids"], "query_ids": lead["query_ids"],
                                    "next_action": lead["next_action"]}))

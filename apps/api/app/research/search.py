@@ -84,6 +84,10 @@ class SearchService:
         case = self.db.get(ResearchCase, case_id)
         if case is None:
             raise ValueError("Research case does not exist")
+        if not query_text.strip():
+            raise ValueError("Search query must contain between 1 and 500 characters")
+        from app.research.signal_freshness import dated_query
+        query_text = dated_query(query_text, case.signal_intake_policy)
         if not query_text.strip() or len(query_text) > 500:
             raise ValueError("Search query must contain between 1 and 500 characters")
         if not provider.key.strip():
