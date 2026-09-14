@@ -13,7 +13,9 @@ from app.research.analysis_preparation import canonical_bytes, observation_error
 from app.research.ingestion import assert_safe_source_content
 
 
-PROTOCOL = "m7-analysis-execution-v1"
+# Separately approved September 14 retry. The v1 claim and failed result remain
+# immutable; this version grants one new attempt of the same frozen requests.
+PROTOCOL = "m7-analysis-execution-v2"
 BUNDLE_SHA256 = "5142f997f0f29192f8ca9bd4b47e68b4532ce3e611aa4d1bea5aceecfcaeb08e"
 
 

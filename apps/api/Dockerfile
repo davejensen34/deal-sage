@@ -1,4 +1,10 @@
 FROM python:3.12-slim
+
+# Base-image publication can lag available Debian security fixes. Apply them
+# before installing the app; the container audit remains the release gate.
+RUN apt-get update \
+    && apt-get upgrade -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY pyproject.toml .
 # The providers remain runtime-disabled without keys, but the local image includes
