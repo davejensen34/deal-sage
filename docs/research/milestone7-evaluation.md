@@ -251,3 +251,21 @@ Select the package on the review page, inspect source text against the model and
 Validation: **343 backend/API tests and 19 frontend tests passed** on Windows. The production TypeScript/Vite build passed with its existing large-chunk warning. Windows lacked npm on PATH, so the installed Node runtime executed the same local TypeScript, Vitest and Vite entry points directly. The new backend regression verifies source/model/context separation, expectation exclusion and input hash refusal. Five frontend tests cover explicit/missing judgments, duration validation, exact-byte digest invocation, package/citation rejection, safe links, literal HTML-like source text, layer separation, failed-import reset and absence of API uploads. Rendered inspection used an isolated loopback Vite harness with fictional data at the available narrow viewport; source/model/context sections and test-only feedback export rendered correctly. That simulated export is not human usefulness evidence. The live application's web container was not redeployed in this increment.
 
 No source, search or model calls occurred; incremental external spend was $0. Actual human feedback remains outstanding. Milestone 7 and Issue #130 remain open; this feature does not claim representative live precision or automatically close quality gates.
+
+## Feedback validation and metrics — September 14
+
+Issue #130 adds a credential-free importer/summarizer for the review page's `m7-human-usefulness-v1` downloads. It accepts only files explicitly supplied on the command line; it does not inspect or change the open browser, scan Downloads, or count a test export automatically. The exact retained review package is pinned. Hash validation and strict fields establish linkage and shape, not authenticated human authorship.
+
+From `apps/api`, first export your actual judgments from the review page, then name that file explicitly:
+
+```powershell
+.venv/Scripts/python.exe -m scripts.summarize_milestone7_feedback --package ../../.local-validation/m7-preflight/analyst-review-package-v1.json --feedback '<absolute-path-to-your-export.json>' --output ../../.local-validation/m7-preflight/usefulness-summary-reviewed-v1.json
+```
+
+Repeat `--feedback` for additional deliberately selected exports. Overlapping reviewer/packet judgments are refused, including revisions and duplicate downloads, so choose which export should count. Original files remain unchanged. The output must be a new file; there is no overwrite option. Keep feedback files with the summary for audit by their retained hashes.
+
+A no-feedback validation ran against the real package with no `--feedback` arguments, producing the ignored `.local-validation/m7-preflight/usefulness-summary-no-input-v1.json` (SHA-256 `ae7f98787946609ddd592cd18bfe6bd6aab1bcadc2ab72d42bd0a0c62c87a190`). It reports **0 judgments, 0/3 packet coverage, null usefulness and null known review duration**, with time saved, promotion precision and analyst acceptance also null. This describes the deliberately empty input set; it does not assert that no user export exists elsewhere. No actual human feedback was supplied to or counted by this run.
+
+All **375 backend/API tests passed**, including 32 new fictional validation and aggregation checks. They exercise partial/multiple-reviewer denominators, defer in the usefulness denominator, zero versus missing duration, stable file fingerprints, Unicode/case/whitespace duplicate detection, disjoint partial exports, malformed/extra fields, hash mismatch, missing/duplicate/unknown slots, invalid times and timestamps, duplicate JSON keys, input limits, and CLI no-overwrite behavior. The fixture data remains test-only. No UI changed, so the existing rendered review page remains untouched; no frontend validation is claimed beyond its prior PR and current CI.
+
+No source/search/model calls or external spend occurred, and no application database was read or written. Actual usefulness feedback, representative precision and source sustainability remain outstanding. Milestone 7 and Issue #130 stay open; metrics never close them automatically.
