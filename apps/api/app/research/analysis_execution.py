@@ -11,6 +11,7 @@ from app.ai.providers.openai import OpenAIProvider
 from app.ai.providers.base import AIProviderIncompleteError, AIProviderRefusalError
 from app.research.analysis_preparation import canonical_bytes, observation_errors
 from app.research.ingestion import assert_safe_source_content
+from app.research.observation_contract import DIAGNOSTIC_VERSION, safe_diagnostic_codes
 
 
 # Separately approved September 14 retry. The v1 claim and failed result remain
@@ -96,7 +97,9 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
             sources = {s["source_id"] for s in json.loads(request["input"])["sources"]}
             errors = observation_errors(observation, sources)
             if errors:
-                row.update(status="invalid", reason="observation_consistency")
+                row.update(status="invalid", reason="observation_consistency",
+                           diagnostic_version=DIAGNOSTIC_VERSION,
+                           diagnostic_codes=safe_diagnostic_codes(errors))
             else:
                 row.update(status="completed", observation=observation)
         except AIProviderIncompleteError:

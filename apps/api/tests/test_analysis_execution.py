@@ -121,3 +121,21 @@ async def test_real_sdk_token_count_parsing_with_offline_transport(tmp_path, mon
     row=result['calls'][0]
     assert row['counted_input_tokens']==20001
     assert row['reason']=='input_count_outside_limit' and not row['analysis_attempted']
+
+
+@pytest.mark.asyncio
+async def test_consistency_diagnostics_survive_without_response_or_citation_payload(tmp_path, monkeypatch):
+    output = dict(case_origin='hybrid',identity_resolution='unresolved',relationship='unclear',
+                  relationship_time='unclear',operating_status='unknown',contradiction_state='none',
+                  research_disposition='needs_more_research',supported_source_ids=['private-id-do-not-save'],
+                  contradictions=[],unresolved_questions=[],summary='response text do not save',
+                  state_fit='unknown',private_company_fit='unknown')
+    path=bundle(tmp_path,monkeypatch); client=Client(output)
+    result=await execution.execute(path,tmp_path/'out.json',client,execution.PROTOCOL)
+    for row in result['calls']:
+        assert row['status']=='invalid'
+        assert row['diagnostic_codes']==['unsupported_source_ids']
+        assert row['diagnostic_version']=='m7-observation-diagnostics-v1'
+        assert 'observation' not in row
+    saved=(tmp_path/'out.json').read_text()
+    assert 'private-id-do-not-save' not in saved and 'response text do not save' not in saved
