@@ -44,15 +44,47 @@ def review(result_bytes: bytes, bundle_bytes: bytes) -> dict:
             "human_usefulness": None, "external_calls": 0}
 
 
+def review_package(result_bytes: bytes, bundle_bytes: bytes) -> dict:
+    """Project verified local artifacts for browser review, excluding expectations.
+
+    Source text is retained as untrusted evidence. The UI must render it as text,
+    never HTML, and human feedback binds to the bytes of this separate package.
+    """
+    report = review(result_bytes, bundle_bytes)
+    bundle = json.loads(bundle_bytes)
+    packets = {p["slot"]: p for p in bundle["requests"]}
+    items = []
+    for row in report["reviews"]:
+        request = packets[row["slot"]]["request"]
+        source_context = json.loads(request["input"])
+        observation = row["model_observation"]
+        items.append({
+            "slot": row["slot"], "signal_type": source_context["signal_type"],
+            "requested_state": row["requested_state"], "as_of": row["as_of"],
+            "model": request["model"], "sources": source_context["sources"],
+            "summary": observation["summary"], "questions": observation["unresolved_questions"],
+            "contradictions": observation["contradictions"],
+            "supported_source_ids": observation["supported_source_ids"],
+            "model_dimensions": {k: v for k, v in observation.items() if isinstance(v, str) and k != "summary"},
+            "assessment": {k: row[k] for k in ("version", "temporal_scope", "operating_status_at_assessment",
+                                                "requested_state_operating_fit", "deterministic_research_disposition")},
+            "review_context": row["review_context"],
+        })
+    return {"version": "m7-analyst-review-package-v1", "result_sha256": RESULT_SHA256,
+            "bundle_sha256": BUNDLE_SHA256, "items": items}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("result", "bundle", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--format", choices=("context", "review-package"), default="context")
     args = parser.parse_args()
-    report = review(args.result.read_bytes(), args.bundle.read_bytes())
+    build = review_package if args.format == "review-package" else review
+    report = build(args.result.read_bytes(), args.bundle.read_bytes())
     with args.output.open("xb") as stream:
         stream.write(canonical_bytes(report))
-    print({"reviewed": len(report["reviews"]), "external_calls": 0})
+    print({"reviewed": len(report.get("reviews", report.get("items", []))), "external_calls": 0})
 
 
 if __name__ == "__main__":

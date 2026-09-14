@@ -108,3 +108,25 @@ def test_offline_report_binds_inputs_and_preserves_original(tmp_path, monkeypatc
         runner.review(raw+b" ", frozen)
     with pytest.raises(ValueError, match="Unreviewed"):
         runner.review(raw, frozen+b" ")
+
+
+def test_browser_package_keeps_source_model_context_separate_without_expectations(monkeypatch):
+    result = {"calls": [{"slot": "fixture", "model_observation": observation()}]}
+    source = {"source_id": "1", "url": "https://example.test/fixture", "text": "Untrusted fictional source"}
+    bundle = {"requests": [{"slot": "fixture", "preflight_expectation": "DO NOT INCLUDE EXPECTATIONS",
+                            "request": {"model": "fixture", "input": json.dumps({"sources": [source],
+                                "case_origin": "hybrid", "signal_type": "succession", "as_of": "2026-09-11",
+                                "requested_state": "CO"})}}]}
+    raw, frozen = canonical_bytes(result), canonical_bytes(bundle)
+    monkeypatch.setattr(runner, "RESULT_SHA256", sha256(raw).hexdigest())
+    monkeypatch.setattr(runner, "BUNDLE_SHA256", sha256(frozen).hexdigest())
+    monkeypatch.setattr(runner, "REVIEWS", {"fixture": ("2024-06-03", "1", "address", "NC")})
+    package = runner.review_package(raw, frozen)
+    item = package["items"][0]
+    assert item["sources"] == [source] and item["model_dimensions"]["operating_status"] == "active"
+    assert item["assessment"]["operating_status_at_assessment"] == "unknown"
+    assert item["review_context"]["review_kind"] == "agent_interpretation"
+    assert item["contradictions"] == [] and item["questions"] == observation()["unresolved_questions"]
+    assert "DO NOT INCLUDE EXPECTATIONS" not in json.dumps(package)
+    with pytest.raises(ValueError, match="Unreviewed"):
+        runner.review_package(raw+b" ", frozen)

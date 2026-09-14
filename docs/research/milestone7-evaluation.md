@@ -233,3 +233,21 @@ All three original summaries, questions and labels survive alongside the context
 All **342 backend/API tests passed** on Windows. The 27 new fictional checks cover active and inactive historical/undated assertions, contemporaneous evidence, scoped operating presence/absence versus address/dateline/domicile, invalid/future dates, missing and unsupported citations, role precedence, input isolation, invalid model refusal and report hash binding. The frozen live report was reviewed offline, not rerun. External spend and provider/source/search calls were zero. No UI changed.
 
 The temporal/geographic clarification is now implemented for offline review. Human usefulness, analyst time, representative precision and source sustainability remain unmeasured. Next work should use actual human feedback on the retained review before deciding application integration or another bounded evaluation; no further live run is authorized and Milestone 7 remains open.
+
+## Analyst review surface — September 14
+
+Issue #130 adds **Research → Review a retained evaluation package**, at `/research/evaluation`. The page separates retained source evidence, original model observations, deterministic contextual assessment, and the analyst's usefulness judgment. It loads only a file explicitly selected by the user, in the browser; it does not upload evidence, query providers, mutate cases or imply acceptance. External source links are optional user navigation, not an automatic part of review.
+
+Create the real three-packet package from `apps/api`:
+
+```powershell
+.venv/Scripts/python.exe -m scripts.review_milestone7_observations --result ../../.local-validation/m7-preflight/analysis-results-v3.json --bundle ../../.local-validation/m7-preflight/analysis-requests-v2.json --format review-package --output ../../.local-validation/m7-preflight/analyst-review-package-v1.json
+```
+
+This ignored local package was generated successfully with SHA-256 `e76bb18c0d421a622c73fcdcbe1966957a3b2eb0047877aa7e4327cec3d54749`. Input and output files remain separate and the command refuses overwrite. No new live call is needed to inspect it. The default CLI format remains the prior context-only report.
+
+Select the package on the review page, inspect source text against the model and contextual guidance, then explicitly choose useful for triage, not useful yet, or defer for each reviewed packet. Add a rationale and optionally the minutes actually spent reviewing. Enter your name and download feedback JSON. Unanswered packets remain unreviewed; blank duration stays unknown. The export binds the exact file fingerprint and is self-attributed human feedback, not an authenticated acceptance event. Retain the downloaded file with the package; it is not saved to the application database. A future metric import must verify the package binding before counting it. No time saved is inferred from review duration.
+
+Validation: **343 backend/API tests and 19 frontend tests passed** on Windows. The production TypeScript/Vite build passed with its existing large-chunk warning. Windows lacked npm on PATH, so the installed Node runtime executed the same local TypeScript, Vitest and Vite entry points directly. The new backend regression verifies source/model/context separation, expectation exclusion and input hash refusal. Five frontend tests cover explicit/missing judgments, duration validation, exact-byte digest invocation, package/citation rejection, safe links, literal HTML-like source text, layer separation, failed-import reset and absence of API uploads. Rendered inspection used an isolated loopback Vite harness with fictional data at the available narrow viewport; source/model/context sections and test-only feedback export rendered correctly. That simulated export is not human usefulness evidence. The live application's web container was not redeployed in this increment.
+
+No source, search or model calls occurred; incremental external spend was $0. Actual human feedback remains outstanding. Milestone 7 and Issue #130 remain open; this feature does not claim representative live precision or automatically close quality gates.
