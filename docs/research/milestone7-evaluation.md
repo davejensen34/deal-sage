@@ -128,7 +128,7 @@ The ignored result is `.local-validation/m7-preflight/analysis-results-v1.json`;
 
 ## Milestone decision still needed
 
-The offline implementation and metrics are validated, and the approved source preflight and September 14 model run are complete. The model run did not yield a valid observation. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open. Offline prompt/validator inspection and versioned integration are complete. The next decision is explicit approval of the revised frozen analysis envelope below, or scope closeout. This record does not silently waive those gates.
+The offline implementation and metrics are validated, and the approved source preflight and September 14 model run are complete. The model run did not yield a valid observation. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open. Offline prompt/validator inspection and versioned integration are complete. The revised approved analysis is complete below. Next are human usefulness review and offline clarification of temporal and geographic observation semantics before any further live evaluation or scope closeout. This record does not silently waive those gates.
 
 ## September 14 approved model run
 
@@ -177,3 +177,35 @@ The proposed transfer is the same three frozen public-source packets (Savage suc
 **Not authorized or executed:** the previous approval was exhausted by execution v2. Sending these revised requests requires new explicit user approval of the payload, destination and limits before supplying `--approved-protocol-id m7-analysis-execution-v3 --confirm-live-calls`. The CLI reproduces the selected frozen bundle against read-only local evidence before loading provider configuration. Execution v3 has its own permanent claim; it cannot rewrite or replay v1/v2 outcomes. Valid observations are retained under `model_observation`, with `deterministic_research_disposition` separately labeled. Invalid observations retain only safe diagnostics and usage metadata. Cases remain stopped and there is no automatic promotion.
 
 All **315 backend/API tests passed** on Windows, including seven new offline integration checks. Mocked tests cover immutable bundle revision, unchanged evidence and expectation isolation, output limits, successful observation/disposition separation, one-shot behavior, legacy claim preservation, approval/hash/retry refusal before network activity, and rejection without persistence of model-authored disposition. Both local bundles reproduced byte-for-byte from retained evidence, and the execution-v3 claim was absent. No source, search or model calls ran; incremental external spend was $0. No UI changed. Live precision, analyst value and Milestone 7 closeout remain unvalidated.
+
+## Approved observation-v2 execution — September 14
+
+The user explicitly approved the named Savage/Aurora/Premier public-source packets to OpenAI after PR #139. Execution `m7-analysis-execution-v3` used the exact preparation-v2 bundle above, the original assessment date and model snapshot, three input-count prechecks and three analysis calls. All returned observations passed the v2 contract. No retries, substitutions, searches, acquisitions, case reopening or candidate promotions occurred. The $0.15 approval is now exhausted; it does not authorize another run.
+
+| Packet | Input tokens | Output tokens | Contract result | Code-derived disposition | Estimated generation cost |
+| --- | ---: | ---: | --- | --- | ---: |
+| Savage succession (M7-UT-2) | 1,580 | 1,902 | Valid | no_qualifying_relationship | $0.004199 |
+| Aurora founder exit (M7-TX-1) | 2,124 | 1,936 | Valid | no_qualifying_relationship | $0.004403 |
+| Premier leadership (M7-CO-3) | 1,300 | 1,529 | Valid | no_qualifying_relationship | $0.003383 |
+
+Reported usage totals **5,004 input and 5,367 output tokens**, with **$0.011985 estimated generation cost** and **$0.15 reserved**. Actual invoiced spend remains unavailable. These estimates use the previously reviewed rates, not an invoice. All calls returned `gpt-5-mini-2025-08-07`. Each completed within the proposed 6,000-output-token ceiling; all actually used fewer than 2,000 output tokens. This small rerun changed both prompt/schema and allowance, so it does not isolate which change helped or prove the larger ceiling was necessary.
+
+The ignored immutable result is `.local-validation/m7-preflight/analysis-results-v3.json`, SHA-256 `906a5ba69502ad4edf5ba4291938a8de59d3e2537d882ca7712d6e6fd8375799`. The `.m7-analysis-execution-v3.claimed` marker is present alongside the retained v1/v2 claims. Do not delete any marker to repeat the experiment. Model observations, deterministic dispositions and the following agent review remain separate from human decisions. The model output was not imported into the application research database or presented as analyst acceptance.
+
+### Agent review of retained observations
+
+This is an offline comparison with the frozen source text and preflight expectations, not independent verification or human ground truth. All three observations retain useful narrative detail and follow-up questions even though none establishes a qualifying ownership relationship. `no_qualifying_relationship` applies to the evidence presented; it is not a finding that the executive owns no shares or that the business has no research value.
+
+- **Savage:** preserves management succession, the self-description as privately held/family-owned, a source-reported 4,000-plus team members and the planned leadership dates. It does not infer executive ownership. The next useful checks are actual transition completion and ownership/control evidence; no audited revenue, profitability or acquisition attractiveness was established.
+- **Aurora:** preserves the founder/executive departure and Texas operating clue while recognizing the source's publicly traded status. It distinguishes role exit from equity sale. The dates are announced effective dates, not independently confirmed completion; regulatory filings are referenced by the article but were not retrieved in this run.
+- **Premier:** preserves the conditional CEO succession and North Carolina address. It does not equate the executive role with ownership. Colorado fit is unsupported by this packet; the output's stronger `out_of_scope` label is not proof that the company has no Colorado operations. Related-article headings are clues about the acquisition, not independently retrieved transaction evidence.
+
+Two contract limitations remain visible despite a 3/3 valid-output rate. First, all three outputs say `operating_status=active`, although the source dates precede the frozen assessment date and the narratives ask for current confirmation. The enum does not carry a separate observation date; these outputs do not establish current operations as of September 11. Second, geographic fit lacks an explicit distinction between a supported requested-state operating connection, legal domicile, and absence of evidence. An outside-state address alone cannot prove absence of in-state operations. These findings warrant offline temporal/geographic contract clarification, with fictional regression fixtures, before stronger quality claims. Do not silently rewrite these retained outputs or loosen promotion guards.
+
+### Measures and remaining decision
+
+Execution/contract completion is **3/3**; failed, incomplete and invalid outcomes are **0/3** in this run. Useful summaries are retained for all three packets, but usefulness has only been assessed by this coding agent. Ownership-supported observations are **0/3**, actual promotions are **0**, and promotion precision has a zero denominator and remains unavailable. Frozen-context comparison supports the narrow role/ownership distinction and Aurora public-company exclusion; temporal/geographic concerns prevent treating overall dimension agreement as a quality pass. The prior v2 failed outcomes remain part of the record, not replaced by this run. No per-family or statewide precision estimate is justified by three selected packets spanning only three signal families.
+
+Human usefulness, recorded analyst decisions and time saved remain **unmeasured**. Source sustainability, representative coverage, current ownership and recommendation attractiveness remain unvalidated. Next: review these three retained observations with a human analyst and clarify the temporal/geographic contract offline under Issue #130. No further external call is authorized by this record. Milestone 7 remains open.
+
+Before the live run, all 17 execution/revision guard tests passed on Windows. This increment changes documentation only; the existing full 315-test and five-job CI validation belongs to PR #139. PR validation for this outcome record is recorded on its linked GitHub PR. No UI changed.
