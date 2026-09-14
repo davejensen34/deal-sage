@@ -128,7 +128,7 @@ The ignored result is `.local-validation/m7-preflight/analysis-results-v1.json`;
 
 ## Milestone decision still needed
 
-The offline implementation and metrics are validated, and the approved source preflight and September 14 model run are complete. The model run did not yield a valid observation. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open. The next useful work is offline inspection of prompt/validator alignment and safe diagnostic detail, followed by an explicit decision about further live evaluation or scope closeout. This record does not silently waive those gates.
+The offline implementation and metrics are validated, and the approved source preflight and September 14 model run are complete. The model run did not yield a valid observation. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open. Offline prompt/validator inspection and versioned integration are complete. The next decision is explicit approval of the revised frozen analysis envelope below, or scope closeout. This record does not silently waive those gates.
 
 ## September 14 approved model run
 
@@ -161,3 +161,19 @@ The existing executor now records versioned, allowlisted per-check codes for fut
 All 308 backend/API tests passed, including 13 new offline contract and diagnostic checks. They cover the reproduced disposition seam, useful unknown/non-owner observations, target fit, contradictions, citation and origin failures, response-schema rejection, mutation isolation and persisted diagnostic redaction. The frozen bundle still hashes to `5142f997f0f29192f8ca9bd4b47e68b4532ce3e611aa4d1bea5aceecfcaeb08e`; both historical execution claims remain present. No provider, source or search calls ran; spend was $0. No UI or application promotion policy changed.
 
 The v2 contract is not connected to a live executor or the existing frozen request builder. A future integration must deliberately freeze new instructions/schema/requests and approval limits. The observed output-cap issue remains unresolved by this offline change. No claim is made that v2 improves live precision or cures the discarded responses. Issue #130 and Milestone 7 remain open pending the evaluation/closeout decision.
+
+## Revised observation integration — September 14
+
+Issue #130 now connects `m7-observation-v2` to preparation v2 and the separately gated `m7-analysis-execution-v3`. Source context, expectations outside the provider request, the September 11 assessment date and `gpt-5-mini-2025-08-07` remain unchanged. Only the model instructions/schema and output ceiling change. Preparation verifies the original reviewed bundle before transforming it; the historical bundle, claims and failed outcomes remain intact.
+
+The revised ignored bundle is `.local-validation/m7-preflight/analysis-requests-v2.json`, SHA-256 `1e0ca8fd29c6d2016560bc81d9009cd429efdcafda8bfe5880baf2786b9fde3d`. Reproduce it without credentials or network calls from `apps/api`:
+
+```powershell
+.venv/Scripts/python.exe -m scripts.prepare_milestone7_analysis --manifest ../../.local-validation/m7-preflight/packets.json --database dealsage.db --evidence-dir data/evidence --observation-version v2 --output ../../.local-validation/m7-preflight/analysis-requests-v2.json
+```
+
+The proposed transfer is the same three frozen public-source packets (Savage succession, Aurora founder exit, Premier leadership) to OpenAI for three analysis calls. Each call has a provider input-count precheck, a 20,000-input-token ceiling, a revised 6,000-output-token ceiling, a 90-second SDK timeout, no retries, and a durable five-cent reservation; the total ceiling remains **$0.15**. At the reviewed [GPT-5 mini rates](https://developers.openai.com/api/docs/models/gpt-5-mini) of $0.25/M input and $2/M output tokens, the maximum generation estimate is $0.017 per call before cached-input savings. The larger output allowance addresses an observed constraint but does not guarantee completion or improved quality.
+
+**Not authorized or executed:** the previous approval was exhausted by execution v2. Sending these revised requests requires new explicit user approval of the payload, destination and limits before supplying `--approved-protocol-id m7-analysis-execution-v3 --confirm-live-calls`. The CLI reproduces the selected frozen bundle against read-only local evidence before loading provider configuration. Execution v3 has its own permanent claim; it cannot rewrite or replay v1/v2 outcomes. Valid observations are retained under `model_observation`, with `deterministic_research_disposition` separately labeled. Invalid observations retain only safe diagnostics and usage metadata. Cases remain stopped and there is no automatic promotion.
+
+All **315 backend/API tests passed** on Windows, including seven new offline integration checks. Mocked tests cover immutable bundle revision, unchanged evidence and expectation isolation, output limits, successful observation/disposition separation, one-shot behavior, legacy claim preservation, approval/hash/retry refusal before network activity, and rejection without persistence of model-authored disposition. Both local bundles reproduced byte-for-byte from retained evidence, and the execution-v3 claim was absent. No source, search or model calls ran; incremental external spend was $0. No UI changed. Live precision, analyst value and Milestone 7 closeout remain unvalidated.

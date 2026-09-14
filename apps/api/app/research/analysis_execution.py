@@ -11,13 +11,17 @@ from app.ai.providers.openai import OpenAIProvider
 from app.ai.providers.base import AIProviderIncompleteError, AIProviderRefusalError
 from app.research.analysis_preparation import canonical_bytes, observation_errors
 from app.research.ingestion import assert_safe_source_content
-from app.research.observation_contract import DIAGNOSTIC_VERSION, safe_diagnostic_codes
+from app.research.observation_contract import DIAGNOSTIC_VERSION, safe_diagnostic_codes, assess_observation
+from app.research.analysis_revision import PROTOCOL_V3
 
 
 # Separately approved September 14 retry. The v1 claim and failed result remain
 # immutable; this version grants one new attempt of the same frozen requests.
 PROTOCOL = "m7-analysis-execution-v2"
 BUNDLE_SHA256 = "5142f997f0f29192f8ca9bd4b47e68b4532ce3e611aa4d1bea5aceecfcaeb08e"
+# Prepared for review, not yet approved for live execution. The explicit protocol
+# argument must be supplied only after the user approves this new payload/budget.
+BUNDLE_V3_SHA256 = "1e0ca8fd29c6d2016560bc81d9009cd429efdcafda8bfe5880baf2786b9fde3d"
 
 
 def persist(path: Path, value: dict) -> None:
@@ -36,20 +40,21 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
     database is opened here, and only validated observations survive persistence.
     """
     payload = bundle_path.read_bytes()
-    if approval != PROTOCOL or sha256(payload).hexdigest() != BUNDLE_SHA256:
+    expected_hash = {PROTOCOL: BUNDLE_SHA256, PROTOCOL_V3: BUNDLE_V3_SHA256}.get(approval)
+    if expected_hash is None or sha256(payload).hexdigest() != expected_hash:
         raise ValueError("Approval or frozen bundle mismatch")
     if client.max_retries != 0:
         raise ValueError("Provider retries must be disabled")
     bundle = json.loads(payload)
     # The location is tied to the approved bundle, not a caller-selected output.
-    claim = bundle_path.parent / f".{PROTOCOL}.claimed"
+    claim = bundle_path.parent / f".{approval}.claimed"
     with claim.open("x") as stream:
-        stream.write(BUNDLE_SHA256)
+        stream.write(expected_hash)
         stream.flush()
         os.fsync(stream.fileno())
     with output.open("xb"):
         pass
-    record = {"protocol": PROTOCOL, "bundle_sha256": BUNDLE_SHA256,
+    record = {"protocol": approval, "bundle_sha256": expected_hash,
               "started_at": datetime.now(timezone.utc).isoformat(), "calls": [],
               "count_requests": 0, "reserved_cents": 0, "actual_billed_usd": None}
     persist(output, record)
@@ -80,8 +85,8 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
             if not 0 <= tokens <= 20000:
                 row["reason"] = "input_count_outside_limit"
                 raise ValueError("Input token ceiling or count contract failed")
-            # 20k input at $0.25/M plus 2k output at $2/M is $0.009,
-            # below the five-cent reservation even without cached-input savings.
+            # At reviewed rates, 20k input plus v3's 6k output costs at most
+            # $0.017, below five cents without cached-input savings. V2 caps 2k.
             row["analysis_attempted"] = True
             persist(output, record)
             response = await client.responses.create(**request)
@@ -94,14 +99,26 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
                 raise ValueError("Unexpected response status or model")
             observation = json.loads(response.output_text)
             assert_safe_source_content(observation)
-            sources = {s["source_id"] for s in json.loads(request["input"])["sources"]}
-            errors = observation_errors(observation, sources)
-            if errors:
-                row.update(status="invalid", reason="observation_consistency",
-                           diagnostic_version=DIAGNOSTIC_VERSION,
-                           diagnostic_codes=safe_diagnostic_codes(errors))
+            context = json.loads(request["input"])
+            sources = {s["source_id"] for s in context["sources"]}
+            if approval == PROTOCOL_V3:
+                assessment = assess_observation(observation, sources, context["case_origin"])
+                row["observation_contract"] = assessment.contract_version
+                if assessment.diagnostic_codes:
+                    row.update(status="invalid", reason="observation_validation",
+                               diagnostic_version=DIAGNOSTIC_VERSION,
+                               diagnostic_codes=assessment.diagnostic_codes)
+                else:
+                    row.update(status="completed", model_observation=assessment.model_observation,
+                               deterministic_research_disposition=assessment.deterministic_research_disposition)
             else:
-                row.update(status="completed", observation=observation)
+                errors = observation_errors(observation, sources)
+                if errors:
+                    row.update(status="invalid", reason="observation_consistency",
+                               diagnostic_version=DIAGNOSTIC_VERSION,
+                               diagnostic_codes=safe_diagnostic_codes(errors))
+                else:
+                    row.update(status="completed", observation=observation)
         except AIProviderIncompleteError:
             row.update(status="incomplete")
         except AIProviderRefusalError:
