@@ -1,6 +1,6 @@
 # Milestone 7 comparative evaluation
 
-Issue #130. Status: offline contract validated; live precision, source sustainability and analyst value remain unvalidated. Milestone 7 remains active pending the live-evaluation or scope-closeout decision. No later milestone is activated.
+Issue #130. Status: offline contract validated; actual human evaluation failed the usefulness gate (0/3 useful). Representative live precision and source sustainability remain unvalidated. Milestone 7 remains active pending the live-evaluation or scope-closeout decision. No later milestone is activated.
 
 ## What was run
 
@@ -269,3 +269,36 @@ A no-feedback validation ran against the real package with no `--feedback` argum
 All **375 backend/API tests passed**, including 32 new fictional validation and aggregation checks. They exercise partial/multiple-reviewer denominators, defer in the usefulness denominator, zero versus missing duration, stable file fingerprints, Unicode/case/whitespace duplicate detection, disjoint partial exports, malformed/extra fields, hash mismatch, missing/duplicate/unknown slots, invalid times and timestamps, duplicate JSON keys, input limits, and CLI no-overwrite behavior. The fixture data remains test-only. No UI changed, so the existing rendered review page remains untouched; no frontend validation is claimed beyond its prior PR and current CI.
 
 No source/search/model calls or external spend occurred, and no application database was read or written. Actual usefulness feedback, representative precision and source sustainability remain outstanding. Milestone 7 and Issue #130 stay open; metrics never close them automatically.
+
+## Actual human judgment analysis — September 14
+
+The user supplied the browser-exported feedback file explicitly for analysis. Package/result/request hashes, schema, slot partition and attribution validation passed. The exact original bytes were retained in ignored `.local-validation/m7-preflight/human-feedback-v1.json`, SHA-256 `c77701a7d63bf26088cffcfda172277c39f7d99042bd134ddbb65a407e811faf`; the supplied Downloads file was not changed. Raw rationale and reviewer identity remain local. Attribution is self-reported; the file was directly provided by the user in this conversation.
+
+The validated summary is `.local-validation/m7-preflight/usefulness-summary-reviewed-v1.json`, SHA-256 `937674c5fffd12d45f0e873d6b64567f511434f56c68e88f3b247c22a5ddbdb8`. Reproduce into a new output path from `apps/api`:
+
+```powershell
+.venv/Scripts/python.exe -m scripts.summarize_milestone7_feedback --package ../../.local-validation/m7-preflight/analyst-review-package-v1.json --feedback ../../.local-validation/m7-preflight/human-feedback-v1.json --output ../../.local-validation/m7-preflight/usefulness-summary-reviewed-replay.json
+```
+
+| Packet | Human judgment | Self-reported review seconds | Publication age at frozen 2026-09-11 assessment |
+| --- | --- | ---: | ---: |
+| Savage succession | Not useful | 180 | 830 days |
+| Aurora founder exit | Not useful | 0 | 491 days |
+| Premier leadership | Not useful | 60 | 245 days |
+
+One reviewer covered **3/3 packets (100%)**. **0/3 judgments were useful (0%)**; all three were not useful, with no deferrals or unreviewed slots. Known review duration is **240 seconds**. The recorded zero is preserved and is not treated as missing or corrected to an invented duration. Time saved, ownership truth and promotion precision remain unavailable. This is observed usefulness for this three-packet cohort, not a representative estimate of the platform's future performance.
+
+The user's rationale identifies two linked product problems. First, the events are too old for action. Second, the gathered output feels oriented toward telling the analyst how to review and why evidence is insufficient, rather than showing value in the discovered business information. These judgments supersede the coding agent's earlier assessment that the summaries were useful. They do not mean evidence boundaries should be removed or ownership should be inferred from executive roles.
+
+**Outcome: the human-value gate failed.** Three contract-valid outputs and passing CI did not produce a useful cohort. The prior invalid responses and the eventual valid responses remain preserved; this feedback must not be reframed as a successful opportunity demonstration or used to close Milestone 7.
+
+### Implementation findings and remediation
+
+Inspection found that `preflight_budget.py` freezes search queries without a date window; `analysis_preparation.py` records publication age without enforcing an intake freshness limit; and `leads.py` prioritizes retained/type/conflict clues without a signal-age factor. The separate confidence recency multiplier uses publication or retrieval time with multi-year decay, which is not a current-opportunity freshness policy. None of the offline contextual-report work repaired those upstream selection gaps. All three publications fall outside 30-, 90- and 180-day windows; the proposed window choice does not change this cohort's negative result.
+
+- **[#144 — Recent-signal intake](https://github.com/davejensen34/deal-sage/issues/144):** configure and freeze the lookback, add dated discovery, preserve source-backed event/announcement/retrieval dates, and route stale/unknown dates before paid analysis. Retain background clues and date-verification work without presenting them as fresh matches. Fresh republication cannot make an old event recent. Empty qualifying results must remain empty. A 90-day initial next-evaluation window is proposed pending user preference; no new window or live run is activated here.
+- **[#145 — Business-focused briefs](https://github.com/davejensen34/deal-sage/issues/145):** lead with the business, what changed and when, why it may matter, available size/fit clues and the most useful next verification. Put generic guidance behind the substantive brief while preserving source/model/human separation. Do not fabricate financials, ownership or acquisition intent. Validate rendered examples, then collect actual usefulness judgments on a separately approved recent cohort.
+
+The next sequence is freshness intake, brief presentation, bounded recent-source validation, then actual human value review. No new source/model calls, widened sampling budget, freshness threshold or milestone completion is authorized by this outcome record. Milestone 7 stays active; no completed milestone is reopened and Issue #92 remains deferred.
+
+Validation for this analysis: the real supplied export passed the importer; all 32 feedback-validation tests passed again. This change adds outcome/plan documentation only; the 375-test implementation baseline remains historical until current PR CI. No application database, score or case changed, and the open review page was untouched. New external spend was $0.
