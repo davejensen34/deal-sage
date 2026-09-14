@@ -23,18 +23,21 @@ export function Research(){
   const cases=useQuery({queryKey:['research-case-narratives'],queryFn:()=>api<{cases:CaseNarrative[]}>('/research/case-narratives')});
   const caseMetrics=useQuery({queryKey:['research-case-metrics'],queryFn:()=>api<{origin_metrics:Record<string,OriginMetrics>}>('/research/case-metrics')});
   const effectiveness=useQuery({queryKey:['workflow-effectiveness'],queryFn:()=>api<WorkflowEffectivenessResult>('/research/workflow-effectiveness')});
-  if(sources.isLoading||result.isLoading||funnel.isLoading||trail.isLoading||sourceSamples.isLoading)return <div className="loading">Loading research evidence…</div>;
-  if(sources.isError||result.isError||funnel.isError||trail.isError||sourceSamples.isError||!sources.data?.[0]||!result.data||!funnel.data||!trail.data||!sourceSamples.data)return <div className="empty"><AlertTriangle/><h3>Research result unavailable</h3><p>The recorded experiment could not be loaded.</p></div>;
+  const briefs=cases.isLoading?<p>Loading business research…</p>:cases.isError?<p role="alert">Business research could not be loaded.</p>:<CaseNarratives cases={cases.data?.cases||[]}/>;
+  const evaluation=<p><Link to="/research/evaluation">Review a retained evaluation package and record usefulness feedback</Link></p>;
+  if(sources.isLoading||result.isLoading||funnel.isLoading||trail.isLoading||sourceSamples.isLoading)return <><h1>Research workspace</h1>{evaluation}{briefs}<p>Loading source operations…</p></>;
+  if(sources.isError||result.isError||funnel.isError||trail.isError||sourceSamples.isError||!sources.data?.[0]||!result.data||!funnel.data||!trail.data||!sourceSamples.data)return <><h1>Research workspace</h1>{evaluation}{briefs}<details className="research-archive"><summary>Source operations and historical experiments</summary><p>The recorded experiment could not be loaded.</p></details></>;
   const source=sources.data[0],data=result.data,metrics=data.metrics;
   return <>
-    <div className="page-heading compact"><div><p className="eyebrow">Milestone 3.1 · evidence convergence</p><h1>Research workspace</h1><p>Follow signal-first, business-first, and hybrid research without mistaking evidence, inference, or scores for analyst judgment.</p></div><a href={data.query_url} target="_blank" rel="noreferrer"><ExternalLink/>Inspect Colorado query</a></div>
-    <p><Link to="/research/evaluation">Review a retained evaluation package and record usefulness feedback</Link></p>
+    <div className="page-heading compact"><div><p className="eyebrow">Business research</p><h1>Research workspace</h1><p>Explore businesses, transition signals and the evidence worth following up.</p></div></div>
+    {evaluation}
+    {briefs}
+    <details className="research-archive"><summary>Source operations and historical experiments</summary>
     <section className="research-verdict panel"><div className="verdict-icon"><AlertTriangle/></div><div><p className="eyebrow">Recommendation · {data.recommendation.decision}</p><h2>{data.recommendation.summary}</h2><p>{data.recommendation.next_step}</p></div></section>
     <section className="metric-grid research-metrics"><div className="metric"><Database/><span>Records retrieved</span><b>{data.sample_size}</b></div><div className="metric"><CheckCircle2/><span>Retrieval success</span><b>{pct(metrics.retrieval_success_percent)}</b></div><div className="metric"><Building2/><span>Agent evidence</span><b>{pct(metrics.registered_agent_evidence_percent)}</b></div><div className="metric danger"><UserRoundSearch/><span>Owner evidence</span><b>{pct(metrics.owner_controller_evidence_yield_percent)}</b></div><div className="metric"><Database/><span>Marginal API cost</span><b>${metrics.marginal_api_cost_usd}</b></div></section>
     <section className="panel funnel-panel"><div className="panel-title"><div><p className="eyebrow">Actual demo state</p><h2>Research funnel</h2><p>Counts reflect persisted validated stages; no expected conversions are invented.</p></div></div><div className="funnel-path">{funnel.data.map((item,index)=><div key={item.stage}><span>{index+1}</span><b>{item.count}</b><small>{item.stage.replaceAll('_',' ')}</small></div>)}</div></section>
     <ResearchTrailView trail={trail.data}/>
     <section className="panel origin-metrics"><div className="panel-title"><div><p className="eyebrow">Measured by entry strategy</p><h2>Convergence activity</h2><p>Observed persisted counts only; no conversion rate is projected.</p></div></div><div>{['signal_first','business_first','hybrid'].map(origin=>{const metric=caseMetrics.data?.origin_metrics[origin];return <article key={origin}><b>{origin.replaceAll('_',' ')}</b><strong>{metric?.cases||0} cases</strong><small>{metric?.evidence_items||0} evidence · {metric?.claims||0} claims · {metric?.research_steps||0} steps</small></article>})}</div></section>
-    <CaseNarratives cases={cases.data?.cases||[]}/>
     <SourceOperations result={sourceSamples.data}/>
     <SourceRefreshes/>
     {effectiveness.data&&<WorkflowEffectiveness result={effectiveness.data}/>}
@@ -44,5 +47,6 @@ export function Research(){
       <section className="panel method-card"><h2>Experiment method</h2><p>{data.selection}</p><p>{data.review_method}</p><p className="muted">Latency: {metrics.retrieval_latency_ms} ms · Name coverage: {pct(metrics.entity_name_coverage_percent)} · Formation-date coverage: {pct(metrics.formation_date_coverage_percent)}</p></section>
       <section className="panel method-card"><h2>Known source limits</h2>{source.limitations.map(limit=><p key={limit}><CheckCircle2/>{limit}</p>)}</section>
     </div>
+    </details>
   </>;
 }
