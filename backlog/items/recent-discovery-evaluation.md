@@ -1,6 +1,8 @@
 # Recent discovery evaluation
 
-Issue [#130](https://github.com/davejensen34/deal-sage/issues/130), Milestone 7. Status: approved attempt stopped after its first query; no retained candidates and approval exhausted.
+Issue [#130](https://github.com/davejensen34/deal-sage/issues/130), Milestone 7. Status: corrective validation completed through two recent review packets; awaiting actual human usefulness judgment and remaining quality decision. The approved $5 completion envelope includes retries: $3.30 reserved, $0.34614475 estimated spend, $1.70 remaining. No promotion or milestone closeout. [Current validation record](../../docs/research/milestone7-completion-validation.md).
+
+The earlier one-shot execution history below is preserved; its exhausted approval does not cancel the later explicit completion envelope.
 
 The [reviewable protocol](../../docs/research/milestone7-recent-discovery.md) freezes eight signal-first public-web queries using the same date hints and search contract as the application. Offline tests cover exact requests, all eight families/three states, tamper/approval/expiry/replay refusal, persisted failure reservations, candidate-only sanitation, no replacement calls, and the real SDK with offline transport. No UI changed or live calls ran.
 

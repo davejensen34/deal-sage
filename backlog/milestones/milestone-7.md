@@ -2,6 +2,8 @@
 
 Status: in_progress. Approved September 11, 2026; GitHub milestone [12](https://github.com/davejensen34/deal-sage/milestone/12).
 
+September 14 corrective-validation checkpoint: the user's $5 completion approval permits retries within one durable ledger. Twenty searches, 45 HTTP requests and six model attempts produced two recent review packets plus a date-verification lead, with zero promotions. Windows newline hashing, incomplete-search reference handling and relationship/fit contract guidance were corrected without changing historical results. All 471 backend/API tests, 24 frontend tests, TypeScript/build and desktop/narrow rendered checks passed. Estimated spend $0.34614475; $3.30 reserved, $1.70 remaining. New human review is 0/2 recorded, not a failed usefulness score; the previous 0/3 useful outcome remains. No Texas packet, registry corroboration, representative precision or financial attractiveness is claimed. [Source/attempt/hash record](../../docs/research/milestone7-completion-validation.md). Milestone closeout remains unfulfilled.
+
 Approval starts implementation. It does not establish that historical live precision or source-sustainability gates passed. New live execution remains a separately approved bounded evaluation.
 
 ## Goal

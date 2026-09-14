@@ -1,5 +1,7 @@
 # Milestone 7 comparative evaluation
 
+Latest checkpoint: [September 14 corrective validation](milestone7-completion-validation.md) used the new $5 discovery/retrieval/analysis/retry envelope and produced two recent packets for a new human review. All six analysis attempts remain recorded, including one invalid result and semantic errors in intermediate contract-valid observations. Latest observations retain management changes without ownership support. Estimated spend $0.34614475 / $3.30 reserved; no promotions. New review coverage is 0/2; the historical 0/3 useful result below is unchanged. Milestone 7 is not complete, and small-cohort contract validity is not representative live precision.
+
 Issue #130. Status: offline contract validated; actual human evaluation failed the usefulness gate (0/3 useful). Representative live precision and source sustainability remain unvalidated. Milestone 7 remains active pending the live-evaluation or scope-closeout decision. No later milestone is activated.
 
 ## What was run

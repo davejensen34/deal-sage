@@ -1,5 +1,7 @@
 # Product roadmap
 
+Latest Milestone 7 checkpoint (September 14): corrective live validation under the explicit $5 envelope produced two recent management-transition review packets, with ownership unestablished, and one retained date-verification lead. Twenty searches, 45 HTTP requests and six analysis attempts cost an estimated $0.34614475; $3.30 is reserved. All 471 backend/API tests, 24 frontend tests, TypeScript/build and desktop/narrow review checks passed. The original 0/3 useful result remains intact; the new 0/2 review coverage is not a usefulness result. Milestone 7 remains active for actual human review and a representative quality/source-sustainability decision. [Full record](../research/milestone7-completion-validation.md).
+
 ## Milestone 1 — Evidence and Analyst Foundation
 
 Complete. The persisted fictional-data MVP and its validation record are tracked in `docs/project/current-state.md` and `backlog/milestones/milestone-1.md`.
