@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom';
 import {useQuery} from '@tanstack/react-query';
 import {AlertTriangle,Building2,CheckCircle2,Database,ExternalLink,UserRoundSearch} from 'lucide-react';
 import {api} from '../api/client';
@@ -27,6 +28,7 @@ export function Research(){
   const source=sources.data[0],data=result.data,metrics=data.metrics;
   return <>
     <div className="page-heading compact"><div><p className="eyebrow">Milestone 3.1 · evidence convergence</p><h1>Research workspace</h1><p>Follow signal-first, business-first, and hybrid research without mistaking evidence, inference, or scores for analyst judgment.</p></div><a href={data.query_url} target="_blank" rel="noreferrer"><ExternalLink/>Inspect Colorado query</a></div>
+    <p><Link to="/research/evaluation">Review a retained evaluation package and record usefulness feedback</Link></p>
     <section className="research-verdict panel"><div className="verdict-icon"><AlertTriangle/></div><div><p className="eyebrow">Recommendation · {data.recommendation.decision}</p><h2>{data.recommendation.summary}</h2><p>{data.recommendation.next_step}</p></div></section>
     <section className="metric-grid research-metrics"><div className="metric"><Database/><span>Records retrieved</span><b>{data.sample_size}</b></div><div className="metric"><CheckCircle2/><span>Retrieval success</span><b>{pct(metrics.retrieval_success_percent)}</b></div><div className="metric"><Building2/><span>Agent evidence</span><b>{pct(metrics.registered_agent_evidence_percent)}</b></div><div className="metric danger"><UserRoundSearch/><span>Owner evidence</span><b>{pct(metrics.owner_controller_evidence_yield_percent)}</b></div><div className="metric"><Database/><span>Marginal API cost</span><b>${metrics.marginal_api_cost_usd}</b></div></section>
     <section className="panel funnel-panel"><div className="panel-title"><div><p className="eyebrow">Actual demo state</p><h2>Research funnel</h2><p>Counts reflect persisted validated stages; no expected conversions are invented.</p></div></div><div className="funnel-path">{funnel.data.map((item,index)=><div key={item.stage}><span>{index+1}</span><b>{item.count}</b><small>{item.stage.replaceAll('_',' ')}</small></div>)}</div></section>
