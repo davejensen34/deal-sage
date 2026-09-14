@@ -128,4 +128,22 @@ The ignored result is `.local-validation/m7-preflight/analysis-results-v1.json`;
 
 ## Milestone decision still needed
 
-The offline implementation and metrics are validated, and the approved source preflight is complete. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open; a further analysis attempt, acquisition fixes or a scope-closeout decision require explicit direction. This record does not silently waive those gates.
+The offline implementation and metrics are validated, and the approved source preflight and September 14 model run are complete. The model run did not yield a valid observation. Live precision, reproducible coverage and observed analyst value are not validated. Issue #130 and Milestone 7 stay open. The next useful work is offline inspection of prompt/validator alignment and safe diagnostic detail, followed by an explicit decision about further live evaluation or scope closeout. This record does not silently waive those gates.
+
+## September 14 approved model run
+
+After automatic review rejected generic continuation as data-transfer authorization, Dave Jensen explicitly approved sending the three frozen public-source packets to OpenAI. Protocol `m7-analysis-execution-v2` used the unchanged bundle and model snapshot, with a separate execution claim and result file. The v1 claim and failed attempt were preserved. Source/request hashes were reverified before execution, SDK retries remained disabled, and the requests kept their frozen September 11 assessment date rather than silently changing the evaluation context.
+
+| Slot | Counted/reported input tokens | Output tokens | Outcome | Estimated model cost |
+| --- | ---: | ---: | --- | ---: |
+| UT succession | 1,550 | 2,000 | Incomplete at the output limit | $0.0043875 |
+| TX founder exit | 2,094 | 1,790 | Invalid: observation consistency | $0.0041035 |
+| CO leadership change | 1,270 | 1,461 | Invalid: observation consistency | $0.0032395 |
+
+Three input-count prechecks and three model-analysis requests ran. All input counts were below 20,000, and output usage remained within 2,000 per call. The returned model was `gpt-5-mini-2025-08-07` in all three calls. Reported usage totaled 4,914 input and 5,251 output tokens; estimated generation cost was **$0.0117305**, against **$0.15 reserved**. Actual invoiced spend remains unavailable. No search, evidence retrieval, model substitution, replacement request, case reopening or promotion occurred.
+
+Zero of three observations passed the evaluation contract. One incomplete response and two invalid responses are execution outcomes, not three negative business findings or evidence of poor source quality. Precision and dimension agreement are unavailable with zero valid observations. The invalid responses were not persisted; the retained reason `observation_consistency` does not identify the individual failed checks. Consequently, this record cannot attribute either failure to ownership reasoning, target fit, citations or disposition precedence. No human usefulness or time-saved observation was collected.
+
+The ignored result is `.local-validation/m7-preflight/analysis-results-v2.json`, with the permanent `.m7-analysis-execution-v2.claimed` marker beside it. Existing source packets remain available for offline inspection. Do not regenerate discarded responses through unapproved calls. Before another live experiment, inspect the frozen instructions against the deterministic contract and add safe per-check diagnostic codes without retaining invalid payloads. Treat the output cap as an observed constraint; changing it requires a newly bounded protocol, not an automatic retry.
+
+All 295 backend/API tests passed on Windows. The nine execution-guard tests passed before this run. No UI changed. These engineering checks do not convert the failed live evaluation into a quality pass; Issue #130 and Milestone 7 remain open.
