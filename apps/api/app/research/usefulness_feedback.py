@@ -13,6 +13,9 @@ from app.research.transition_evaluation import ratio
 
 
 PACKAGE_SHA256 = "e76bb18c0d421a622c73fcdcbe1966957a3b2eb0047877aa7e4327cec3d54749"
+# September 14 corrective cohort, separately frozen after source/date review.
+# The original failed-value cohort remains accepted and cannot be mixed with it.
+COMPLETION_PACKAGE_SHA256 = "9b8db67e21342f64fc25d67dba3005daac72536b30719610361a635f36ad2bbe"
 MAX_BYTES = 2_000_000
 
 
@@ -92,7 +95,8 @@ def summarize_feedback(package_bytes: bytes, feedback_files: list[bytes]) -> dic
     Conflicting exports require deliberate file selection; no 'latest wins' rule
     silently replaces prior feedback. No raw rationale enters aggregate output.
     """
-    if sha256(package_bytes).hexdigest() != PACKAGE_SHA256:
+    package_hash = sha256(package_bytes).hexdigest()
+    if package_hash not in {PACKAGE_SHA256, COMPLETION_PACKAGE_SHA256}:
         raise ValueError("Unreviewed analyst package")
     package = _json(package_bytes)
     slots = {item["slot"] for item in package["items"]}
@@ -106,7 +110,7 @@ def summarize_feedback(package_bytes: bytes, feedback_files: list[bytes]) -> dic
             # Pydantic errors include original values: exclude them from logs.
             raise ValueError("Invalid feedback contract") from None
         if any(getattr(feedback, key) != expected for key, expected in (
-            ("package_sha256", PACKAGE_SHA256), ("result_sha256", package["result_sha256"]),
+            ("package_sha256", package_hash), ("result_sha256", package["result_sha256"]),
             ("bundle_sha256", package["bundle_sha256"]),
         )):
             raise ValueError("Feedback fingerprint mismatch")
@@ -130,7 +134,7 @@ def summarize_feedback(package_bytes: bytes, feedback_files: list[bytes]) -> dic
     durations = [j.self_reported_review_seconds for _, j in records if j.self_reported_review_seconds is not None]
     reviewed_slots = {j.slot for _, j in records}
     return {
-        "version": "m7-usefulness-summary-v1", "package_sha256": PACKAGE_SHA256,
+        "version": "m7-usefulness-summary-v1", "package_sha256": package_hash,
         "result_sha256": package["result_sha256"], "bundle_sha256": package["bundle_sha256"],
         "feedback_sha256": sorted(hashes), "attribution": "self_reported_human_not_authenticated",
         "reviewer_labels": len({reviewer for reviewer, _ in records}),

@@ -37,6 +37,18 @@ def test_no_feedback_is_missing_not_negative(package):
     assert not result["milestone_complete"]
 
 
+def test_corrective_cohort_remains_separate_from_prior_feedback(package, monkeypatch):
+    recent = canonical_bytes({"items": [{"slot": "NEW"}], "result_sha256": "c"*64, "bundle_sha256": "d"*64})
+    digest = sha256(recent).hexdigest()
+    monkeypatch.setattr(module, "COMPLETION_PACKAGE_SHA256", digest)
+    result = module.summarize_feedback(recent, [])
+    assert result["package_sha256"] == digest
+    assert result["packet_review_coverage"]["denominator"] == 1
+    assert result["judgment_usefulness"]["value"] is None
+    with pytest.raises(ValueError, match="fingerprint mismatch"):
+        module.summarize_feedback(recent, [canonical_bytes(feedback())])
+
+
 def test_partial_and_multiple_reviewers_keep_distinct_denominators(package):
     first = feedback(seconds=0)
     second = feedback(("A", "B"), reviewer="Second fictional reviewer", usefulness="defer")
