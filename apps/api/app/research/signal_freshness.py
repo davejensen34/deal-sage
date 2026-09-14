@@ -143,6 +143,17 @@ def case_signal_intake(db, case_id: int, *, evidence_ids=None, claim_ids=None) -
         CaseEvidence, EvidenceClaim.evidence_id == CaseEvidence.id
     ).where(EvidenceClaim.case_id == case_id, CaseEvidence.case_id == case_id,
             EvidenceClaim.predicate == "transition").order_by(EvidenceClaim.id)).all()
+    conflicts = db.scalars(select(ClaimContradiction).where(
+        ClaimContradiction.case_id == case_id, ClaimContradiction.status == "open"
+    )).all()
+    conflicted_ids = {cid for conflict in conflicts for cid in (conflict.left_claim_id, conflict.right_claim_id)}
+    return assess_intake(pairs, policy, conflicted_ids=conflicted_ids,
+                         evidence_ids=evidence_ids, claim_ids=claim_ids)
+
+
+def assess_intake(pairs, policy, *, conflicted_ids=(), evidence_ids=None, claim_ids=None):
+    """Shared pure routing for database cases and immutable evaluation snapshots."""
+    policy = validate_policy(policy)
     rows = [assess_signal(claim, evidence, policy) for claim, evidence in pairs]
     groups = defaultdict(list)
     for index, (claim, _) in enumerate(pairs):
@@ -158,10 +169,6 @@ def case_signal_intake(db, case_id: int, *, evidence_ids=None, claim_ids=None) -
         if len(dates) > 1 or ("cancelled" in statuses and len(statuses) > 1):
             for i in indexes:
                 rows[i].update(route="date_verification", reason="conflicting_event_dates", eligible=False)
-    conflicts = db.scalars(select(ClaimContradiction).where(
-        ClaimContradiction.case_id == case_id, ClaimContradiction.status == "open"
-    )).all()
-    conflicted_ids = {cid for conflict in conflicts for cid in (conflict.left_claim_id, conflict.right_claim_id)}
     for row in rows:
         if row["claim_id"] in conflicted_ids:
             row.update(route="date_verification", reason="open_claim_conflict", eligible=False)
