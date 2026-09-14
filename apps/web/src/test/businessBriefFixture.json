@@ -1,0 +1,978 @@
+[
+  {
+    "id": 5,
+    "origin_strategy": "hybrid",
+    "status": "open",
+    "stop_reason": null,
+    "discovery_leads": [],
+    "transitions": [
+      {
+        "claim_id": 5,
+        "evidence_id": 5,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Ridge Fabrication",
+        "event_date": "2026-09-03",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.018049",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/4",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      },
+      {
+        "claim_id": 6,
+        "evidence_id": 5,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Ridge Fabrication",
+        "event_date": "2026-08-01",
+        "event_status": "cancelled",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.018049",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/4",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      }
+    ],
+    "signal_intake": {
+      "policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "signals": [
+        {
+          "claim_id": 5,
+          "evidence_id": 5,
+          "event_date": "2026-09-03",
+          "event_status": "reported",
+          "announcement_date": "2026-09-01",
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.018049",
+          "route": "date_verification",
+          "reason": "open_claim_conflict",
+          "eligible": false
+        },
+        {
+          "claim_id": 6,
+          "evidence_id": 5,
+          "event_date": "2026-08-01",
+          "event_status": "cancelled",
+          "announcement_date": null,
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.018049",
+          "route": "date_verification",
+          "reason": "open_claim_conflict",
+          "eligible": false
+        }
+      ],
+      "route_counts": {
+        "date_verification": 2
+      },
+      "eligible_signal_count": 0,
+      "analysis_allowed": false
+    },
+    "lead_brief": {
+      "version": "business-brief-v1",
+      "title": "Ridge Fabrication",
+      "reported_names": [
+        "Ridge Fabrication"
+      ],
+      "category": "date_review",
+      "target_fit": "not_assessed",
+      "signal": {
+        "claim_id": 5,
+        "evidence_id": 5,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Ridge Fabrication",
+        "event_date": "2026-09-03",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.018049",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/4",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      },
+      "assessment_policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "timing": {
+        "claim_id": 5,
+        "evidence_id": 5,
+        "event_date": "2026-09-03",
+        "event_status": "reported",
+        "announcement_date": "2026-09-01",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.018049",
+        "route": "date_verification",
+        "reason": "open_claim_conflict",
+        "eligible": false
+      },
+      "facts": [
+        {
+          "label": "Business",
+          "value": "Ridge Fabrication",
+          "evidence_id": 5,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/4",
+          "classification": "source_fact"
+        },
+        {
+          "label": "State",
+          "value": "UT",
+          "evidence_id": 5,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/4",
+          "classification": "source_fact"
+        }
+      ],
+      "why_it_matters": "Retirement may change who runs the business and how continuity is planned.",
+      "next_gap": "Resolve the conflicting business or transition assertions for Ridge Fabrication.",
+      "conflicts": [
+        "A second retained claim says the retirement was cancelled."
+      ],
+      "order": 1
+    },
+    "hypothesis": null,
+    "confidence": null,
+    "searches": [],
+    "evidence": [
+      {
+        "id": 5,
+        "publisher": "Fictional business journal",
+        "source_type": "newspaper",
+        "canonical_url": "https://example.test/brief/4",
+        "classification": "source_fact",
+        "relevant_excerpt": "Fictional fixture: Ridge Fabrication reports Jordan's retirement 2026-09-03. The announcement was made 2026-09-01."
+      }
+    ],
+    "conflicts": [
+      {
+        "type": "timeline",
+        "rationale": "A second retained claim says the retirement was cancelled.",
+        "status": "open"
+      }
+    ],
+    "frontier": [],
+    "steps": [],
+    "model_proposals": [],
+    "conclusion": null
+  },
+  {
+    "id": 4,
+    "origin_strategy": "hybrid",
+    "status": "open",
+    "stop_reason": null,
+    "discovery_leads": [],
+    "transitions": [
+      {
+        "claim_id": 4,
+        "evidence_id": 4,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Mesa Services",
+        "event_date": "2026-10-01",
+        "event_status": "planned",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.016549",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/3",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      }
+    ],
+    "signal_intake": {
+      "policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "signals": [
+        {
+          "claim_id": 4,
+          "evidence_id": 4,
+          "event_date": "2026-10-01",
+          "event_status": "planned",
+          "announcement_date": "2026-09-01",
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.016549",
+          "route": "planned_event",
+          "reason": "recent_announcement_of_future_plan",
+          "eligible": true
+        }
+      ],
+      "route_counts": {
+        "planned_event": 1
+      },
+      "eligible_signal_count": 1,
+      "analysis_allowed": true
+    },
+    "lead_brief": {
+      "version": "business-brief-v1",
+      "title": "Mesa Services",
+      "reported_names": [
+        "Mesa Services"
+      ],
+      "category": "recent",
+      "target_fit": "not_assessed",
+      "signal": {
+        "claim_id": 4,
+        "evidence_id": 4,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Mesa Services",
+        "event_date": "2026-10-01",
+        "event_status": "planned",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.016549",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/3",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      },
+      "assessment_policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "timing": {
+        "claim_id": 4,
+        "evidence_id": 4,
+        "event_date": "2026-10-01",
+        "event_status": "planned",
+        "announcement_date": "2026-09-01",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.016549",
+        "route": "planned_event",
+        "reason": "recent_announcement_of_future_plan",
+        "eligible": true
+      },
+      "facts": [
+        {
+          "label": "Business",
+          "value": "Mesa Services",
+          "evidence_id": 4,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/3",
+          "classification": "source_fact"
+        },
+        {
+          "label": "State",
+          "value": "CO",
+          "evidence_id": 4,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/3",
+          "classification": "source_fact"
+        },
+        {
+          "label": "Industry",
+          "value": "Commercial maintenance",
+          "evidence_id": 4,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/3",
+          "classification": "source_fact"
+        }
+      ],
+      "why_it_matters": "Retirement may change who runs the business and how continuity is planned.",
+      "next_gap": "Identify which business relationship the reported retirement affects at Mesa Services.",
+      "conflicts": [],
+      "order": 0
+    },
+    "hypothesis": null,
+    "confidence": null,
+    "searches": [],
+    "evidence": [
+      {
+        "id": 4,
+        "publisher": "Fictional business journal",
+        "source_type": "newspaper",
+        "canonical_url": "https://example.test/brief/3",
+        "classification": "source_fact",
+        "relevant_excerpt": "Fictional fixture: Mesa Services reports Jordan's retirement 2026-10-01. The announcement was made 2026-09-01."
+      }
+    ],
+    "conflicts": [],
+    "frontier": [],
+    "steps": [],
+    "model_proposals": [],
+    "conclusion": null
+  },
+  {
+    "id": 3,
+    "origin_strategy": "hybrid",
+    "status": "open",
+    "stop_reason": null,
+    "discovery_leads": [],
+    "transitions": [
+      {
+        "claim_id": 3,
+        "evidence_id": 3,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Prairie Systems",
+        "event_date": "2026-09-02",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.015050",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/2",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      }
+    ],
+    "signal_intake": {
+      "policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "signals": [
+        {
+          "claim_id": 3,
+          "evidence_id": 3,
+          "event_date": "2026-09-02",
+          "event_status": "reported",
+          "announcement_date": "2026-09-01",
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.015050",
+          "route": "recent_event",
+          "reason": "reported_event_in_lookback",
+          "eligible": true
+        }
+      ],
+      "route_counts": {
+        "recent_event": 1
+      },
+      "eligible_signal_count": 1,
+      "analysis_allowed": true
+    },
+    "lead_brief": {
+      "version": "business-brief-v1",
+      "title": "Prairie Systems",
+      "reported_names": [
+        "Prairie Systems"
+      ],
+      "category": "recent",
+      "target_fit": "public_company_reported",
+      "signal": {
+        "claim_id": 3,
+        "evidence_id": 3,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Prairie Systems",
+        "event_date": "2026-09-02",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.015050",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/2",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      },
+      "assessment_policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "timing": {
+        "claim_id": 3,
+        "evidence_id": 3,
+        "event_date": "2026-09-02",
+        "event_status": "reported",
+        "announcement_date": "2026-09-01",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.015050",
+        "route": "recent_event",
+        "reason": "reported_event_in_lookback",
+        "eligible": true
+      },
+      "facts": [
+        {
+          "label": "Business",
+          "value": "Prairie Systems",
+          "evidence_id": 3,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/2",
+          "classification": "source_fact"
+        },
+        {
+          "label": "State",
+          "value": "TX",
+          "evidence_id": 3,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/2",
+          "classification": "source_fact"
+        },
+        {
+          "label": "Company type",
+          "value": "public",
+          "evidence_id": 3,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/2",
+          "classification": "source_fact"
+        }
+      ],
+      "why_it_matters": "Retirement may change who runs the business and how continuity is planned. The source reports a public company, outside the current private-company acquisition focus.",
+      "next_gap": "Identify which business relationship the reported retirement affects at Prairie Systems.",
+      "conflicts": [],
+      "order": 2
+    },
+    "hypothesis": null,
+    "confidence": null,
+    "searches": [],
+    "evidence": [
+      {
+        "id": 3,
+        "publisher": "Fictional business journal",
+        "source_type": "newspaper",
+        "canonical_url": "https://example.test/brief/2",
+        "classification": "source_fact",
+        "relevant_excerpt": "Fictional fixture: Prairie Systems reports Jordan's retirement 2026-09-02. The announcement was made 2026-09-01."
+      }
+    ],
+    "conflicts": [],
+    "frontier": [],
+    "steps": [],
+    "model_proposals": [],
+    "conclusion": null
+  },
+  {
+    "id": 2,
+    "origin_strategy": "hybrid",
+    "status": "open",
+    "stop_reason": null,
+    "discovery_leads": [],
+    "transitions": [
+      {
+        "claim_id": 2,
+        "evidence_id": 2,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Canyon Components",
+        "event_date": "2023-02-01",
+        "event_status": "completed",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.013550",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/1",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": []
+      }
+    ],
+    "signal_intake": {
+      "policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "signals": [
+        {
+          "claim_id": 2,
+          "evidence_id": 2,
+          "event_date": "2023-02-01",
+          "event_status": "completed",
+          "announcement_date": "2026-09-01",
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.013550",
+          "route": "background",
+          "reason": "event_outside_lookback",
+          "eligible": false
+        }
+      ],
+      "route_counts": {
+        "background": 1
+      },
+      "eligible_signal_count": 0,
+      "analysis_allowed": false
+    },
+    "lead_brief": {
+      "version": "business-brief-v1",
+      "title": "Canyon Components",
+      "reported_names": [
+        "Canyon Components"
+      ],
+      "category": "background",
+      "target_fit": "not_assessed",
+      "signal": {
+        "claim_id": 2,
+        "evidence_id": 2,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Canyon Components",
+        "event_date": "2023-02-01",
+        "event_status": "completed",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.013550",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/1",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": []
+      },
+      "assessment_policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "timing": {
+        "claim_id": 2,
+        "evidence_id": 2,
+        "event_date": "2023-02-01",
+        "event_status": "completed",
+        "announcement_date": "2026-09-01",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.013550",
+        "route": "background",
+        "reason": "event_outside_lookback",
+        "eligible": false
+      },
+      "facts": [
+        {
+          "label": "Business",
+          "value": "Canyon Components",
+          "evidence_id": 2,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/1",
+          "classification": "source_fact"
+        },
+        {
+          "label": "City",
+          "value": "Denver",
+          "evidence_id": 2,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/1",
+          "classification": "source_fact"
+        },
+        {
+          "label": "State",
+          "value": "CO",
+          "evidence_id": 2,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/1",
+          "classification": "source_fact"
+        }
+      ],
+      "why_it_matters": "This historical transition provides background for comparing newer business developments.",
+      "next_gap": "Find a newer development for Canyon Components before treating this retirement as a current lead.",
+      "conflicts": [],
+      "order": 2
+    },
+    "hypothesis": null,
+    "confidence": null,
+    "searches": [],
+    "evidence": [
+      {
+        "id": 2,
+        "publisher": "Fictional business journal",
+        "source_type": "newspaper",
+        "canonical_url": "https://example.test/brief/1",
+        "classification": "source_fact",
+        "relevant_excerpt": "Fictional fixture: Canyon Components reports Jordan's retirement 2023-02-01. The announcement was made 2026-09-01."
+      }
+    ],
+    "conflicts": [],
+    "frontier": [],
+    "steps": [],
+    "model_proposals": [],
+    "conclusion": null
+  },
+  {
+    "id": 1,
+    "origin_strategy": "hybrid",
+    "status": "open",
+    "stop_reason": null,
+    "discovery_leads": [],
+    "transitions": [
+      {
+        "claim_id": 1,
+        "evidence_id": 1,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Summit Tool Works",
+        "event_date": "2026-09-01",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.009051",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/0",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      }
+    ],
+    "signal_intake": {
+      "policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "signals": [
+        {
+          "claim_id": 1,
+          "evidence_id": 1,
+          "event_date": "2026-09-01",
+          "event_status": "reported",
+          "announcement_date": "2026-09-01",
+          "publication_date": "2026-09-01T00:00:00",
+          "retrieved_at": "2026-09-14T20:01:04.009051",
+          "route": "recent_event",
+          "reason": "reported_event_in_lookback",
+          "eligible": true
+        }
+      ],
+      "route_counts": {
+        "recent_event": 1
+      },
+      "eligible_signal_count": 1,
+      "analysis_allowed": true
+    },
+    "lead_brief": {
+      "version": "business-brief-v1",
+      "title": "Summit Tool Works",
+      "reported_names": [
+        "Summit Tool Works"
+      ],
+      "category": "recent",
+      "target_fit": "not_assessed",
+      "signal": {
+        "claim_id": 1,
+        "evidence_id": 1,
+        "signal_type": "retirement",
+        "subject_type": "person",
+        "person": "Jordan",
+        "business": "Summit Tool Works",
+        "event_date": "2026-09-01",
+        "event_status": "reported",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.009051",
+        "publisher": "Fictional business journal",
+        "canonical_url": "https://example.test/brief/0",
+        "classification": "source_fact",
+        "claim_status": "asserted",
+        "policy_version": "transition-policy-v1",
+        "policy": {
+          "signal_type": "retirement",
+          "label": "Retirement",
+          "subject_type": "person",
+          "evidence_requirements": [
+            "Retain an explicit retirement statement and the role it concerns."
+          ],
+          "temporal_questions": [
+            "Is retirement planned, effective, postponed, or historical?"
+          ],
+          "ownership_limitations": [
+            "Retirement from employment or management does not prove an ownership exit."
+          ],
+          "review_questions": [
+            "Does the person retain equity or control after leaving the role?"
+          ]
+        },
+        "uncertainties": [
+          "Event completion has not been established."
+        ]
+      },
+      "assessment_policy": {
+        "version": "signal-intake-v1",
+        "assessment_date": "2026-09-14",
+        "lookback_days": 90
+      },
+      "timing": {
+        "claim_id": 1,
+        "evidence_id": 1,
+        "event_date": "2026-09-01",
+        "event_status": "reported",
+        "announcement_date": "2026-09-01",
+        "publication_date": "2026-09-01T00:00:00",
+        "retrieved_at": "2026-09-14T20:01:04.009051",
+        "route": "recent_event",
+        "reason": "reported_event_in_lookback",
+        "eligible": true
+      },
+      "facts": [
+        {
+          "label": "Business",
+          "value": "Summit Tool Works",
+          "evidence_id": 1,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/0",
+          "classification": "source_fact"
+        },
+        {
+          "label": "City",
+          "value": "Ogden",
+          "evidence_id": 1,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/0",
+          "classification": "source_fact"
+        },
+        {
+          "label": "State",
+          "value": "UT",
+          "evidence_id": 1,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/0",
+          "classification": "source_fact"
+        },
+        {
+          "label": "Activity",
+          "value": "Repairs industrial pumps",
+          "evidence_id": 1,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/0",
+          "classification": "source_fact"
+        },
+        {
+          "label": "Employees",
+          "value": "24, reported by company",
+          "evidence_id": 1,
+          "publisher": "Fictional business journal",
+          "url": "https://example.test/brief/0",
+          "classification": "source_fact"
+        }
+      ],
+      "why_it_matters": "Retirement may change who runs the business and how continuity is planned.",
+      "next_gap": "Identify which business relationship the reported retirement affects at Summit Tool Works.",
+      "conflicts": [],
+      "order": 0
+    },
+    "hypothesis": null,
+    "confidence": null,
+    "searches": [],
+    "evidence": [
+      {
+        "id": 1,
+        "publisher": "Fictional business journal",
+        "source_type": "newspaper",
+        "canonical_url": "https://example.test/brief/0",
+        "classification": "source_fact",
+        "relevant_excerpt": "Fictional fixture: Summit Tool Works reports Jordan's retirement 2026-09-01. The announcement was made 2026-09-01."
+      }
+    ],
+    "conflicts": [],
+    "frontier": [],
+    "steps": [],
+    "model_proposals": [],
+    "conclusion": null
+  }
+]

@@ -28,6 +28,7 @@ from app.research.leads import discovery_leads, queue_lead
 from app.domain.transition_policies import transition_policy_catalog
 from app.research.transitions import case_transitions
 from app.research.signal_freshness import case_signal_intake
+from app.research.lead_briefs import lead_brief
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -350,14 +351,17 @@ def research_case_narratives(db: Session = Depends(get_db)):
         dispositions_by_proposal: dict[int, list[ModelProposalDisposition]] = {}
         for disposition in dispositions:
             dispositions_by_proposal.setdefault(disposition.proposal_id, []).append(disposition)
+        transitions = case_transitions(db, case.id)
+        intake = case_signal_intake(db, case.id)
         narratives.append({
             "id": case.id,
             "origin_strategy": case.origin_strategy,
             "status": case.status,
             "stop_reason": case.stop_reason,
             "discovery_leads": discovery_leads(db, case.id),
-            "transitions": case_transitions(db, case.id),
-            "signal_intake": case_signal_intake(db, case.id),
+            "transitions": transitions,
+            "signal_intake": intake,
+            "lead_brief": lead_brief(db, case, evidence, transitions, intake, conflicts, frontier),
             "hypothesis": {
                 "direction": resolution.direction,
                 "subject": resolution.subject_value,
@@ -378,6 +382,7 @@ def research_case_narratives(db: Session = Depends(get_db)):
                 "status": query.status, "result_count": query.result_count,
             } for query in queries],
             "evidence": [{
+                "id": item.id,
                 "publisher": item.publisher, "source_type": item.source_type,
                 "canonical_url": item.canonical_url, "classification": item.classification,
                 "relevant_excerpt": item.relevant_excerpt,
