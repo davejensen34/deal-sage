@@ -13,6 +13,7 @@ from app.research.analysis_preparation import canonical_bytes, observation_error
 from app.research.ingestion import assert_safe_source_content
 from app.research.observation_contract import DIAGNOSTIC_VERSION, safe_diagnostic_codes, assess_observation
 from app.research.analysis_revision import PROTOCOL_V3
+from app.research.frozen_signal_intake import EXECUTION as PROTOCOL_V4, validate_bundle
 
 
 # Separately approved September 14 retry. The v1 claim and failed result remain
@@ -33,19 +34,26 @@ def persist(path: Path, value: dict) -> None:
     temporary.replace(path)
 
 
-async def execute(bundle_path: Path, output: Path, client, approval: str) -> dict:
+def execution_bundle(payload: bytes, approval: str, approved_bundle_sha256: str | None = None) -> tuple[dict, str]:
+    """Validate the entire cohort before claims, reservations or provider calls."""
+    expected_hash = {PROTOCOL: BUNDLE_SHA256, PROTOCOL_V3: BUNDLE_V3_SHA256}.get(approval)
+    if approval == PROTOCOL_V4:
+        expected_hash = approved_bundle_sha256
+    if not expected_hash or sha256(payload).hexdigest() != expected_hash:
+        raise ValueError("Approval or frozen bundle mismatch")
+    return (validate_bundle(payload) if approval == PROTOCOL_V4 else json.loads(payload)), expected_hash
+
+
+async def execute(bundle_path: Path, output: Path, client, approval: str, *, approved_bundle_sha256: str | None = None) -> dict:
     """Failures consume their reservation; the persistent claim forbids reruns.
 
     The caller revalidates evidence offline and supplies a no-retry client. No
     database is opened here, and only validated observations survive persistence.
     """
     payload = bundle_path.read_bytes()
-    expected_hash = {PROTOCOL: BUNDLE_SHA256, PROTOCOL_V3: BUNDLE_V3_SHA256}.get(approval)
-    if expected_hash is None or sha256(payload).hexdigest() != expected_hash:
-        raise ValueError("Approval or frozen bundle mismatch")
+    bundle, expected_hash = execution_bundle(payload, approval, approved_bundle_sha256)
     if client.max_retries != 0:
         raise ValueError("Provider retries must be disabled")
-    bundle = json.loads(payload)
     # The location is tied to the approved bundle, not a caller-selected output.
     claim = bundle_path.parent / f".{approval}.claimed"
     with claim.open("x") as stream:
@@ -57,6 +65,9 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
     record = {"protocol": approval, "bundle_sha256": expected_hash,
               "started_at": datetime.now(timezone.utc).isoformat(), "calls": [],
               "count_requests": 0, "reserved_cents": 0, "actual_billed_usd": None}
+    if approval == PROTOCOL_V4:
+        record.update(intake_sha256=bundle["intake_sha256"], intake_reports=bundle["intake_reports"],
+                      cohort_counts=bundle["cohort_counts"])
     persist(output, record)
     for packet in bundle["requests"]:
         row = {"slot": packet["slot"], "request_sha256": packet["request_sha256"],
@@ -101,7 +112,7 @@ async def execute(bundle_path: Path, output: Path, client, approval: str) -> dic
             assert_safe_source_content(observation)
             context = json.loads(request["input"])
             sources = {s["source_id"] for s in context["sources"]}
-            if approval == PROTOCOL_V3:
+            if approval in {PROTOCOL_V3, PROTOCOL_V4}:
                 assessment = assess_observation(observation, sources, context["case_origin"])
                 row["observation_contract"] = assessment.contract_version
                 if assessment.diagnostic_codes:
