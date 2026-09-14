@@ -1,6 +1,6 @@
 # Milestone 7 recent discovery proposal
 
-Issue [#130](https://github.com/davejensen34/deal-sage/issues/130). Protocol `m7-recent-discovery-v1`. **Prepared, not authorized or executed.**
+Issue [#130](https://github.com/davejensen34/deal-sage/issues/130). Protocol `m7-recent-discovery-v1`. **Approved and attempted September 14; stopped on the first query. Approval exhausted.**
 
 The first real cohort was 0/3 useful because its signals were old and its presentation did not provide enough business value. Freshness intake (#144) and business briefs (#145) are now implemented. This next stage seeks new discovery candidates; it cannot establish source truth, ownership, size, actionable fit or human usefulness from search results.
 
@@ -37,7 +37,7 @@ The preparation command runs without credentials, network or database access. Fr
 .venv/Scripts/python.exe -m scripts.recent_milestone7_discovery prepare --assessment-date 2026-09-14 --output ../../.local-validation/m7-recent-discovery/discovery-requests-v1.json
 ```
 
-Only after the user approves the named transfer, window and budget, the run subcommand accepts `--bundle`, `--env-file`, `--approved-protocol-id m7-recent-discovery-v1`, `--approved-bundle-sha256` and `--confirm-live-calls`. Those flags record external approval; they do not grant it. The CLI reconstructs all requests and caps before loading provider credentials, pins the OpenAI destination, and uses zero SDK retries. No approval flag has been supplied and no run has started.
+Only after the user approves the named transfer, window and budget, the run subcommand accepts `--bundle`, `--env-file`, `--approved-protocol-id m7-recent-discovery-v1`, `--approved-bundle-sha256` and `--confirm-live-calls`. Those flags record external approval; they do not grant it. The CLI reconstructs all requests and caps before loading provider credentials, pins the OpenAI destination, and uses zero SDK retries. The approved run supplied these flags once; its original claim and result are retained. Do not reuse them to replay the attempt.
 
 A permanent `.m7-recent-discovery-v1.claimed` file and fsynced reservation ledger live beside the frozen bundle. `discovery-results-v1.json` contains query/request hashes, safe outcomes/usage, ordered consulted-source references and access-review-required markers. Do not delete/copy artifacts to replay a spent approval; any crash or failed attempt requires inspection and a new explicit decision. Full responses, model narrative and unknown/capability fields are discarded. Only the new local evaluation artifacts are written; the app database, evidence corpus and old execution records are not opened for mutation.
 
@@ -49,3 +49,9 @@ A permanent `.m7-recent-discovery-v1.claimed` file and fsynced reservation ledge
 4. Freeze up to three eligible packets through preparation v3/execution v4, obtain separate exact-packet model-transfer/budget approval, and measure usefulness of the resulting business briefs through actual human review. The current 0/3 outcome stays preserved. Zero eligible packets means no analysis spend.
 
 This protocol prepares discovery, not Milestone 7 completion or live precision validation. Issue #92 remains deferred.
+
+## Observed execution outcome
+
+Issue #130 approved recent discovery stopped after its first query. The provider returned 9,058 input and 932 output tokens, but a subsequent ValueError failed response validation; the historical record lacks the per-check detail needed to identify the cause. Zero candidates or source evidence were retained and seven slots were unattempted. The reservation is $0.12; the recorded estimate is $0.0141285 using the planned one-search fee, not an invoice or proof of actual tool count. The result SHA-256 is `60a423857868c2f3a34f1ee85e4c1564da3b11251a24e31488452d3bfc0a11b7`. The one-shot claim and original result remain immutable, and this run approval is exhausted. Future attempts now have safe versioned per-check diagnostics and bounded response-status/model-match/tool-count observations; this cannot reconstruct the discarded response. All 25 discovery guard tests passed before execution and again after the diagnostic change. No retry, direct source/registry retrieval, corpus write, separate analysis or promotion ran. Milestone 7 and #130 remain open, and human usefulness remains 0/3. A new attempt requires a separately versioned, reviewed execution decision; never delete the claim to replay.
+
+The saved usage proves that the response reached the usage check. It does not distinguish model mismatch, incomplete status, unexpected tool count, invalid source structure, oversized reference or sanitation failure. No response body was retained, so none of those causes is asserted retrospectively. Future diagnostic codes identify the failed check without logging provider/source text. The request contract, budgets and replay refusal are unchanged.

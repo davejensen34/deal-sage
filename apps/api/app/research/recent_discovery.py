@@ -103,26 +103,43 @@ async def execute(bundle_path: Path, client, approved_sha256: str, approval: str
         record["calls"].append(row)
         record["reserved_cents"] += 12
         persist(output, record)
+        failure_code = "provider_request_failed"
         try:
             response = await client.responses.create(**slot["request"])
+            failure_code = "invalid_response_shape"
+            # Keep only bounded contract observations, never provider error text
+            # or source content, so failed runs can be diagnosed without replay.
+            status = _value(response, "status")
+            row["response_status"] = status if isinstance(status, str) and status in {"completed", "incomplete", "failed", "cancelled", "queued", "in_progress"} else "unknown"
+            row["model_matches"] = _value(response, "model") == MODEL
+            row["search_tool_calls"] = sum(_value(item, "type") == "web_search_call" for item in (_value(response, "output") or []))
             usage = _value(response, "usage")
             inputs, outputs = _value(usage, "input_tokens"), _value(usage, "output_tokens")
+            failure_code = "usage_missing_or_out_of_bounds"
             if type(inputs) is not int or type(outputs) is not int or not 0 <= inputs <= 400000 or not 0 <= outputs <= 1000:
                 raise ValueError("Unbounded or missing usage")
             row.update(input_tokens=inputs, output_tokens=outputs,
                        estimated_usd=round(inputs * .25 / 1000000 + outputs * 2 / 1000000 + .01, 8))
-            if _value(response, "model") != MODEL or _value(response, "status") != "completed":
-                raise ValueError("Unexpected model or incomplete search")
-            if sum(_value(item, "type") == "web_search_call" for item in (_value(response, "output") or [])) != 1:
+            failure_code = "unexpected_model"
+            if not row["model_matches"]:
+                raise ValueError("Unexpected model")
+            failure_code = "search_not_completed"
+            if row["response_status"] != "completed":
+                raise ValueError("Incomplete search")
+            failure_code = "unexpected_search_tool_count"
+            if row["search_tool_calls"] != 1:
                 raise ValueError("Unexpected search-tool call count")
+            failure_code = "invalid_consulted_sources"
             candidates = [asdict(result) for result in search_results(response, 5)]
+            failure_code = "oversized_discovery_reference"
             if any(len(c["url"]) > 2048 or len(c["title"]) > 1000 for c in candidates):
                 raise ValueError("Oversized discovery reference")
+            failure_code = "unsafe_discovery_fields"
             assert_safe_source_content(candidates)
             row.update(status="completed", candidates=candidates)
             record["candidate_count"] += len(candidates)
         except Exception as error:
-            row.update(status="failed", error_class=type(error).__name__)
+            row.update(status="failed", error_class=type(error).__name__, diagnostic_version="discovery-diagnostics-v1", failure_code=failure_code)
             persist(output, record)
             break
         persist(output, record)

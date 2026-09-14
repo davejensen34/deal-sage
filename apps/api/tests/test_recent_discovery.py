@@ -114,6 +114,11 @@ async def test_failure_stops_without_retry_and_preserves_reservation(tmp_path, f
     assert len(client.calls) == 1 and record["reserved_cents"] == 12
     assert len(record["unattempted_slots"]) == 7
     assert record["calls"][0]["status"] == "failed"
+    expected = {"exception": "provider_request_failed", "missing_usage": "usage_missing_or_out_of_bounds",
+                "output_limit": "usage_missing_or_out_of_bounds", "model": "unexpected_model",
+                "incomplete": "search_not_completed", "extra_tool": "unexpected_search_tool_count"}
+    assert record["calls"][0]["failure_code"] == expected[failure]
+    assert record["calls"][0]["diagnostic_version"] == "discovery-diagnostics-v1"
     assert "SECRET" not in json.dumps(record)
 
 
