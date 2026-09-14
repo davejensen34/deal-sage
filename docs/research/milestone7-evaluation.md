@@ -209,3 +209,27 @@ Execution/contract completion is **3/3**; failed, incomplete and invalid outcome
 Human usefulness, recorded analyst decisions and time saved remain **unmeasured**. Source sustainability, representative coverage, current ownership and recommendation attractiveness remain unvalidated. Next: review these three retained observations with a human analyst and clarify the temporal/geographic contract offline under Issue #130. No further external call is authorized by this record. Milestone 7 remains open.
 
 Before the live run, all 17 execution/revision guard tests passed on Windows. This increment changes documentation only; the existing full 315-test and five-job CI validation belongs to PR #139. PR validation for this outcome record is recorded on its linked GitHub PR. No UI changed.
+
+## Offline contextual review — September 14
+
+Issue #130 adds an attributed deterministic assessment around the retained v3 observations. The original model observations and all three execution histories remain unchanged. Reviewer context is an explicit coding-agent interpretation with citations, not human acceptance or a new source fact. This is an offline evaluation feature, not an application UI or promotion-policy change.
+
+From `apps/api` on Windows:
+
+```powershell
+.venv/Scripts/python.exe -m scripts.review_milestone7_observations --result ../../.local-validation/m7-preflight/analysis-results-v3.json --bundle ../../.local-validation/m7-preflight/analysis-requests-v2.json --output ../../.local-validation/m7-preflight/context-review-v1-final.json
+```
+
+The runner verifies both frozen input hashes and refuses to overwrite an existing report. Its ignored output hashes to `5adcab7fec45cc486afdea4c63830fbeb6bd30f1cd500bb00a041ba01f16c528`. It reads no credentials or database and has no provider/live mode.
+
+| Packet | Agent-interpreted operating evidence date | Temporal scope at 2026-09-11 | Operating status at assessment | Requested-state operating relevance |
+| --- | --- | --- | --- | --- |
+| Savage | 2024-06-03 | Historical | Unknown | Unknown; Utah dateline alone is insufficient |
+| Aurora | 2025-05-08 | Historical | Unknown | Supported by cited Texas operation |
+| Premier | 2026-01-09 | Historical | Unknown | Unknown; NC address does not exclude CO |
+
+All three original summaries, questions and labels survive alongside the contextual assessment. The `no_qualifying_relationship` guidance remains unchanged because the cited executive/founder roles do not establish ownership; no candidate was promoted. Historical evidence remains available to inform further research. No same-day freshness requirement is imposed on the application: this offline policy simply declines to extrapolate an assertion beyond its supported date without an explicit continuity policy. Geographic relevance refers to cited operating context and does not establish current operating coverage or legal domicile.
+
+All **342 backend/API tests passed** on Windows. The 27 new fictional checks cover active and inactive historical/undated assertions, contemporaneous evidence, scoped operating presence/absence versus address/dateline/domicile, invalid/future dates, missing and unsupported citations, role precedence, input isolation, invalid model refusal and report hash binding. The frozen live report was reviewed offline, not rerun. External spend and provider/source/search calls were zero. No UI changed.
+
+The temporal/geographic clarification is now implemented for offline review. Human usefulness, analyst time, representative precision and source sustainability remain unmeasured. Next work should use actual human feedback on the retained review before deciding application integration or another bounded evaluation; no further live run is authorized and Milestone 7 remains open.
