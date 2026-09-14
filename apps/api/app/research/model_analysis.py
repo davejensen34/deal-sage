@@ -11,7 +11,8 @@ from sqlalchemy.orm import Session
 
 from app.ai.providers.base import AIProvider, AIProviderOutputError, TokenUsage
 from app.ai.pricing import estimated_cost_cents
-from app.domain.models import CaseEvidence, EvidenceClaim, ModelProposal
+from app.domain.models import AuditEvent, CaseEvidence, EvidenceClaim, ModelProposal
+from app.research.signal_freshness import require_recent_signal
 from app.research.ingestion import assert_safe_source_content
 from app.research.model_proposals import ModelProposalService
 
@@ -252,6 +253,16 @@ class ModelAnalysisService:
         validate_output,
     ) -> ModelProposal:
         started = perf_counter()
+        intake = require_recent_signal(self.db, case_id, evidence_ids=packet.evidence_ids, claim_ids=packet.claim_ids)
+        if intake is not None:
+            # Freeze the exact pre-call decision even if the provider later fails.
+            # Evidence text remains in its own records, not in the audit log.
+            packet.payload["signal_intake"] = intake
+            self.db.add(AuditEvent(actor="deterministic_policy", action="signal_intake_analysis",
+                                   after_state={"case_id": case_id, "task": task, "provider": provider_name,
+                                                "model": model, "prompt_version": prompt_version,
+                                                "schema_version": schema_version, "intake": intake}))
+            self.db.commit()
         try:
             output = await provider.extract_structured(
                 f"{instruction}\n\nEvidence packet:\n{json.dumps(packet.payload, sort_keys=True, default=str)}",
