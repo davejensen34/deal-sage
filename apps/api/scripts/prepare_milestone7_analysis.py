@@ -6,6 +6,7 @@ from pathlib import Path
 import sqlite3
 
 from app.research.analysis_preparation import canonical_bytes, prepare_bundle
+from app.research.analysis_revision import revise_bundle
 
 
 def contained_file(root: Path, name: str) -> Path:
@@ -15,7 +16,9 @@ def contained_file(root: Path, name: str) -> Path:
     return path
 
 
-def prepare(manifest: Path, database: Path, evidence_dir: Path) -> dict:
+def prepare(manifest: Path, database: Path, evidence_dir: Path, *, observation_version: str = "v1") -> dict:
+    if observation_version not in {"v1", "v2"}:
+        raise ValueError("Unsupported observation version")
     # mode=ro cannot create an absent database or change the research corpus.
     with sqlite3.connect(database.resolve().as_uri() + "?mode=ro", uri=True) as db:
         db.execute("PRAGMA query_only=ON")
@@ -37,7 +40,8 @@ def prepare(manifest: Path, database: Path, evidence_dir: Path) -> dict:
             text = contained_file(manifest.parent, packet["text_file"]).read_text(encoding="utf-8")
             return raw, text
 
-        return prepare_bundle(manifest.read_bytes(), load)
+        bundle = prepare_bundle(manifest.read_bytes(), load)
+        return revise_bundle(bundle) if observation_version == "v2" else bundle
 
 
 def main():
@@ -46,8 +50,9 @@ def main():
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--evidence-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--observation-version", choices=("v1", "v2"), default="v1")
     args = parser.parse_args()
-    bundle = prepare(args.manifest, args.database, args.evidence_dir)
+    bundle = prepare(args.manifest, args.database, args.evidence_dir, observation_version=args.observation_version)
     payload = canonical_bytes(bundle)
     # Refuse overwrites: a later revision needs its own reviewable bundle.
     with args.output.open("xb") as stream:
