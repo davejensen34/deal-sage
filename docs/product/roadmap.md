@@ -2,6 +2,12 @@
 
 Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. No milestone is active. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. [Closeout record](../research/milestone7-closeout.md).
 
+## Proposed Milestone 8 — Reviewer Workbench and Opportunity Development
+
+Planning/design is authorized under [Issue #154](https://github.com/davejensen34/deal-sage/issues/154); implementation is not active. The [whole-app audit](reviewer-workflow-audit.md) proposes a reviewer journey from bounded discovery through evidence-backed investigation to a reasoned development brief or monitoring decision. Marketing/business introductions, succession advisory and acquisition exploration have different evidence needs; a transition does not establish sale intent.
+
+The [proposed milestone](../../backlog/milestones/milestone-8.md) sequences the inbox, durable research execution, investigation, human decisions/handoffs, monitoring and actual user validation. Review the [interactive concept](design/milestone-8/index.html) before approving scope. Existing failed/unmeasured quality outcomes remain intact; no live calls or automated outreach are authorized by this planning record.
+
 ## Milestone 1 — Evidence and Analyst Foundation
 
 Complete. The persisted fictional-data MVP and its validation record are tracked in `docs/project/current-state.md` and `backlog/milestones/milestone-1.md`.
