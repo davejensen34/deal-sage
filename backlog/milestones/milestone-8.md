@@ -1,5 +1,9 @@
 # Milestone 8 — Reviewer Workbench and Opportunity Development
 
+## Required remediation before acceptance
+
+User feedback on September 15 rejects readiness of the thin acceptance packets. Pause #187’s human exercise until #194 connects bounded system-led discovery, capture, corroboration, reconciliation, target-fit assessment and recommendation-first handoff. Preserve the original cohort/results; no individual ratings are inferred. [Implementation inspection and plan](../../docs/product/milestone8-intelligence-remediation.md). M8 remains active; engineering controls alone do not complete its intelligence outcome. Conversational investigation is recorded under #195 for subsequent milestone planning.
+
 ## M8.6 live acquisition prepared for human review
 
 Issue #187 retains ten frozen version-1 briefs after the approved run: six searches, 19 document attempts, 13 extractions and $0.98 reserved. Nine model outputs completed; invalid/incomplete attempts remain. All ten leads derive from one Utah publisher, with semantic extraction errors and missing independent corroboration explicitly retained. Human judgments (0/10 at preparation) and five hands-on tasks remain open. Issues #189/#191 fixed observed excerpt and extraction failures through PRs #190/#192; all five CI jobs passed. [Acceptance results and instructions](../../docs/research/milestone8-acceptance-results.md). This is not milestone closure.

@@ -1,5 +1,7 @@
 # Milestone 8 human acceptance protocol
 
+Current status: **paused for intelligence remediation** after September 15 user feedback that the packets are too light on insight. Do not request the ten-record ratings or five-task exercise until #194 delivers discovery-to-recommendation readiness and #187’s revised protocol is frozen. Preserve this approved acquisition protocol as history; no human judgments are inferred. [Remediation plan](../product/milestone8-intelligence-remediation.md).
+
 Status: approved September 15, 2026; live acquisition and ten saved review packets prepared. Actual human acceptance remains pending under Issue #187. See [the acquisition record and reviewer instructions](milestone8-acceptance-results.md). Agent fixtures and prior Milestone 7 ratings are not this cohort.
 
 ## Frozen selection and purpose
