@@ -8,7 +8,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 ## Current product position
 
-- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is proposed under planning Issue #154. The whole-app audit and interactive concept are ready for scope/design review; no milestone is active and implementation is not approved.
+- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is active following September 15 user approval, under GitHub milestone 13. Planning Issue #154/PR #155 established scope; Issue #156 delivers 8.1. Research execution, investigation, decisions/handoffs, monitoring and actual human validation remain pending.
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
@@ -32,7 +32,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 5. Milestone 5 turns reviewed evidence and analysis into ongoing opportunity workflows after its prerequisites are met.
 6. Milestone 5.1 completes alert traceability and workflow-effectiveness measurement found missing in the Milestone 5 audit.
 7. Milestone 6 hardens a proven pilot for dependable multi-user operation without assuming distributed infrastructure.
-8. Milestone 7 completed broader typed transition research and comparative evaluation. Live precision and source sustainability were not demonstrated; those gates remain prerequisites for future activation and quality claims. No next milestone is approved.
+8. Milestone 7 completed broader typed transition research and comparative evaluation. Live precision and source sustainability were not demonstrated; those gates remain prerequisites for future activation and quality claims. Milestone 8 was subsequently approved on September 15; its implementation does not erase those quality limits.
 
 This ordering is a product constraint: model-assisted discovery must consume traceable curated evidence, and opportunity workflows must consume validated outputs. Neither may create a parallel path that bypasses provenance, deterministic validation, or human review.
 

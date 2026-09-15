@@ -1,5 +1,6 @@
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from typing import Literal
 import json
 from pathlib import Path
 from time import perf_counter
@@ -29,6 +30,7 @@ from app.domain.transition_policies import transition_policy_catalog
 from app.research.transitions import case_transitions
 from app.research.signal_freshness import case_signal_intake
 from app.research.lead_briefs import lead_brief
+from app.research.inbox import inbox_query
 
 router = APIRouter(prefix="/api", dependencies=[Depends(current_identity)])
 settings = get_settings()
@@ -312,7 +314,36 @@ def research_workflow_effectiveness(db: Session = Depends(get_db)):
 @router.get("/research/case-narratives")
 def research_case_narratives(db: Session = Depends(get_db)):
     """Expose analyst-readable case history without raw pages or agent logs."""
-    cases = db.scalars(select(ResearchCase).order_by(ResearchCase.updated_at.desc()).limit(20)).all()
+    cases = db.scalars(select(ResearchCase).order_by(ResearchCase.updated_at.desc(), ResearchCase.id.desc()).limit(20)).all()
+    return {"cases": _case_narratives(db, cases)}
+
+
+@router.get("/research/inbox")
+def research_inbox(
+    page: int = Query(1, ge=1), page_size: int = Query(10, ge=1, le=50),
+    state: str | None = Query(None, pattern="^[A-Z]{2}$"), signal: str | None = None,
+    since: date | None = None, until: date | None = None,
+    date_basis: Literal["event", "announcement"] = "event", db: Session = Depends(get_db),
+):
+    """Filter retained assertions, not eligibility, truth or a renewed research budget."""
+    if since and until and since > until:
+        raise HTTPException(422, "Start date must not follow end date")
+    stmt = inbox_query(db, state=state, signal=signal, since=since, until=until, date_basis=date_basis)
+    total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
+    cases = db.scalars(stmt.order_by(ResearchCase.updated_at.desc(), ResearchCase.id.desc())
+                       .offset((page - 1) * page_size).limit(page_size)).all()
+    return {"cases": _case_narratives(db, cases), "total": total, "page": page, "page_size": page_size}
+
+
+@router.get("/research/cases/{case_id}")
+def research_case_detail(case_id: int, db: Session = Depends(get_db)):
+    case = db.get(ResearchCase, case_id)
+    if case is None:
+        raise HTTPException(404, "Research case not found")
+    return _case_narratives(db, [case])[0]
+
+
+def _case_narratives(db, cases):
     narratives = []
     for case in cases:
         queries = db.scalars(
@@ -351,11 +382,14 @@ def research_case_narratives(db: Session = Depends(get_db)):
         dispositions_by_proposal: dict[int, list[ModelProposalDisposition]] = {}
         for disposition in dispositions:
             dispositions_by_proposal.setdefault(disposition.proposal_id, []).append(disposition)
+        business = db.get(Business, case.business_id) if case.business_id else None
         transitions = case_transitions(db, case.id)
         intake = case_signal_intake(db, case.id)
         narratives.append({
             "id": case.id,
             "origin_strategy": case.origin_strategy,
+            "candidate_match_id": case.candidate_match_id,
+            "linked_business": ({"id": business.id, "name": business.legal_name, "state": business.state} if business else None),
             "status": case.status,
             "stop_reason": case.stop_reason,
             "discovery_leads": discovery_leads(db, case.id),
@@ -408,7 +442,7 @@ def research_case_narratives(db: Session = Depends(get_db)):
                 "statement": conclusion.statement, "status": conclusion.status,
             } if conclusion else None,
         })
-    return {"cases": narratives}
+    return narratives
 
 
 @router.post("/research/cases/{case_id}/discovery-leads/{candidate_id}/follow-up")
@@ -523,7 +557,7 @@ def dashboard(db: Session = Depends(get_db)):
     states: dict[str,int] = {}
     for c in candidates: states[c.business.state or "Unknown"] = states.get(c.business.state or "Unknown",0)+1
     audits = db.scalars(select(AuditEvent).order_by(AuditEvent.timestamp.desc()).limit(8)).all()
-    return {"metrics":{"total":len(candidates),"new":counts["new"],"needs_review":counts["needs_review"],"validated":counts["validated"],"high_confidence":sum(c.overall_candidate_confidence>=80 for c in candidates),"rejected":counts["rejected"],"average_confidence":round(sum(c.overall_candidate_confidence for c in candidates)/len(candidates)),"evidence_items":db.scalar(select(func.count(Evidence.id)))},"status_distribution":[{"name":k.replace("_"," ").title(),"value":v} for k,v in counts.items()],"geography":[{"state":k,"candidates":v} for k,v in states.items()],"confidence_distribution":[{"range":label,"value":sum(lo<=c.overall_candidate_confidence<=hi for c in candidates)} for label,lo,hi in [("0–39",0,39),("40–59",40,59),("60–79",60,79),("80–100",80,100)]],"recent_candidates":[item(c) for c in candidates[:6]],"recent_activity":[{"id":a.id,"action":a.action,"actor":a.actor,"timestamp":a.timestamp,"detail":a.detail,"candidate_id":a.candidate_id} for a in audits]}
+    return {"metrics":{"total":len(candidates),"new":counts["new"],"needs_review":counts["needs_review"],"validated":counts["validated"],"high_confidence":sum(c.overall_candidate_confidence>=80 for c in candidates),"rejected":counts["rejected"],"average_confidence":round(sum(c.overall_candidate_confidence for c in candidates)/len(candidates)) if candidates else None,"evidence_items":db.scalar(select(func.count(Evidence.id)))},"status_distribution":[{"name":k.replace("_"," ").title(),"value":v} for k,v in counts.items()],"geography":[{"state":k,"candidates":v} for k,v in states.items()],"confidence_distribution":[{"range":label,"value":sum(lo<=c.overall_candidate_confidence<=hi for c in candidates)} for label,lo,hi in [("0–39",0,39),("40–59",40,59),("60–79",60,79),("80–100",80,100)]],"recent_candidates":[item(c) for c in candidates if c.status in {"new", "researching", "needs_review"}][:6],"recent_activity":[{"id":a.id,"action":a.action,"actor":a.actor,"timestamp":a.timestamp,"detail":a.detail,"candidate_id":a.candidate_id} for a in audits]}
 
 
 @router.get("/candidates", response_model=CandidatePage)
