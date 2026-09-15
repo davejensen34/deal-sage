@@ -37,16 +37,21 @@ Parser = Callable[[bytes], list[CuratedSubject]]
 class EvidenceLanding:
     """Persist immutable transport evidence before publishing any normalized result."""
 
-    def __init__(self, db: Session, storage: EvidenceStorage):
+    def __init__(self, db: Session, storage: EvidenceStorage, *, defer_commit: bool = False):
         self.db = db
         self.storage = storage
+        self.defer_commit = defer_commit
+
+    def _commit(self):
+        """Allow a caller to atomically land evidence with its durable attempt."""
+        self.db.flush() if self.defer_commit else self.db.commit()
 
     def start_run(self, source_key: str, jurisdiction: str, discovery_strategy: str, contract_fingerprint: str) -> AcquisitionRun:
         if discovery_strategy not in {"signal_first", "business_first", "hybrid"}:
             raise ValueError("Unsupported discovery strategy")
         run = AcquisitionRun(source_key=source_key, jurisdiction=jurisdiction, discovery_strategy=discovery_strategy, contract_fingerprint=contract_fingerprint)
         self.db.add(run)
-        self.db.commit()
+        self._commit()
         self.db.refresh(run)
         return run
 
@@ -109,7 +114,7 @@ class EvidenceLanding:
         run.finished_at = datetime.now(timezone.utc)
         run.error = type(error).__name__
         run.metrics = {"artifacts": 0, "curated_records": 0, "quarantined_records": 0}
-        self.db.commit()
+        self._commit()
 
     def _finish_run(self, run: AcquisitionRun) -> None:
         self.db.flush()
@@ -120,4 +125,4 @@ class EvidenceLanding:
         run.status = "partial" if quarantined_count else "succeeded"
         run.finished_at = datetime.now(timezone.utc)
         run.metrics = {"artifacts": artifact_count,"curated_records": curated_count,"quarantined_records": quarantined_count}
-        self.db.commit()
+        self._commit()

@@ -15,6 +15,21 @@ class TimestampMixin:
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)
 
 
+class RetrievalAttempt(TimestampMixin, Base):
+    """One explicit document authorization and its durable outcome."""
+    __tablename__ = "retrieval_attempts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    source_id: Mapped[int] = mapped_column(ForeignKey("source_candidates.id"), index=True)
+    actor: Mapped[str] = mapped_column(String(160))
+    plan: Mapped[dict[str, Any]] = mapped_column(JSON)
+    status: Mapped[str] = mapped_column(String(30), default="running")
+    recovery_after: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    evidence_id: Mapped[int | None] = mapped_column(ForeignKey("case_evidence.id"))
+    error_code: Mapped[str | None] = mapped_column(String(60))
+
+
 class DiscoveryProfile(TimestampMixin, Base):
     """Append-only workspace defaults; runs retain their own exact plan."""
     __tablename__ = "discovery_profiles"

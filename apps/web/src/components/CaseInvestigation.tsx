@@ -3,6 +3,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {api} from '../api/client';
 import {useIdentity} from './AuthGate';
 import './case-investigation.css';
+import {RetrieveSource,RetrievalHistory} from './CaseRetrieval';
 
 type Page<T>={items:T[];has_next:boolean};
 type Source={id:number;url:string;publisher:string;source_type:string;access:string;reason:string|null;reviewer:string|null;reviewed_at:string|null;blocking_observations:string[]};
@@ -37,6 +38,7 @@ function AccessReview({source,caseId}:{source:Source;caseId:number}) {
       <button disabled={save.isPending||reason.trim().length<5||(decision==='approved'&&(!reviewed||!!source.blocking_observations.length))}>Record access decision</button>
       {save.error&&<p role="alert">{save.error.message} <button type="button" onClick={()=>qc.invalidateQueries({queryKey:['case-investigation',caseId]})}>Reload source decisions</button></p>}
     </form>:<p>An analyst is required to record an access decision.</p>}
+    {source.access==='approved'&&<RetrieveSource caseId={caseId} sourceId={source.id} url={source.url}/>}
   </article>;
 }
 
@@ -69,7 +71,8 @@ export function CaseInvestigation({caseId}:{caseId:number}) {
       {!sources.data?.items.length&&<p>No discovered sources in this case yet.</p>}{sources.data?.items.map(s=><AccessReview key={s.id} source={s} caseId={caseId}/>)}<Pages label="sources" page={sourcePage} next={!!sources.data?.has_next} setPage={setSourcePage}/>
     </>}
     <h3>Retained source evidence</h3>{evidence.isLoading?<p>Loading evidence…</p>:evidence.isError?<p role="alert">Evidence unavailable. <button onClick={()=>evidence.refetch()}>Try again</button></p>:<>
-      {!evidence.data?.items.length&&<p>No source documents retained yet. Access approval alone does not retrieve evidence. Bounded retrieval and analysis controls are the next investigation increment.</p>}{evidence.data?.items.map(e=><EvidenceItem key={e.id} item={e} caseId={caseId}/>)}<Pages label="evidence" page={evidencePage} next={!!evidence.data?.has_next} setPage={setEvidencePage}/>
+      {!evidence.data?.items.length&&<p>No source documents retained yet. An operator can retrieve an access-approved source using the bounded controls above. Extraction and analysis follow separately.</p>}{evidence.data?.items.map(e=><EvidenceItem key={e.id} item={e} caseId={caseId}/>)}<Pages label="evidence" page={evidencePage} next={!!evidence.data?.has_next} setPage={setEvidencePage}/>
     </>}
+    <RetrievalHistory caseId={caseId}/>
   </section>;
 }
