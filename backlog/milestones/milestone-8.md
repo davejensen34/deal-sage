@@ -1,6 +1,13 @@
 # Milestone 8 — Reviewer Workbench and Opportunity Development
 
-Status: proposed. Planning/design authorized September 15, 2026 under [#154](https://github.com/davejensen34/deal-sage/issues/154); implementation has not been activated. Milestone 7 stays closed. No new GitHub milestone or implementation issues are created until scope approval.
+Status: in_progress. The user approved activation September 15, 2026 after planning PR #155. GitHub milestone [13](https://github.com/davejensen34/deal-sage/milestone/13) tracks execution. Milestone 7 remains closed with its recorded quality limitations.
+
+## Execution record
+
+- 8.1: [Issue #156](https://github.com/davejensen34/deal-sage/issues/156) implements a paginated case-first landing inbox, individual case URLs, state/signal/date filters, candidate provenance, dependable error states, role-aware candidate actions and pilot sign-out. Existing research and candidate routes remain supported. No new scoring, research execution or promotion is introduced.
+- 8.1 validation: 481 backend/API tests, 30 frontend tests and TypeScript/production build passed (existing large-chunk warning). Rendered desktop/390px, keyboard case navigation, Utah filter, provenance expansion and missing-candidate screen were inspected against a fresh fictional database with disabled providers. Health responded `ok`. No live calls or research-corpus changes. Large-corpus filtering and fresh Google sign-in were not exercised.
+- 8.2–8.6 remain pending. The next slice connects research setup to durable bounded execution; the live cohort and cost envelope must be frozen before its validation calls.
+
 
 ## Outcome
 
@@ -10,9 +17,9 @@ The objective includes relevant marketing/business introductions, succession/con
 
 Inputs: [whole-app audit](../../docs/product/reviewer-workflow-audit.md), [interaction concept](../../docs/product/design/milestone-8/index.html), [Milestone 7 quality outcome](../../docs/research/milestone7-closeout.md).
 
-## Proposed increments
+## Approved increments
 
-Each increment will receive an implementation-ready Issue, short-lived branch, PR, appropriate tests/rendered review and squash merge after approval. These are proposed slices, not retrospective issues or a promise that every gap is solved at once.
+Each increment receives an implementation-ready Issue, short-lived branch, PR, appropriate tests/rendered review and squash merge. Deliver and validate each slice before claiming its outcome.
 
 | Sequence | Deliverable | Acceptance and dependencies |
 | --- | --- | --- |
@@ -35,14 +42,14 @@ Each increment will receive an implementation-ready Issue, short-lived branch, P
 
 **Source and contact use.** Separate source access review from confidence and source usefulness. Existing bounded official entity adapters do not supply comprehensive ownership. Show relevant public business contact provenance and reviewer-selected recipient/channel; do not infer a family's consent to contact from a public obituary or automatically use surviving relatives as sales contacts. Outbound sending and campaign automation are outside this milestone.
 
-## Proposed quality gates for approval
+## Quality gates
 
-These are proposed evaluation targets, not achieved measurements:
+The approved plan supplies these evaluation targets; they are not achieved measurements:
 
 - A reviewer completes five tasks without CLI assistance: start signal-first research with no company name, inspect an uncertain lead, execute a permitted follow-up, record a rationale, and retrieve a development brief/monitoring item. The acceptance exercise must also demonstrate a no-match outcome.
 - All displayed material assertions have inspectable source or interpretation attribution; planned/past/unknown timing and conflicting evidence survive the journey. No automatic ownership, successor or sale-intent assertion from a name, role or death.
 - Empty database, source failure, partial model output, access restriction, duplicate submission, restart and exhausted-budget regressions preserve data and reservations. Permission denial is understandable in the UI and enforced on the server.
-- A proposed ten-lead recent real-source evaluation receives ten actual reviewer usefulness judgments with reasons. Target: at least six useful for the selected purpose, with no critical fabricated ownership/sale claim in a selected brief. Define the selection protocol and what “useful” means before acquisition; preserve every discovery miss, exclusion, retry and denominator. Do not silently replace unhelpful leads to meet the target. Use purpose-specific review rather than equating every leadership change with acquisition value.
+- A ten-lead recent real-source evaluation receives ten actual reviewer usefulness judgments with reasons. Target: at least six useful for the selected purpose, with no critical fabricated ownership/sale claim in a selected brief. Define the selection protocol and what “useful” means before acquisition; preserve every discovery miss, exclusion, retry and denominator. Do not silently replace unhelpful leads to meet the target. Use purpose-specific review rather than equating every leadership change with acquisition value.
 - Report median/individual review time, source/analysis cost and missing financial/contact evidence. Do not claim time saved without a measured comparison. This small cohort is directional evidence, not population precision.
 - All required CI jobs pass; inspect real UI at desktop and narrow widths, including keyboard and error states. Reconcile current state, roadmap and backlog in the closing PR. A failed human-quality gate requires remediation or an explicit user decision on scope; routine engineering completion alone does not make it pass.
 
@@ -50,6 +57,6 @@ These are proposed evaluation targets, not achieved measurements:
 
 Automated marketing/email delivery, CRM synchronization, scraped personal-contact enrichment, family-contact automation, comprehensive ownership coverage, valuation estimates without evidence, recurrent unattended discovery, multi-tenant collaboration, vector infrastructure and national expansion. Minimal reviewer identity/assignment can be designed within the current pilot; enterprise workflow is not required.
 
-## Approval needed after design review
+## Execution boundaries
 
-Approve or adjust the workflow, the distinction between development and outreach, the six implementation slices and the proposed usefulness target. The concept deliberately shows business context first and detailed evidence on demand. Implementation and real-source execution are not started by this planning record. Freeze a concrete live cohort and cost envelope when 8.6 is ready; no paid calls were made during this audit.
+The workflow, six slices and usefulness target were approved when the user activated Milestone 8. The concept is a design artifact; only completed execution records establish product functionality. Freeze a concrete live cohort and cost envelope when 8.6 is ready. No live source/model calls were made for 8.1.

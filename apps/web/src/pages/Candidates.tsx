@@ -1,5 +1,5 @@
 import {useMutation,useQuery} from '@tanstack/react-query';
-import {AlertCircle,BookmarkPlus,ChevronLeft,ChevronRight,Download,Search,SlidersHorizontal} from 'lucide-react';
+import {AlertCircle,BookmarkPlus,ChevronLeft,ChevronRight,Download,Search} from 'lucide-react';
 import {useState} from 'react';
 import {useNavigate,useSearchParams} from 'react-router-dom';
 import {api,apiDownload,Candidate} from '../api/client';
@@ -29,9 +29,9 @@ export function Candidates(){
     <div className="filterbar">
       <label className="searchbox"><Search/><input aria-label="Search candidates" placeholder="Search business or person…" value={q} onChange={e=>{setQ(e.target.value);setPage(1)}}/></label>
       <label><span>Status</span><select value={status} onChange={e=>{setStatus(e.target.value);setPage(1)}}><option value="">All statuses</option>{['new','researching','needs_review','validated','rejected','watchlist'].map(x=><option key={x}>{x}</option>)}</select></label>
-      <label><span>State</span><select value={state} onChange={e=>{setState(e.target.value);setPage(1)}}><option value="">All states</option>{['AZ','CA','CO','DE','GA','ID','KS','ME','MN','NH','NM','NV','OH','PA','TX','VA','WA','WI'].map(x=><option key={x}>{x}</option>)}</select></label>
+      <label><span>State</span><select value={state} onChange={e=>{setState(e.target.value);setPage(1)}}><option value="">All states</option>{['AZ','CA','CO','DE','GA','ID','KS','ME','MN','NH','NM','NV','OH','PA','TX','UT','VA','WA','WI'].map(x=><option key={x}>{x}</option>)}</select></label>
       <label><span>Confidence</span><select value={min} onChange={e=>{setMin(Number(e.target.value));setPage(1)}}><option value="0">Any score</option><option value="60">60%+</option><option value="80">80%+</option></select></label>
-      <button className="icon-button" title="Filters"><SlidersHorizontal/></button>
+
     </div>
     {save.isSuccess&&<p className="workflow-notice">Saved to your research views.</p>}
     {save.error&&<p className="error">{save.error.message}</p>}

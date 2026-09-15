@@ -14,7 +14,7 @@ export function DiscoveryLeads({caseId,open,leads}:{caseId:number;open:boolean;l
     setPending(id);setError('');
     try{
       await api(`/research/cases/${caseId}/discovery-leads/${id}/follow-up`,{method:'POST'});
-      await client.invalidateQueries({queryKey:['research-case-narratives']});
+      await client.invalidateQueries({queryKey:['research-case-narratives']});client.invalidateQueries({queryKey:['research-case']});client.invalidateQueries({queryKey:['reviewer-inbox']});
     }catch(reason){setError(reason instanceof Error?reason.message:'Unable to queue follow-up');}
     finally{setPending(null);}
   }

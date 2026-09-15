@@ -22,7 +22,7 @@ export function ProposalReview({proposal}:{proposal:ModelProposal}){
       }
       return api(`/research/model-proposals/${proposal.id}/dispositions`,{method:'POST',body:JSON.stringify({decision,rationale,corrected_output})});
     },
-    onSuccess:()=>{setRationale('');setCorrection('');setError('');queryClient.invalidateQueries({queryKey:['research-case-narratives']})},
+    onSuccess:()=>{setRationale('');setCorrection('');setError('');queryClient.invalidateQueries({queryKey:['research-case-narratives']});queryClient.invalidateQueries({queryKey:['research-case']});queryClient.invalidateQueries({queryKey:['reviewer-inbox']})},
     onError:(reason)=>setError(reason instanceof Error?reason.message:'Disposition failed'),
   });
   const completed=proposal.execution_outcome==='completed';
