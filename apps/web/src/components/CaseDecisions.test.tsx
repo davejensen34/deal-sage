@@ -16,9 +16,12 @@ it('ties a decision to reviewed sources and retries a lost response with the sam
   fireEvent.change(await screen.findByLabelText('Decision rationale'),{target:{value:'There is not enough evidence of ownership.'}});
   fireEvent.change(screen.getByLabelText('Next action'),{target:{value:'Check independent official records.'}});
   fireEvent.click(screen.getByLabelText('Supports decision · evidence 7'));
+  fireEvent.change(screen.getByLabelText('Usefulness for this purpose'),{target:{value:'not_useful'}});
+  fireEvent.change(screen.getByLabelText('Usefulness reason'),{target:{value:'Missing identity evidence for this purpose.'}});
+  fireEvent.change(screen.getByLabelText('Self-reported review seconds'),{target:{value:'120'}});
   fireEvent.click(screen.getByRole('button',{name:'Record reviewer decision'}));
   fireEvent.click(await screen.findByRole('button',{name:'Retry same decision'}));
-  await waitFor(()=>expect(posts.length).toBe(2));expect(posts[0]).toBe(posts[1]);expect(JSON.parse(posts[0]).decision.supporting_source_ids).toEqual([7]);
+  await waitFor(()=>expect(posts.length).toBe(2));expect(posts[0]).toBe(posts[1]);expect(JSON.parse(posts[0]).decision.supporting_source_ids).toEqual([7]);expect(JSON.parse(posts[0]).decision.feedback).toEqual({usefulness:'not_useful',reason:'Missing identity evidence for this purpose.',review_seconds:120});
 });
 it('keeps viewers read-only',async()=>{
   role='viewer';vi.stubGlobal('fetch',vi.fn(async()=>new Response(JSON.stringify({items:[],has_next:false,latest:null}))));show();

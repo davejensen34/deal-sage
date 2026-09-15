@@ -26,6 +26,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 
 - 8.5 saved comparisons: [Issue #180](https://github.com/davejensen34/deal-sage/issues/180) adds explicit before/after inspection of retained source, model, human and case-context records, preserving version metadata and hashes. All 547 backend/API tests, 54 frontend tests and TypeScript/build pass; desktop/390px fictional comparison, unchanged, stale-input clearing and missing-version checks passed. No migration or live calls. Review/usefulness/time/cost measures and full explicit-refresh workflow validation remain within 8.5; 8.6 actual human quality gates remain open.
 
+- 8.5 workflow measures: [Issue #182](https://github.com/davejensen34/deal-sage/issues/182) adds optional version-linked usefulness/reason and self-reported review duration, latest-case coverage/decision/purpose measures and explicitly scoped attempt reservations in Overview. All 551 backend/API tests, 57 frontend tests and TypeScript/build pass; desktop/390px fictional feedback save/reload/history and overview were inspected. No migration or live calls. Full explicit-refresh validation and complete cost coverage remain within 8.5; 8.6 actual human quality gates remain open.
+
 ## Outcome
 
 A reviewer can start bounded discovery, inspect recent business-transition evidence, ask a targeted follow-up, record a reasoned decision and create a useful opportunity-development handoff **inside DealSage**, without a coding agent or local JSON exchange.
