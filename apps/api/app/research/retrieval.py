@@ -245,4 +245,7 @@ def assert_nonlocal_url(url: str) -> str:
 def _bounded_text_excerpt(content: bytes, media_type: str) -> str | None:
     if media_type not in {"text/html", "text/plain", "application/json"}:
         return None
+    if media_type == "text/html":
+        from app.research.html_excerpt import html_excerpt
+        return html_excerpt(content)
     return content.decode("utf-8", errors="replace")[:2_000]
