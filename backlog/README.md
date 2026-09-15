@@ -8,7 +8,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 ## Current product position
 
-- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is active following September 15 user approval, under GitHub milestone 13. Planning Issue #154/PR #155 established scope; Issue #156 delivers 8.1. Research execution, investigation, decisions/handoffs, monitoring and actual human validation remain pending.
+- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is active following September 15 user approval, under GitHub milestone 13. Planning Issue #154/PR #155 established scope; Issue #156 delivers 8.1; Issue #158 delivers 8.2 discovery setup and durable bounded attempts. Next is 8.3 evidence-to-insight investigation; decisions/handoffs, monitoring and actual human validation remain pending.
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.

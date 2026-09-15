@@ -5,6 +5,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app.auth.routes import router as auth_router
 from app.api.routes import router
+from app.api.discovery import router as discovery_router
 from app.core.config import get_settings
 from app.core.database import SessionLocal
 from app.services.seed import seed_database
@@ -49,4 +50,5 @@ def startup():
         with SessionLocal() as db: seed_database(db)
 
 app.include_router(router)
+app.include_router(discovery_router)
 app.include_router(auth_router)

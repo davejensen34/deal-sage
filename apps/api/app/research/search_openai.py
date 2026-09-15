@@ -22,7 +22,7 @@ class OpenAIWebSearchProvider(SearchProvider):
 
         if not api_key.strip() or not model.strip():
             raise ValueError("OpenAI web search requires an API key and model")
-        self.client = AsyncOpenAI(api_key=api_key, timeout=timeout_seconds)
+        self.client = AsyncOpenAI(api_key=api_key, timeout=timeout_seconds, max_retries=0)
         self.model = model
         self.max_output_tokens = max_output_tokens
 
