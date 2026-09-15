@@ -22,6 +22,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 
 - 8.4 handoff completion: [Issue #176](https://github.com/davejensen34/deal-sage/issues/176) adds purpose-specific development briefs, retained unknowns, reviewer-assessed communication readiness, exact source-quoted public business contacts and reviewed text export. Existing decision/version history is reused; exports retain source/model/human boundaries and historical supersession. All 539 backend/API tests, 49 frontend tests and build pass; desktop/390px fictional save/reload/contact and downloaded-text checks passed. No migration or live calls. M8.4 engineering is complete; M8.5 monitoring/workflow measures and M8.6 actual human validation remain open.
 
+- 8.5 first slice: [Issue #178](https://github.com/davejensen34/deal-sage/issues/178) adds personal manual case monitoring with UTC review dates/questions, active/paused state, append-only reschedules and a paginated due queue in Watchlists. Unresolved cases require no promotion; no background calls or notifications start. All 544 backend/API tests, 52 frontend tests and build pass; desktop/390px save/queue/pause/history checks passed. Only the isolated demo received the additive migration. Explicit refresh/version comparisons and workflow measures remain within 8.5; 8.6 human quality gates remain open.
+
 ## Outcome
 
 A reviewer can start bounded discovery, inspect recent business-transition evidence, ask a targeted follow-up, record a reasoned decision and create a useful opportunity-development handoff **inside DealSage**, without a coding agent or local JSON exchange.

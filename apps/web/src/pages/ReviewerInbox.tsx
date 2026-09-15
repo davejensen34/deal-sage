@@ -1,3 +1,4 @@
+import {CaseMonitoring} from '../components/CaseMonitoring';
 import {CaseDecisions} from '../components/CaseDecisions';
 import {CaseFollowups} from '../components/CaseFollowups';
 import {CaseInvestigation} from '../components/CaseInvestigation';
@@ -61,6 +62,7 @@ export function ResearchCaseDetail() {
       {result.data.candidate_match_id && <p><Link to={`/candidates/${result.data.candidate_match_id}`}>Open linked review candidate</Link></p>}
       <CaseNarratives cases={[result.data]}/>
       <CaseDecisions key={`decision-${result.data.id}`} caseId={result.data.id}/>
+      <CaseMonitoring key={`monitoring-${result.data.id}`} caseId={result.data.id}/>
       <CaseFollowups key={`followup-${result.data.id}`} caseId={result.data.id}/>
       <CaseBriefVersions key={`brief-${result.data.id}`} caseId={result.data.id}/>
       <CaseInvestigation key={result.data.id} caseId={result.data.id}/>
