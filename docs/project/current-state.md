@@ -8,6 +8,10 @@ Milestone 7 is complete as an implemented and evaluated research foundation, wit
 
 Issue #186 completes M8.5 engineering with explicit audited date-window renewal and a non-additive inventory of retained cost ledgers and unknowns. All 559 backend/API tests, 59 frontend tests and TypeScript/build pass; fictional desktop/390px renewal, keyboard submission, reload/history and cost rendering passed. No live calls or migration ran. M8.6 remains open under #187 for the separately approved ten-lead cohort, actual human workflow/usefulness judgments and product closeout; the prepared protocol is in docs/research/milestone8-human-acceptance.md. Missing invoice/infrastructure costs remain unknown, not zero.
 
+## Milestone 8.6 live acceptance underway
+
+The user approved Issue #187's ten-lead/90-day evaluation on September 15, with up to 12 searches, 30 retrievals, 20 extractions and a $5 ceiling. Six frozen CO/UT/TX searches completed in an isolated OIDC-authenticated database: 30 unverified links and $0.72 reserved, with actual search spend unmeasured. Initial source inspection exposed raw HTML being retained as the readable excerpt. Issue #189 corrects that representation with bounded visible-text parsing and conservative access-marker handling. Acceptance acquisition and human judgments are not yet complete; these results do not close Milestone 8 or establish useful opportunities. Operational research data is untouched.
+
 ## Milestone 8.2 — Durable discovery setup
 
 Issue #158 delivers `/discover`: signal-first, business-first and hybrid setup, versioned SQL defaults, frozen previews, operator-controlled search attempts, history and case links. Plans retain exact queries/provider requests, policy and limits; reservations precede network calls. Duplicate keys and concurrent claims cannot repeat execution. Failed attempts retain reservations; bounded retries use a new attempt. Interrupted recovery records attribution atomically, skips the unknown query without refund/replay and fences late responses. Retrieved evidence, model investigation, human decisions and handoffs remain 8.3–8.6 work.
