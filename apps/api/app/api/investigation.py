@@ -18,7 +18,8 @@ from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
 from app.research import extraction_attempts
 from app.research import brief_versions
-from app.domain.models import CaseBriefVersion
+from app.domain.models import CaseBriefVersion, CaseDecision
+from app.research import case_decisions
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
 
@@ -245,3 +246,27 @@ def comparisons(case_id: int, evidence_id: int, page: int = Query(1, ge=1), db: 
         results.append({"evidence_id": other.id, "publisher": other.publisher, "url": other.canonical_url,
             "relationship": relationship, "rule": rule, "explanation": PAIR_EXPLANATIONS[rule]})
     return {"items": results, "has_next": len(rows)>20, "method": "evidence-pair-inspection-v1"}
+
+
+class RecordCaseDecision(BaseModel):
+    request_key: UUID
+    decision: case_decisions.DecisionInput
+
+
+@router.get('/{case_id}/decisions')
+def decisions(case_id:int,page:int=Query(1,ge=1),db:Session=Depends(get_db)):
+    require_case(db,case_id)
+    rows=db.scalars(select(CaseDecision).where(CaseDecision.case_id==case_id).order_by(CaseDecision.id.desc()).offset((page-1)*10).limit(11)).all()
+    current=case_decisions.latest(db,case_id)
+    return {'items':[case_decisions.view(r) for r in rows[:10]],'has_next':len(rows)>10,
+        'latest':case_decisions.view(current) if current else None}
+
+
+@router.post('/{case_id}/decisions')
+def record_decision(case_id:int,payload:RecordCaseDecision,db:Session=Depends(get_db),
+                    identity:Identity=Depends(require_permission('review'))):
+    try:
+        return case_decisions.save(db,case_id,payload.decision,request_key=payload.request_key,
+            actor=identity.display_name,actor_key=extraction_attempts.digest([identity.provider,identity.subject]),user_id=identity.user_id)
+    except ValueError as exc:
+        db.rollback();raise HTTPException(409,str(exc)) from exc

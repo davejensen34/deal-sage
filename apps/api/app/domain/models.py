@@ -521,6 +521,19 @@ class ClaimContradiction(TimestampMixin, Base):
     )
 
 
+class CaseDecision(TimestampMixin, Base):
+    """Append-only workflow intent, distinct from evidence truth and model review."""
+    __tablename__ = "case_decisions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    brief_id: Mapped[int] = mapped_column(ForeignKey("case_brief_versions.id"))
+    prior_id: Mapped[int | None] = mapped_column(ForeignKey("case_decisions.id"), unique=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    actor: Mapped[str] = mapped_column(String(160))
+    actor_key: Mapped[str] = mapped_column(String(64))
+    content: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+
 class CaseBriefVersion(TimestampMixin, Base):
     """Immutable reviewer-requested snapshot; never a new research judgment."""
     __tablename__ = "case_brief_versions"
