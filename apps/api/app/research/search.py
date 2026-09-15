@@ -80,7 +80,13 @@ class SearchService:
         query_text: str,
         *,
         max_results: int = 10,
+        accept_results=None,
     ) -> list[SourceCandidate]:
+        """Persist a query before I/O, then stage its results atomically.
+
+        A durable caller may supply accept_results to acquire its run lock in
+        the staging transaction; raising rejects a response whose lease ended.
+        """
         case = self.db.get(ResearchCase, case_id)
         if case is None:
             raise ValueError("Research case does not exist")
@@ -112,6 +118,8 @@ class SearchService:
         started = perf_counter()
         try:
             results = await provider.search(query.query_text, max_results)
+            if accept_results is not None:
+                accept_results()
             if len(results) > max_results:
                 raise ValueError("Search provider exceeded the requested result limit")
             candidates = [

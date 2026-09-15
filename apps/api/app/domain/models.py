@@ -15,6 +15,45 @@ class TimestampMixin:
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)
 
 
+class DiscoveryProfile(TimestampMixin, Base):
+    """Append-only workspace defaults; runs retain their own exact plan."""
+    __tablename__ = "discovery_profiles"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    settings: Mapped[dict[str, Any]] = mapped_column(JSON)
+    actor: Mapped[str] = mapped_column(String(160))
+
+
+class DiscoveryRun(TimestampMixin, Base):
+    __tablename__ = "discovery_runs"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), unique=True)
+    profile_id: Mapped[int | None] = mapped_column(ForeignKey("discovery_profiles.id"))
+    plan: Mapped[dict[str, Any]] = mapped_column(JSON)
+    plan_hash: Mapped[str] = mapped_column(String(64))
+    actor: Mapped[str] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(30), default="ready")
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    next_slot: Mapped[int] = mapped_column(Integer, default=0)
+    reserved_cents: Mapped[int] = mapped_column(Integer, default=0)
+    deadline_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class DiscoveryAttempt(TimestampMixin, Base):
+    __tablename__ = "discovery_attempts"
+    __table_args__ = (UniqueConstraint("run_id", "request_key"),)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("discovery_runs.id"), index=True)
+    request_key: Mapped[str] = mapped_column(String(36))
+    slot: Mapped[int] = mapped_column(Integer)
+    actor: Mapped[str] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(30), default="running")
+    reserved_cents: Mapped[int] = mapped_column(Integer)
+    recovery_after: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    result_count: Mapped[int | None] = mapped_column(Integer)
+    error_code: Mapped[str | None] = mapped_column(String(60))
+
+
 class Business(TimestampMixin, Base):
     __tablename__ = "businesses"
     id: Mapped[int] = mapped_column(primary_key=True)
