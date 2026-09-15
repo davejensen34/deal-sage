@@ -8,6 +8,20 @@ from app.research.discovery_runs import utc
 from app.research.development_briefs import DevelopmentInput, validate_contact
 
 
+class ReviewFeedback(BaseModel):
+    """Reviewer-reported value for this purpose/version, never verified quality."""
+    model_config=ConfigDict(extra='forbid',strict=True)
+    usefulness: Literal['useful','not_useful','not_assessed']
+    reason: str = Field(default='',max_length=2000)
+    review_seconds: int | None = Field(default=None,ge=1,le=86400)
+
+    @model_validator(mode='after')
+    def explained(self):
+        if self.usefulness != 'not_assessed' and len(self.reason.strip()) < 10:
+            raise ValueError('A usefulness judgment requires a meaningful reason')
+        return self
+
+
 class DecisionInput(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     brief_version: int = Field(ge=1)
@@ -20,6 +34,7 @@ class DecisionInput(BaseModel):
     contradicting_source_ids: list[int] = Field(default_factory=list,max_length=200)
     change_reason: str = Field(default='',max_length=1000)
     development: DevelopmentInput | None = None
+    feedback: ReviewFeedback | None = None
 
     @model_validator(mode='after')
     def coherent(self):

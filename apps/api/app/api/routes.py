@@ -24,6 +24,7 @@ from app.research.sources.utah import UTAH_BEL_DEFINITION
 from app.storage.local import LocalEvidenceStorage
 from app.services.candidate_exports import EXPORT_SCHEMA_VERSION, candidate_export_csv, candidate_export_record, export_envelope
 from app.services.workflow_effectiveness import workflow_effectiveness
+from app.services.case_workflow_metrics import case_workflow_metrics
 from app.ops.health import operational_readiness
 from app.research.leads import discovery_leads, queue_lead
 from app.domain.transition_policies import transition_policy_catalog
@@ -309,6 +310,11 @@ def research_case_metrics(db: Session = Depends(get_db)):
 def research_workflow_effectiveness(db: Session = Depends(get_db)):
     """Expose deterministic operational measures without candidate guesswork."""
     return workflow_effectiveness(db)
+
+
+@router.get('/research/case-workflow-measures')
+def research_case_workflow_measures(page: int = Query(default=1, ge=1), db: Session = Depends(get_db)):
+    return case_workflow_metrics(db, page)
 
 
 @router.get("/research/case-narratives")
