@@ -4,10 +4,11 @@ from datetime import datetime, timezone
 from time import perf_counter
 from urllib.parse import urlsplit, urlunsplit
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from app.domain.models import (
+    AuditEvent,
     ResearchCase,
     ResearchQuery,
     Source,
@@ -170,6 +171,7 @@ class SearchService:
         decision: str,
         reason: str,
         decided_by: str,
+        user_id: int | None = None,
     ) -> SourceCandidate:
         """Record a human or governed-policy decision before any retrieval."""
         candidate = self.db.get(SourceCandidate, candidate_id)
@@ -181,10 +183,18 @@ class SearchService:
             raise ValueError("Source access decision requires reason and attribution")
         if candidate.access_decision != "pending":
             raise ValueError("Source access decision is immutable")
-        candidate.access_decision = decision
-        candidate.access_decision_reason = reason.strip()
-        candidate.access_decided_by = decided_by.strip()
-        candidate.access_decided_at = datetime.now(timezone.utc)
+        # A second reviewer may hold a stale ORM object. Claim the pending
+        # decision in SQL so concurrent submissions cannot rewrite attribution.
+        claimed = self.db.execute(update(SourceCandidate).where(
+            SourceCandidate.id == candidate_id, SourceCandidate.access_decision == "pending"
+        ).values(access_decision=decision, access_decision_reason=reason.strip(),
+                 access_decided_by=decided_by.strip(), access_decided_at=datetime.now(timezone.utc)))
+        if claimed.rowcount != 1:
+            self.db.rollback()
+            raise ValueError("Source access decision is immutable")
+        self.db.add(AuditEvent(actor=decided_by.strip(), user_id=user_id,
+            action="source_access_decided", detail=reason.strip(),
+            after_state={"case_id": candidate.case_id, "source_candidate_id": candidate_id, "decision": decision}))
         self.db.commit()
         self.db.refresh(candidate)
         return candidate

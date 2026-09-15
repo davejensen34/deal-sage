@@ -1,3 +1,4 @@
+import {CaseInvestigation} from '../components/CaseInvestigation';
 import {useQuery} from '@tanstack/react-query';
 import {Link, useParams, useSearchParams} from 'react-router-dom';
 import {api} from '../api/client';
@@ -56,6 +57,7 @@ export function ResearchCaseDetail() {
       {result.data.linked_business && <p>Linked entity: {result.data.linked_business.name}. Source-reported alternatives remain in the brief.</p>}
       {result.data.candidate_match_id && <p><Link to={`/candidates/${result.data.candidate_match_id}`}>Open linked review candidate</Link></p>}
       <CaseNarratives cases={[result.data]}/>
+      <CaseInvestigation key={result.data.id} caseId={result.data.id}/>
     </>}
   </>;
 }
