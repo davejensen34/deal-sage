@@ -6,12 +6,37 @@ from sqlalchemy.orm import Session
 from app.auth.service import Identity, current_identity, require_permission
 from app.core.config import Settings, get_settings
 from app.core.database import get_db
-from app.domain.models import FollowupRun, ResearchCase
-from app.research import followups
+from app.domain.models import FollowupRun, ResearchCase, AuditEvent
+from app.research import followups, policy_renewal
 from app.research.discovery_runs import run_view, execute_attempt, recover, digest
 from app.api.discovery import ExecuteRun, RecoverRun
 
 router=APIRouter(prefix='/api/followups',dependencies=[Depends(current_identity)])
+
+
+class RenewPolicy(BaseModel):
+    request_key: UUID
+    expected_hash: str = Field(pattern='^[0-9a-f]{64}$')
+    reason: str = Field(min_length=10,max_length=1000)
+
+
+@router.get('/cases/{case_id}/date-policy')
+def date_policy(case_id:int,page:int=Query(default=1,ge=1),db:Session=Depends(get_db)):
+    try:
+        p=policy_renewal.preview(db,case_id)
+        rows=db.scalars(policy_renewal.history_query(case_id).order_by(AuditEvent.id.desc()).offset((page-1)*10).limit(11)).all()
+        return {**p,'history':[{'id':r.id,'actor':r.actor,'reason':r.detail,'before':r.before_state,
+            'after':r.after_state['policy']} for r in rows[:10]],'has_next':len(rows)>10}
+    except ValueError as exc: raise HTTPException(409,str(exc)) from exc
+
+
+@router.post('/cases/{case_id}/date-policy')
+def renew_policy(case_id:int,payload:RenewPolicy,db:Session=Depends(get_db),identity:Identity=Depends(require_permission('review'))):
+    try:
+        return policy_renewal.save(db,case_id,**payload.model_dump(),actor=identity.display_name,
+            actor_key=digest([identity.provider,identity.subject]),user_id=identity.user_id)
+    except ValueError as exc:
+        db.rollback();raise HTTPException(409,str(exc)) from exc
 
 
 class CreateFollowup(BaseModel):

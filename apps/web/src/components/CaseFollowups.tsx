@@ -1,3 +1,4 @@
+import {CaseDatePolicy} from './CaseDatePolicy';
 import {useRef,useState} from 'react';
 import {useMutation,useQuery} from '@tanstack/react-query';
 import {Link,useNavigate} from 'react-router-dom';
@@ -16,6 +17,7 @@ export function CaseFollowups({caseId}:{caseId:number}){
   const create=useMutation({mutationFn:()=>api<{id:number}>(`/followups/cases/${caseId}`,{method:'POST',body:JSON.stringify({settings:value,request_key:key.current,expected_hash:prepared!.hash})}),onSuccess:r=>navigate(`/followups/runs/${r.id}`)});
   const canReview=!!identity&&identity.role!=='viewer';
   return <section className="panel case-investigation"><h2>Research a specific unknown</h2><p>Record your question and why it matters, then review the exact search. Finding a link does not answer the question or verify ownership.</p>
+    <CaseDatePolicy key={caseId} caseId={caseId}/>
     <form className="discovery-form" onSubmit={e=>{e.preventDefault();preview.mutate()}}>
       {(['question','rationale','query'] as const).map(name=><label key={name}>{name==='question'?'Follow-up question':name==='rationale'?'Why this needs research':'Exact search query'}<input required minLength={name==='query'?5:10} maxLength={name==='query'?350:name==='question'?500:1000} value={value[name]} disabled={create.isPending||preview.isPending} onChange={e=>{setValue({...value,[name]:e.target.value});setPrepared(null);key.current=null}}/></label>)}
       <button disabled={!canReview||preview.isPending||create.isPending}>Preview follow-up</button>

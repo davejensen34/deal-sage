@@ -152,6 +152,17 @@ async def execute_attempt(db, run, settings, *, request_key, expected_revision, 
     now = datetime.now(timezone.utc)
     if is_followup:
         followups.admit(db, run)
+    else:
+        # Serialize discovery admission with explicit case date renewal. The
+        # exact frozen request must never execute under a different window.
+        claim=db.execute(update(ResearchCase).where(ResearchCase.id==run.case_id,
+            ResearchCase.status=='open').values(updated_at=ResearchCase.updated_at))
+        if claim.rowcount!=1: raise ValueError('Case is stopped; discovery unavailable')
+        db.expire_all()
+        from app.research.signal_freshness import dated_query
+        case=db.get(ResearchCase,run.case_id)
+        if [dated_query(q,case.signal_intake_policy) for q in run.plan['queries']]!=run.plan['submitted_queries']:
+            raise ValueError('Case date policy changed; prepare a new follow-up')
     frozen = run.plan["provider"]
     if digest(frozen) != digest(provider_snapshot(settings, now.date())) or not frozen["ready"]:
         raise ValueError("Provider configuration or pricing changed/unavailable; prepare a new run")

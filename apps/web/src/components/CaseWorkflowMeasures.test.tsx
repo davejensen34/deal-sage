@@ -26,3 +26,9 @@ it('explains load failures and supports retry',async()=>{
   expect(await screen.findByRole('alert')).toHaveTextContent('Case review measures unavailable');
   expect(screen.getByRole('button',{name:'Retry measures'})).toBeVisible();
 });
+
+it('shows missing costs without an invented grand total',async()=>{
+  vi.stubGlobal('fetch',vi.fn(async()=>new Response(JSON.stringify({...data,cost_coverage:{boundary:'These ledgers overlap and are not additive.',rows:[{name:'Search queries',records:2,recorded_amount:null,unit:'USD',missing_cost_records:2,scope:'Unknown real query spend.'}]}}))));show();
+  fireEvent.click(await screen.findByText('Search queries: 2 records · 2 with missing or incomplete cost data'));
+  expect(screen.getByText('Recorded ledger amount: Unknown / not recorded.')).toBeVisible();
+});
