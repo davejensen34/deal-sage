@@ -5,22 +5,26 @@ from pydantic import BaseModel,ConfigDict,Field,model_validator
 from sqlalchemy import select,update
 from app.domain.models import CaseDecision,CaseBriefVersion,ResearchCase,AuditEvent
 from app.research.discovery_runs import utc
+from app.research.development_briefs import DevelopmentInput, validate_contact
 
 
 class DecisionInput(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     brief_version: int = Field(ge=1)
     expected_prior_id: int | None
-    outcome: Literal['more_research','monitor','dismiss']
+    outcome: Literal['more_research','monitor','dismiss','create_development_brief']
     purpose: Literal['marketing_introduction','succession_advisory','acquisition_exploration']
     rationale: str = Field(min_length=10,max_length=2000)
     next_action: str = Field(min_length=10,max_length=1000)
     supporting_source_ids: list[int] = Field(default_factory=list,max_length=200)
     contradicting_source_ids: list[int] = Field(default_factory=list,max_length=200)
     change_reason: str = Field(default='',max_length=1000)
+    development: DevelopmentInput | None = None
 
     @model_validator(mode='after')
     def coherent(self):
+        if (self.outcome == 'create_development_brief') != (self.development is not None):
+            raise ValueError('Development details are required only for a development brief')
         if len(self.rationale.strip())<10 or len(self.next_action.strip())<10:
             raise ValueError('Provide a meaningful rationale and next action')
         if self.expected_prior_id is not None and len(self.change_reason.strip())<10:
@@ -42,7 +46,10 @@ def view(row):
 
 
 def save(db,case_id,payload,*,request_key,actor,actor_key,user_id=None):
-    key=str(UUID(str(request_key)));content=payload.model_dump()
+    # Omit the new optional field for legacy requests so their UUID recovery
+    # still compares equal to decisions saved before development briefs existed.
+    key=str(UUID(str(request_key)));content=payload.model_dump(exclude_none=True)
+    content['expected_prior_id']=payload.expected_prior_id
     # Serialize the correction chain, including its first row, without changing
     # research status. Reviewing a stopped case must never restart execution.
     claim=db.execute(update(ResearchCase).where(ResearchCase.id==case_id).values(updated_at=ResearchCase.updated_at))
@@ -61,6 +68,8 @@ def save(db,case_id,payload,*,request_key,actor,actor_key,user_id=None):
     sources={s['id'] for s in brief.content['sources']}
     if not set(payload.supporting_source_ids+payload.contradicting_source_ids)<=sources:
         raise ValueError('Selected sources must belong to the saved brief version')
+    if payload.development:
+        validate_contact(payload.development, brief.content['sources'])
     row=CaseDecision(case_id=case_id,brief_id=brief.id,prior_id=payload.expected_prior_id,
         request_key=key,actor=actor,actor_key=actor_key,content=content)
     db.add(row);db.flush()

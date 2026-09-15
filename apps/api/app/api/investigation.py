@@ -2,7 +2,7 @@
 from typing import Literal
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -18,8 +18,8 @@ from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
 from app.research import extraction_attempts
 from app.research import brief_versions
-from app.domain.models import CaseBriefVersion, CaseDecision
-from app.research import case_decisions
+from app.domain.models import CaseBriefVersion, CaseDecision, AuditEvent
+from app.research import case_decisions, development_briefs
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
 
@@ -270,3 +270,25 @@ def record_decision(case_id:int,payload:RecordCaseDecision,db:Session=Depends(ge
             actor=identity.display_name,actor_key=extraction_attempts.digest([identity.provider,identity.subject]),user_id=identity.user_id)
     except ValueError as exc:
         db.rollback();raise HTTPException(409,str(exc)) from exc
+
+
+@router.get('/{case_id}/decisions/{decision_id}/development-brief')
+def development_brief(case_id: int, decision_id: int, db: Session = Depends(get_db)):
+    try:
+        return development_briefs.handoff(db, case_id, decision_id)
+    except ValueError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.post('/{case_id}/decisions/{decision_id}/development-brief/export')
+def export_development_brief(case_id: int, decision_id: int, db: Session = Depends(get_db),
+                             identity: Identity = Depends(require_permission('export'))):
+    packet = development_brief(case_id, decision_id, db)
+    content = development_briefs.text_export(packet)
+    db.add(AuditEvent(actor=identity.display_name, user_id=identity.user_id,
+        action='development_brief_exported', after_state={'case_id': case_id, 'decision_id': decision_id,
+        'brief_id': packet['saved_brief']['id']}, detail='Internal reviewed text handoff downloaded; no communication sent.'))
+    db.commit()
+    return Response(content, media_type='text/plain', headers={
+        'Content-Disposition': f'attachment; filename="dealsage-case-{case_id}-decision-{decision_id}.txt"',
+        'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff'})

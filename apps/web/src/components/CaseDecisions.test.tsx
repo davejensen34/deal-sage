@@ -24,3 +24,19 @@ it('keeps viewers read-only',async()=>{
   role='viewer';vi.stubGlobal('fetch',vi.fn(async()=>new Response(JSON.stringify({items:[],has_next:false,latest:null}))));show();
   expect(await screen.findByText('No workflow decision recorded.')).toBeVisible();expect(screen.queryByRole('button',{name:'Load reviewed brief'})).toBeNull();
 });
+
+it('records a development handoff with explicit unknowns and no invented contact',async()=>{
+  const posts:string[]=[];
+  vi.stubGlobal('fetch',vi.fn(async(url:string,options?:RequestInit)=>{
+    if(options?.method==='POST'){posts.push(options.body as string);throw new Error('Response lost')}
+    return new Response(JSON.stringify(url.endsWith('/brief-versions/1')?brief:{items:[],has_next:false,latest:null}));
+  }));show();await waitFor(()=>expect(screen.getByRole('button',{name:'Load reviewed brief'})).toBeEnabled());
+  fireEvent.click(screen.getByRole('button',{name:'Load reviewed brief'}));
+  fireEvent.change(await screen.findByLabelText('Decision'),{target:{value:'create_development_brief'}});
+  for(const [label,value] of Object.entries({'Decision rationale':'This may fit a continuity advisory purpose.','Next action':'Research the business contact before communication.','Opportunity summary':'A fictional continuity introduction for later review.','Unknowns and limitations':'Ownership and sale intent remain unknown.','Readiness rationale':'No public business contact has been retained.'}))
+    fireEvent.change(screen.getByLabelText(label),{target:{value}});
+  fireEvent.click(screen.getByRole('button',{name:'Record reviewer decision'}));
+  fireEvent.click(await screen.findByRole('button',{name:'Retry same decision'}));
+  await waitFor(()=>expect(posts).toHaveLength(2));expect(posts[0]).toBe(posts[1]);
+  const d=JSON.parse(posts[0]).decision;expect(d.outcome).toBe('create_development_brief');expect(d.development.readiness).toBe('not_ready');expect(d.development.contact).toBeUndefined();
+});
