@@ -1,5 +1,7 @@
 # Milestone 8 acceptance acquisition and review
 
+Subsequent user feedback: these packets are too light on insight for reviewer handoff. The review request below is **suspended**, and #194 must deliver discovery/capture/corroboration/reconciliation and supported recommendations before #187 resumes. This is diagnostic acquisition history, not ten individual usefulness judgments or a completed intelligence transaction. [Remediation plan](../product/milestone8-intelligence-remediation.md).
+
 September 15, 2026. Issue #187 remains open. Live acquisition is complete; usefulness and unassisted human workflow completion are **not assessed**. This record does not close Milestone 8.
 
 ## Scope and retained execution
