@@ -6,7 +6,7 @@ import {useIdentity} from '../components/AuthGate';
 import './discovery.css';
 
 type Config={origin:string;objective:string;business_name:string;states:string[];signals:string[];lookback_days:number;max_records:number;max_queries:number;max_cost_cents:number;max_elapsed_seconds:number};
-type Plan={version:string;settings:Config;policy:{assessment_date:string};queries:string[];submitted_queries:string[];provider:{key:string;model:string|null;ready:boolean;reason:string;reservation_cents:number;max_results:number;timeout_seconds:number}};
+type Plan={question?:string;rationale?:string;version:string;settings:Config;policy:{assessment_date:string};queries:string[];submitted_queries:string[];provider:{key:string;model:string|null;ready:boolean;reason:string;reservation_cents:number;max_results:number;timeout_seconds:number}};
 type Attempt={id:number;request_key:string;slot:number;status:string;reserved_cents:number;result_count:number|null;error_code:string|null;actor:string;recovery_after:string};
 type Run={id:number;case_id:number;plan:Plan;status:string;revision:number;next_slot:number;reserved_cents:number;record_count:number;deadline_at:string|null;attempts:Attempt[]};
 const words=(s:string)=>s.replaceAll('_',' ');
@@ -14,7 +14,7 @@ const families=['possible_death','retirement','succession','ownership_change','f
 const money=(c:number)=>`$${(c/100).toFixed(2)}`;
 
 function PlanSummary({plan}:{plan:Plan}) {
-  return <section className="panel discovery-plan"><h2>Bounded discovery plan</h2>
+  return <section className="panel discovery-plan"><h2>{plan.question?'Bounded follow-up plan':'Bounded discovery plan'}</h2>{plan.question&&<><h3>{plan.question}</h3><p>{plan.rationale}</p></>}
     <p>{plan.provider.reason}{plan.provider.model&&` · ${plan.provider.model}`}</p>
     <p>{plan.settings.max_records} unique source links maximum · {plan.settings.max_queries} total attempts including retries · {money(plan.settings.max_cost_cents)} reservation ceiling</p>
     <p>{money(plan.provider.reservation_cents)} reserved per attempt, including failures. This is a conservative reservation, not a measured invoice. Up to {plan.provider.max_results} links per query.</p>
@@ -67,25 +67,26 @@ export function Discovery() {
   </div>;
 }
 
-export function DiscoveryRun() {
+export function DiscoveryRun({followup=false}:{followup?:boolean}) {
+  const resource=followup?'followups':'discovery';
   const {id}=useParams(),identity=useIdentity(),qc=useQueryClient();
   const canOperate=!!identity&&['operator','administrator','demo'].includes(identity.role);
   const [executing,setExecuting]=useState(false);
   const pending=useRef<{request_key:string;expected_revision:number;retry_last:boolean}|null>(null);
-  const result=useQuery({queryKey:['discovery-run',id],queryFn:()=>api<Run>(`/discovery/runs/${id}`),retry:false,
+  const result=useQuery({queryKey:[resource+'-run',id],queryFn:()=>api<Run>(`/${resource}/runs/${id}`),retry:false,
     refetchInterval:q=>executing||q.state.data?.status==='running'?1500:false});
-  const refresh=()=>{qc.invalidateQueries({queryKey:['discovery-run',id]});qc.invalidateQueries({queryKey:['reviewer-inbox']});qc.invalidateQueries({queryKey:['research-case']})};
+  const refresh=()=>{qc.invalidateQueries({queryKey:[resource+'-run',id]});qc.invalidateQueries({queryKey:['reviewer-inbox']});qc.invalidateQueries({queryKey:['research-case']})};
   const execute=useMutation({mutationFn:(retry:boolean)=>{
     pending.current ||= {request_key:crypto.randomUUID(),expected_revision:result.data!.revision,retry_last:retry};
-    return api<Run>(`/discovery/runs/${id}/execute`,{method:'POST',body:JSON.stringify(pending.current)});
-  },onMutate:()=>setExecuting(true),onSuccess:r=>{pending.current=null;qc.setQueryData(['discovery-run',id],r);refresh()},onSettled:()=>{setExecuting(false);refresh()}});
-  const recover=useMutation({mutationFn:()=>api(`/discovery/runs/${id}/recover`,{method:'POST',body:JSON.stringify({expected_revision:result.data!.revision})}),onSuccess:()=>{pending.current=null;refresh()}});
+    return api<Run>(`/${resource}/runs/${id}/execute`,{method:'POST',body:JSON.stringify(pending.current)});
+  },onMutate:()=>setExecuting(true),onSuccess:r=>{pending.current=null;qc.setQueryData([resource+'-run',id],r);refresh()},onSettled:()=>{setExecuting(false);refresh()}});
+  const recover=useMutation({mutationFn:()=>api(`/${resource}/runs/${id}/recover`,{method:'POST',body:JSON.stringify({expected_revision:result.data!.revision})}),onSuccess:()=>{pending.current=null;refresh()}});
   if(result.isLoading)return <p role="status">Loading durable run progress…</p>;
   if(result.isError||!result.data)return <section className="panel" role="alert"><h1>Discovery run unavailable</h1><p>{result.error?.message}</p><Link to="/discover">Back to discovery</Link></section>;
   const run=result.data,last=run.attempts.at(-1),cfg=run.plan.settings;
   const exhausted=run.attempts.length>=cfg.max_queries||run.record_count>=cfg.max_records||run.reserved_cents+run.plan.provider.reservation_cents>cfg.max_cost_cents||!!run.deadline_at&&Date.parse(run.deadline_at)<Date.now();
   const disabled=!canOperate||executing||run.status==='running'||exhausted||!run.plan.provider.ready;
-  return <div className="discovery-page"><Link to="/discover">← Discovery setup & history</Link><h1>Discovery run {run.id}</h1>
+  return <div className="discovery-page"><Link to="/discover">← Discovery setup & history</Link><h1>{followup?'Follow-up search':'Discovery run'} {run.id}</h1>{followup&&<p>Search completion does not resolve the research question. Review discovered clues in the case, then explicitly retrieve evidence and save a new brief version.</p>}
     <section className="panel"><h2>Status: {run.status}</h2><p>{run.next_slot} of {run.plan.queries.length} planned slots attempted · {run.record_count} unverified links retained · {money(run.reserved_cents)} reserved</p>
       <p><Link to={`/research/cases/${run.case_id}`}>Review case {run.case_id} and discovered clues →</Link></p>
       <div className="discovery-actions"><button className="primary" disabled={disabled||run.next_slot>=run.plan.queries.length} onClick={()=>execute.mutate(false)}>{executing?'Searching…':pending.current?'Retry same request':'Run next search'}</button>

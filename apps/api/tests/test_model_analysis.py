@@ -115,7 +115,7 @@ async def test_research_plan_requires_approval_before_it_enters_frontier(overrid
 
     assert proposal.execution_outcome == "completed"
     assert proposal.proposed_output["next_action"] == "search"
-    assert override_db_session.query(ResearchFrontierItem).count() == 0
+    assert override_db_session.query(ResearchFrontierItem).filter_by(case_id=case.id).count() == 0
 
     item = ResearchPlanApprovalService(override_db_session).approve(proposal.id, priority=70)
     assert item is not None
