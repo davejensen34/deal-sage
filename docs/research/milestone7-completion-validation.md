@@ -1,5 +1,7 @@
 # Milestone 7 corrective validation
 
+Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. No milestone is active. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. [Final acceptance reconciliation](milestone7-closeout.md). The following checkpoint history is preserved; earlier active/approval statements describe their recorded point in time.
+
 Issue [#130](https://github.com/davejensen34/deal-sage/issues/130), September 14, 2026. Branch: `codex/research-130-completion-validation`. This is an observed validation record, not a milestone closeout or an acquisition recommendation.
 
 ## Authorization and execution

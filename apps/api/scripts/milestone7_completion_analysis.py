@@ -12,7 +12,7 @@ from app.research.frozen_signal_intake import validate_bundle
 from app.research.observation_contract import assess_observation
 from app.research.validation_budget import ValidationBudget, PROTOCOL
 
-GUIDANCE_VERSION = "completion-guidance-v2"
+GUIDANCE_VERSION = "completion-guidance-v4"
 GUIDANCE = """
 Contract clarification (not expected case answers): relationship_time encodes the
 relationship label's timing, not the business transition date. Allowed pairs are:
@@ -31,7 +31,25 @@ Private-company fit requires affirmative source evidence; a named company,
 executive role, or absence of a stock ticker alone is insufficient. Use unknown
 when the supplied evidence does not establish private status. Preserve which
 business each financial figure belongs to, and distinguish targets from actuals.
+For a planned ownership transfer without evidence it took effect, successor may
+describe the explicitly named intended ownership recipient, but relationship_time
+must be unclear. began_after_signal asserts an observed start, not a future plan.
+Retain the planned transfer and unknown effective date in the summary; do not
+infer completion from the passage of time or the phrase incoming owners.
+Copy names faithfully from the sources, preserving ordinary apostrophes. Do not
+insert hidden control characters into names, summaries, or questions.
 """
+
+
+def has_text_controls(value):
+    """Refuse corrupted names instead of silently repairing model-authored text."""
+    if isinstance(value, str):
+        return any((ord(c) < 32 and c not in '\t\n\r') or 127 <= ord(c) <= 159 for c in value)
+    if isinstance(value, dict):
+        return any(has_text_controls(k) or has_text_controls(v) for k, v in value.items())
+    if isinstance(value, list):
+        return any(has_text_controls(v) for v in value)
+    return False
 
 
 async def execute(budget, bundle_bytes, slot, client):
@@ -72,7 +90,15 @@ async def execute(budget, bundle_bytes, slot, client):
             OpenAIProvider._ensure_complete(response)
             if response.status != "completed" or response.model != request["model"]:
                 raise ValueError("Unexpected response status or model")
-            assessment = assess_observation(json.loads(response.output_text),
+            output = json.loads(response.output_text)
+            # A live corrective result contained NUL inside a person's name.
+            # Keep its historical bytes; future attempts fail safely and retry
+            # under a new reservation rather than presenting a repaired name.
+            if has_text_controls(output):
+                result.update(status="invalid", diagnostic_codes=["unsupported_text_control"])
+                budget.finish(attempt, result)
+                return {"attempt": attempt, **result}
+            assessment = assess_observation(output,
                 {s["source_id"] for s in context["sources"]}, context["case_origin"])
             result.update(status="invalid" if assessment.diagnostic_codes else "completed",
                           diagnostic_codes=assessment.diagnostic_codes,
