@@ -63,6 +63,22 @@ def test_preview_is_read_only_freezes_excerpt_and_keeps_undated_clues(override_d
     assert case.research_budget['max_model_calls']==0
 
 
+def test_live_reasoning_is_frozen_and_old_preview_cannot_reserve(override_db_session):
+    db=override_db_session;case,item=setup(db)
+    config=Settings(_env_file=None,demo_mode=False,model_provider='openai',
+        openai_model=service.MODEL,openai_api_key='test-only',ai_max_output_tokens=1000)
+    prepared=service.preview(db,case.id,item.id,config)
+    plan=prepared['plan']
+    assert plan['request']['reasoning']=={'effort':'minimal'}
+    assert plan['request']['max_output_tokens']==1000
+    assert plan['policy']['reserved_cents']==2
+    del plan['request']['reasoning']
+    with pytest.raises(ValueError,match='preview again'):
+        execute(db,case,item,config,expected_hash=service.digest(plan),provider=successful)
+    assert db.scalar(select(func.count(ExtractionAttempt.id)).where(ExtractionAttempt.case_id==case.id))==0
+    assert db.scalar(select(func.count(ModelProposal.id)).where(ModelProposal.case_id==case.id))==0
+
+
 def test_completed_cited_proposal_is_atomic_and_replay_does_not_call(override_db_session):
     db=override_db_session;case,item=setup(db);config=settings();key=uuid4();calls=[]
     async def provider(plan,config):
