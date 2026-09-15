@@ -8,6 +8,8 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 ## Current product position
 
+- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is proposed under planning Issue #154. The whole-app audit and interactive concept are ready for scope/design review; no milestone is active and implementation is not approved.
+
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.
 - Milestone 3.1 — Evidence Convergence and Dynamic Discovery is complete as a validated foundation. The live cohort's unsuccessful version-one quality result remains negative evidence; Issue #55 supplies an offline-validated version-two contract without making another live call.
