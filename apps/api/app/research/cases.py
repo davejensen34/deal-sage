@@ -82,6 +82,7 @@ class ResearchCaseService:
         published_at: datetime | None = None,
         known_source_id: int | None = None,
         raw_artifact_id: int | None = None,
+        commit: bool = True,
     ) -> CaseEvidence:
         self._require_case(case_id)
         if source_mode not in SOURCE_MODES:
@@ -127,7 +128,7 @@ class ResearchCaseService:
             classification=classification,
         )
         self.db.add(evidence)
-        self.db.commit()
+        self.db.commit() if commit else self.db.flush()
         self.db.refresh(evidence)
         return evidence
 

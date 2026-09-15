@@ -13,7 +13,7 @@ import httpx
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.domain.models import CaseEvidence, ResearchCase, SourceCandidate
+from app.domain.models import CaseEvidence, ResearchCase, SourceCandidate, RetrievalAttempt
 from app.research.cases import ResearchCaseService
 from app.research.landing import EvidenceLanding, LandingEnvelope
 from app.research.search import canonicalize_public_url
@@ -106,9 +106,10 @@ class HttpDocumentProvider(DocumentProvider):
 class CandidateRetrievalService:
     """Land approved candidate bytes before creating minimal case evidence."""
 
-    def __init__(self, db: Session, storage: EvidenceStorage):
+    def __init__(self, db: Session, storage: EvidenceStorage, *, defer_commit: bool = False):
         self.db = db
-        self.landing = EvidenceLanding(db, storage)
+        self.defer_commit = defer_commit
+        self.landing = EvidenceLanding(db, storage, defer_commit=defer_commit)
         self.cases = ResearchCaseService(db)
 
     async def retrieve(
@@ -118,6 +119,8 @@ class CandidateRetrievalService:
         provider: DocumentProvider,
         *,
         max_bytes: int = MAX_RETRIEVAL_BYTES,
+        authorization_id: int | None = None,
+        accept_results=None,
     ) -> CaseEvidence:
         case = self.db.get(ResearchCase, case_id)
         candidate = self.db.get(SourceCandidate, candidate_id)
@@ -132,12 +135,20 @@ class CandidateRetrievalService:
         document_count = self.db.scalar(
             select(func.count(CaseEvidence.id)).where(CaseEvidence.case_id == case.id)
         ) or 0
-        if document_count >= int(case.research_budget.get("max_documents", 0)):
+        if authorization_id is not None:
+            authorization = self.db.get(RetrievalAttempt, authorization_id)
+            if (authorization is None or authorization.case_id != case_id or authorization.source_id != candidate_id
+                or authorization.status != "running" or authorization.plan.get("url") != candidate.canonical_url
+                or authorization.plan.get("max_bytes") != max_bytes or not self.defer_commit or accept_results is None):
+                raise ValueError("Retrieval requires a matching durable document authorization")
+        elif document_count >= int(case.research_budget.get("max_documents", 0)):
             raise ValueError("Research case document budget is exhausted")
 
         canonical_url, _ = canonicalize_public_url(candidate.canonical_url)
         assert_nonlocal_url(canonical_url)
         document = await provider.retrieve(canonical_url, max_bytes=max_bytes)
+        if accept_results is not None:
+            accept_results()
         final_url, _ = canonicalize_public_url(document.url)
         assert_nonlocal_url(final_url)
         if len(document.content) == 0 or len(document.content) > max_bytes:
@@ -199,6 +210,7 @@ class CandidateRetrievalService:
                 "access_decided_by": candidate.access_decided_by,
             },
             raw_artifact_id=artifact.id,
+            commit=not self.defer_commit,
         )
 
 

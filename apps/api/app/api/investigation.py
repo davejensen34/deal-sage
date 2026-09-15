@@ -1,5 +1,6 @@
 """Case-local access judgments and bounded reads; never external execution."""
 from typing import Literal
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -8,12 +9,47 @@ from sqlalchemy.orm import Session
 
 from app.auth.service import Identity, current_identity, require_permission
 from app.core.database import get_db
-from app.domain.models import CaseEvidence, EvidenceClaim, ResearchCase, SourceCandidate
+from app.core.config import Settings, get_settings
+from app.domain.models import CaseEvidence, EvidenceClaim, ResearchCase, SourceCandidate, RetrievalAttempt
+from app.research import retrieval_attempts
 from app.research.discovery_runs import utc
 from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
+
+
+class RetrieveDocument(BaseModel):
+    request_key: UUID
+    expected_url: str = Field(max_length=1000)
+
+
+@router.get("/{case_id}/investigation/retrievals")
+def retrievals(case_id: int, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)):
+    require_case(db, case_id)
+    rows=db.scalars(select(RetrievalAttempt).where(RetrievalAttempt.case_id==case_id).order_by(RetrievalAttempt.id)).all()
+    return {"policy":retrieval_attempts.POLICY,"provider":retrieval_attempts.provider_key(settings),
+            "attempts":[retrieval_attempts.view(row) for row in rows]}
+
+
+@router.post("/{case_id}/investigation/sources/{source_id}/retrieve")
+async def retrieve(case_id: int, source_id: int, payload: RetrieveDocument, db: Session = Depends(get_db),
+                   settings: Settings = Depends(get_settings), identity: Identity = Depends(require_permission("operate_sources"))):
+    try:
+        return await retrieval_attempts.execute(db,case_id,source_id,settings,request_key=payload.request_key,
+            expected_url=payload.expected_url,actor=identity.display_name,user_id=identity.user_id)
+    except ValueError as exc:
+        db.rollback()
+        raise HTTPException(409,str(exc)) from exc
+
+
+@router.post("/{case_id}/investigation/retrievals/{attempt_id}/recover")
+def recover_retrieval(case_id: int, attempt_id: int, db: Session = Depends(get_db),
+                     identity: Identity = Depends(require_permission("operate_sources"))):
+    try:
+        return retrieval_attempts.recover(db,case_id,attempt_id,actor=identity.display_name,user_id=identity.user_id)
+    except ValueError as exc:
+        raise HTTPException(409,str(exc)) from exc
 
 
 def require_case(db, case_id):
