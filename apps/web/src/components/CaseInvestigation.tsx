@@ -9,6 +9,7 @@ type Page<T>={items:T[];has_next:boolean};
 type Source={id:number;url:string;publisher:string;source_type:string;access:string;reason:string|null;reviewer:string|null;reviewed_at:string|null;blocking_observations:string[]};
 type Evidence={id:number;url:string;publisher:string;classification:string;source_type:string;published_at:string|null;retrieved_at:string;content_hash:string;artifact_id:number|null;excerpt:string;excerpt_truncated:boolean};
 type Claim={id:number;subject:string;predicate:string;value:unknown;relationship:string|null;classification:string;status:string;authority:string;directness:string};
+type Comparison={evidence_id:number;publisher:string;url:string;relationship:string;rule:string;explanation:string};
 const words=(s:string)=>s.replaceAll('_',' ');
 const date=(s:string|null)=>s?new Date(s).toLocaleString():'Not reported';
 
@@ -54,12 +55,28 @@ function Claims({caseId,evidenceId}:{caseId:number;evidenceId:number}) {
 
 function EvidenceItem({item,caseId}:{item:Evidence;caseId:number}) {
   const [expanded,setExpanded]=useState(false);
+  const [comparing,setComparing]=useState(false);
   return <article className="investigation-item"><h3>Evidence {item.id} · {item.publisher}</h3><SourceLink url={item.url}/><p>{words(item.classification)} · {words(item.source_type)}</p>
     <p>Published (UTC date): {item.published_at?.slice(0,10)||'Not reported'}<br/>Retrieved: {date(item.retrieved_at)}</p>
     <p>Publication and retrieval dates do not establish the transition event date. Repeated coverage does not prove independent corroboration.</p>
     <details><summary>Retained excerpt and provenance</summary><blockquote>{item.excerpt||'No excerpt retained.'}</blockquote>{item.excerpt_truncated&&<p>Excerpt display limited to 2,000 characters.</p>}<p>SHA-256: <code>{item.content_hash}</code><br/>Raw artifact: {item.artifact_id?`#${item.artifact_id}`:'Not linked; legacy or manually supplied evidence'}</p></details>
     <button aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Hide':'Inspect'} claims for evidence {item.id}</button>{expanded&&<Claims caseId={caseId} evidenceId={item.id}/>}
+    <button aria-expanded={comparing} onClick={()=>setComparing(!comparing)}>{comparing?'Hide':'Compare'} source independence for evidence {item.id}</button>{comparing&&<Comparisons caseId={caseId} evidenceId={item.id}/>}
   </article>;
+}
+
+function Comparisons({caseId,evidenceId}:{caseId:number;evidenceId:number}) {
+  const [page,setPage]=useState(1);
+  const result=useQuery({queryKey:['case-investigation',caseId,'comparisons',evidenceId,page],queryFn:()=>api<Page<Comparison>>(`/research/cases/${caseId}/investigation/evidence/${evidenceId}/comparisons?page=${page}`)});
+  const labels:Record<string,string>={duplicate:'Duplicate content',syndicated:'Shared original story',same_publisher:'Same recorded publisher',independent:'No shared provenance observed',unknown:'Independence unknown'};
+  return <section aria-label={`Source independence for evidence ${evidenceId}`}><h4>Source independence</h4>
+    <p>Deterministic comparison of retained provenance, not a human verification. Multiple websites may repeat one account. These comparisons do not establish truth, ownership or sale intent, and do not change scores.</p>
+    {result.isLoading?<p>Loading comparisons…</p>:result.isError?<p role="alert">Comparisons unavailable. <button onClick={()=>result.refetch()}>Try again</button></p>:<>
+      {!result.data?.items.length&&<p>{page===1?"No other retained evidence to compare in this case. Independence is unknown.":"No comparisons on this page. Return to the previous page."}</p>}
+      {result.data?.items.map(row=><article key={row.evidence_id}><h4>Compared with evidence {row.evidence_id} · {row.publisher||'Publisher not recorded'}</h4><SourceLink url={row.url}/><p><b>{labels[row.relationship]||'Independence unknown'}</b></p><p>{row.explanation}</p></article>)}
+      <Pages label={`comparisons for evidence ${evidenceId}`} page={page} next={!!result.data?.has_next} setPage={setPage}/>
+    </>}
+  </section>;
 }
 
 export function CaseInvestigation({caseId}:{caseId:number}) {

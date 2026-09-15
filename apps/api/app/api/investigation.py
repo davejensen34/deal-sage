@@ -1,4 +1,4 @@
-"""Case-local access judgments and bounded reads; never external execution."""
+"""Case-local investigation reads, access judgments and authorized retrieval."""
 from typing import Literal
 from uuid import UUID
 
@@ -15,6 +15,7 @@ from app.research import retrieval_attempts
 from app.research.discovery_runs import utc
 from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
+from app.research.identity_resolution import evidence_relationship, normalize_identity
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
 
@@ -124,3 +125,36 @@ def claims(case_id: int, evidence_id: int, page: int = Query(1, ge=1), db: Sessi
         "value": row.object_value, "relationship": row.relationship_semantics,
         "classification": row.classification, "status": row.status,
         "authority": row.source_authority, "directness": row.directness} for row in rows[:20]], "has_next": len(rows)>20}
+
+
+PAIR_EXPLANATIONS = {
+    "same_content_hash": "The retained content hashes match. Repeated content is not additional corroboration.",
+    "shared_syndication_provenance": "Both records identify the same syndication group or original story.",
+    "normalized_publisher_match": "The recorded publisher names match after normalization.",
+    "no_shared_provenance_observed": "No shared content, publisher or syndication provenance was observed. Independent reporting has not been verified.",
+    "missing_provenance": "Required content or publisher provenance is missing; independence is unknown.",
+}
+
+
+@router.get("/{case_id}/investigation/evidence/{evidence_id}/comparisons")
+def comparisons(case_id: int, evidence_id: int, page: int = Query(1, ge=1), db: Session = Depends(get_db)):
+    item = db.get(CaseEvidence, evidence_id)
+    if item is None or item.case_id != case_id:
+        raise HTTPException(404, "Evidence not found in this case")
+    rows = db.scalars(select(CaseEvidence).where(CaseEvidence.case_id == case_id,
+        CaseEvidence.id != evidence_id).order_by(CaseEvidence.id).offset((page-1)*20).limit(21)).all()
+    results = []
+    for other in rows[:20]:
+        relationship, basis = evidence_relationship(item, other)
+        rule = basis["rule"]
+        # Legacy incomplete imports must not turn absent values into corroboration.
+        # This read-only presentation does not alter stored relationships or scores.
+        missing_hash = not item.content_hash.strip() or not other.content_hash.strip()
+        missing_publisher = not normalize_identity(item.publisher) or not normalize_identity(other.publisher)
+        if ((relationship == "duplicate" and missing_hash)
+            or (relationship == "same_publisher" and missing_publisher)
+            or (relationship == "independent" and (missing_hash or missing_publisher))):
+            relationship, rule = "unknown", "missing_provenance"
+        results.append({"evidence_id": other.id, "publisher": other.publisher, "url": other.canonical_url,
+            "relationship": relationship, "rule": rule, "explanation": PAIR_EXPLANATIONS[rule]})
+    return {"items": results, "has_next": len(rows)>20, "method": "evidence-pair-inspection-v1"}

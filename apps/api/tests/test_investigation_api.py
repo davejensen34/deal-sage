@@ -76,3 +76,77 @@ def test_evidence_and_claims_are_case_local_bounded_and_provenance_only(client, 
     assert len(client.get(base+f"/evidence/{evidence.id}/claims?page=2").json()["items"])==1
     assert client.get(f"/api/research/cases/{other.id}/investigation/evidence/{evidence.id}/claims").status_code==404
     assert client.get(base+"/sources?page=0").status_code==422
+
+
+def comparison_evidence(db, case_id, publisher="Fictional publisher", content_hash="a"*64, provenance=None):
+    row = CaseEvidence(case_id=case_id, source_mode="case_specific_research",
+        canonical_url="https://example.test/fictional", publisher=publisher, source_type="other",
+        content_hash=content_hash, classification="source_fact", provenance=provenance or {})
+    db.add(row)
+    db.commit()
+    return row
+
+
+def test_comparisons_explain_existing_rules_without_writes_or_private_metadata(client, override_db_session):
+    from app.domain.models import EvidenceRelationship
+    db = override_db_session
+    case, _ = setup_case(db)
+    first = comparison_evidence(db, case.id, provenance={"syndication_group":"private-marker"})
+    peers = [comparison_evidence(db, case.id, publisher="Copy"),
+        comparison_evidence(db, case.id, publisher="Syndicator", content_hash="b"*64,
+            provenance={"syndication_group":"private-marker", "request_metadata":"never expose"}),
+        comparison_evidence(db, case.id, publisher="FICTIONAL PUBLISHER", content_hash="c"*64),
+        comparison_evidence(db, case.id, publisher="Other publisher", content_hash="d"*64),
+        comparison_evidence(db, case.id, publisher="", content_hash="e"*64)]
+    counts = [db.scalar(select(func.count(model.id))) for model in (EvidenceRelationship, AuditEvent)]
+    url = f"/api/research/cases/{case.id}/investigation/evidence/{first.id}/comparisons"
+    result = client.get(url)
+    assert result.status_code == 200
+    body = result.json()
+    assert [r["evidence_id"] for r in body["items"]] == [p.id for p in peers]
+    assert [r["relationship"] for r in body["items"]] == ["duplicate","syndicated","same_publisher","independent","unknown"]
+    assert "not been verified" in body["items"][3]["explanation"]
+    assert "private-marker" not in result.text and "request_metadata" not in result.text
+    assert client.get(url).json() == body
+    assert counts == [db.scalar(select(func.count(model.id))) for model in (EvidenceRelationship, AuditEvent)]
+
+
+def test_comparisons_are_paginated_case_local_and_authenticated(client, override_db_session):
+    from fastapi import HTTPException
+    db = override_db_session
+    case, _ = setup_case(db)
+    other, _ = setup_case(db)
+    first = comparison_evidence(db, case.id)
+    other_evidence = comparison_evidence(db, other.id)
+    base = f"/api/research/cases/{case.id}/investigation/evidence"
+    url = base + f"/{first.id}/comparisons"
+    assert client.get(url).json()["items"] == []
+    for n in range(21):
+        comparison_evidence(db, case.id, content_hash=f"{n:064x}")
+    body = client.get(url).json()
+    assert len(body["items"]) == 20 and body["has_next"]
+    tail = client.get(url+"?page=2").json()
+    assert len(tail["items"]) == 1 and not tail["has_next"]
+    assert tail["items"][0]["evidence_id"] not in [r["evidence_id"] for r in body["items"]]
+    assert client.get(base+f"/{other_evidence.id}/comparisons").status_code == 404
+    assert client.get(url+"?page=0").status_code == 422
+    app.dependency_overrides[current_identity] = lambda: Identity(None,"demo","test",None,"Viewer",role="viewer")
+    try:
+        assert client.get(url).status_code == 200
+        def unauthenticated():
+            raise HTTPException(401,"Sign in required")
+        app.dependency_overrides[current_identity] = unauthenticated
+        assert client.get(url).status_code == 401
+    finally:
+        app.dependency_overrides.pop(current_identity,None)
+
+
+def test_missing_hashes_and_publishers_do_not_establish_duplicate_or_independent_sources(client, override_db_session):
+    db = override_db_session
+    case, _ = setup_case(db)
+    first = comparison_evidence(db, case.id, publisher="", content_hash="")
+    comparison_evidence(db, case.id, publisher="", content_hash="")
+    comparison_evidence(db, case.id, publisher="", content_hash="f"*64)
+    comparison_evidence(db, case.id, publisher="Known", content_hash="e"*64)
+    body = client.get(f"/api/research/cases/{case.id}/investigation/evidence/{first.id}/comparisons").json()
+    assert all(row["relationship"] == "unknown" for row in body["items"])
