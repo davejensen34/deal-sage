@@ -38,6 +38,7 @@ class ModelProposalService:
         latency_ms: int | None = None,
         cost_cents: int = 0,
         error_class: str | None = None,
+        commit: bool = True,
     ) -> ModelProposal:
         if self.db.get(ResearchCase, case_id) is None:
             raise ValueError("Model proposal requires an existing research case")
@@ -88,7 +89,11 @@ class ModelProposalService:
             error_class=error_class.strip() if error_class else None,
         )
         self.db.add(proposal)
-        self.db.commit()
+        if commit:
+            self.db.commit()
+        else:
+            # Durable executors publish authorization outcome and proposal together.
+            self.db.flush()
         self.db.refresh(proposal)
         return proposal
 

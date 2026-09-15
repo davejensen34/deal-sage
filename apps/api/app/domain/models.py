@@ -488,6 +488,24 @@ class ClaimContradiction(TimestampMixin, Base):
     )
 
 
+class ExtractionAttempt(TimestampMixin, Base):
+    """One frozen model authorization, retained even after an unknown outcome."""
+    __tablename__ = "extraction_attempts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    evidence_id: Mapped[int] = mapped_column(ForeignKey("case_evidence.id"))
+    actor: Mapped[str] = mapped_column(String(160))
+    actor_key: Mapped[str] = mapped_column(String(100))
+    plan: Mapped[dict[str, Any]] = mapped_column(JSON)
+    plan_hash: Mapped[str] = mapped_column(String(64))
+    reserved_cents: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(30), default="running")
+    recovery_after: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    proposal_id: Mapped[int | None] = mapped_column(ForeignKey("model_proposals.id"))
+    error_code: Mapped[str | None] = mapped_column(String(60))
+
+
 class EvidenceRelationship(TimestampMixin, Base):
     """Deterministic independence classification for a pair of evidence items."""
     __tablename__ = "evidence_relationships"

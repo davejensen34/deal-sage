@@ -16,8 +16,53 @@ from app.research.discovery_runs import utc
 from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
+from app.research import extraction_attempts
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
+
+
+class ExecuteExtraction(BaseModel):
+    request_key: UUID
+    expected_hash: str = Field(pattern="^[0-9a-f]{64}$")
+
+
+@router.get("/{case_id}/investigation/evidence/{evidence_id}/extraction-preview")
+def extraction_preview(case_id: int, evidence_id: int, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)):
+    try:
+        return extraction_attempts.preview(db, case_id, evidence_id, settings)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+@router.get("/{case_id}/investigation/extractions")
+def extractions(case_id: int, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)):
+    try:
+        return extraction_attempts.history(db, case_id, settings)
+    except ValueError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.post("/{case_id}/investigation/evidence/{evidence_id}/extract")
+async def extract(case_id: int, evidence_id: int, payload: ExecuteExtraction,
+                  db: Session = Depends(get_db), settings: Settings = Depends(get_settings),
+                  identity: Identity = Depends(require_permission("execute_ai"))):
+    try:
+        return await extraction_attempts.execute(db, case_id, evidence_id, settings,
+            request_key=payload.request_key, expected_hash=payload.expected_hash,
+            actor=identity.display_name, actor_key=extraction_attempts.digest([identity.provider,identity.subject]),
+            user_id=identity.user_id)
+    except ValueError as exc:
+        db.rollback()
+        raise HTTPException(409, str(exc)) from exc
+
+
+@router.post("/{case_id}/investigation/extractions/{attempt_id}/recover")
+def recover_extraction(case_id: int, attempt_id: int, db: Session = Depends(get_db),
+                       identity: Identity = Depends(require_permission("execute_ai"))):
+    try:
+        return extraction_attempts.recover(db,case_id,attempt_id,actor=identity.display_name,user_id=identity.user_id)
+    except ValueError as exc:
+        raise HTTPException(409,str(exc)) from exc
 
 
 class RetrieveDocument(BaseModel):
