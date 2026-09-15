@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 from app.domain.models import (CaseDecision, ResearchCase, DiscoveryAttempt,
                                FollowupAttempt, ExtractionAttempt)
 from app.research.case_decisions import view
+from app.services.research_cost_coverage import research_cost_coverage
 
 
 def case_workflow_metrics(db, page=1):
@@ -41,7 +42,7 @@ def case_workflow_metrics(db, page=1):
     return {'method':'case-workflow-measures-v1','total_cases':total,
         'cases_with_decisions':len(rows),'cases_without_decisions':total-len(rows),
         'decisions':dict(sorted(Counter(r.content['outcome'] for r in rows).items())),
-        'purposes':purposes,'reservations':reservations,
+        'purposes':purposes,'reservations':reservations,'cost_coverage':research_cost_coverage(db),
         'items':[view(r) for r in rows[(page-1)*10:page*10]],'has_next':len(rows)>page*10,
         'measurement_scope':'Latest shared decision per case; all retained cases, not a selected evaluation cohort.',
         'cost_scope':'Retained discovery, follow-up and extraction attempt reservations only. Includes failures and interruptions; excludes legacy research, retrieval, source refresh and infrastructure. Actual spend is not measured here.'}

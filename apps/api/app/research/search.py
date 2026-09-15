@@ -89,6 +89,11 @@ class SearchService:
         A durable caller may supply accept_results to acquire its run lock in
         the staging transaction; raising rejects a response whose lease ended.
         """
+        # Serialize policy renewal with query admission, including legacy callers.
+        # Once this transaction commits, the running query blocks renewal.
+        self.db.execute(update(ResearchCase).where(ResearchCase.id == case_id)
+                        .values(updated_at=ResearchCase.updated_at))
+        self.db.expire_all()
         case = self.db.get(ResearchCase, case_id)
         if case is None:
             raise ValueError("Research case does not exist")

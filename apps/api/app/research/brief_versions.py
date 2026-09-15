@@ -53,6 +53,7 @@ def build(db, case_id):
             'source_changed':any(a.plan['packet']['content_hash']!=e.content_hash or a.plan['packet']['excerpt']!=e.relevant_excerpt for e in evidence if e.id==a.evidence_id),
             'review_id':review.id if review else None})
     content={'method':VERSION,'case_id':case_id,'case_status':case.status,'source_brief':brief,'sources':sources,
+        'signal_intake_policy':case.signal_intake_policy,
         'transitions':transitions,'model_observations':model_rows,
         'model_scope':{'included':len(model_rows),'other_proposals':len(proposals)-len(model_rows)},
         'reviews':[{'id':d.id,'proposal_id':d.proposal_id,'analyst':d.analyst_name,'decision':d.decision,

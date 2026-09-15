@@ -30,6 +30,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 
 - 8.5 refresh acceptance: [Issue #184](https://github.com/davejensen34/deal-sage/issues/184) validates monitored follow-up through source review/retrieval/extraction, saved-version comparison, explicit reviewer feedback and manual reschedule. Positive/empty integrated regressions preserve history, budgets and unanswered questions across reopen and repeated requests. All 553 backend/API tests, 57 frontend tests and TypeScript/build pass; the fictional UI journey and desktop/390px comparison/reload passed. No live calls or migration. In-policy fictional refresh integration is validated; old-case policy renewal, complete cost coverage and actual 8.6 human gates remain open.
 
+- 8.5 engineering completion: Issue #186 completes M8.5 engineering with explicit audited date-window renewal and a non-additive inventory of retained cost ledgers and unknowns. All 559 backend/API tests, 59 frontend tests and TypeScript/build pass; fictional desktop/390px renewal, keyboard submission, reload/history and cost rendering passed. No live calls or migration ran. M8.6 remains open under #187 for the separately approved ten-lead cohort, actual human workflow/usefulness judgments and product closeout; the prepared protocol is in docs/research/milestone8-human-acceptance.md. Missing invoice/infrastructure costs remain unknown, not zero.
+
 ## Outcome
 
 A reviewer can start bounded discovery, inspect recent business-transition evidence, ask a targeted follow-up, record a reasoned decision and create a useful opportunity-development handoff **inside DealSage**, without a coding agent or local JSON exchange.
