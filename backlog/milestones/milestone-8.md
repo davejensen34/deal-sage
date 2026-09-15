@@ -17,6 +17,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 - 8.3 reviewer follow-up: [Issue #172](https://github.com/davejensen34/deal-sage/issues/172) adds explicit question/query plans, separately bounded search, retained frontier/step history and conservative recovery. All 530 backend/API tests, 44 frontend tests and build pass. The fictional discovery case completed follow-up search → source review → retrieval → no-observation extraction → saved cited brief in the UI; desktop/390px form inspected. No live calls or operational-corpus changes.
 - The basic fictional 8.1-to-8.3 engineering journey is complete; 8.4 reviewer decisions/handoffs is next, with 8.5–8.6 still pending. Existing model-proposed frontier execution and old-case date-policy renewal are not implemented by #172. The live cohort and cost envelope must be frozen before validation calls.
 
+- 8.4 first slice: [Issue #174](https://github.com/davejensen34/deal-sage/issues/174) adds version-linked reviewer workflow decisions, source selections, rationale/next action and append-only corrections with stale-submit protection. All 535 backend/API tests, 46 frontend tests and TypeScript/build pass; fictional save/correction/reload and desktop/390px rendering inspected. No live calls or operational-corpus changes. Development-brief creation, contact readiness and reviewed export remain open within 8.4.
+
 
 ## Outcome
 

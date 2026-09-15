@@ -1,3 +1,4 @@
+import {CaseDecisions} from '../components/CaseDecisions';
 import {CaseFollowups} from '../components/CaseFollowups';
 import {CaseInvestigation} from '../components/CaseInvestigation';
 import {CaseBriefVersions} from '../components/CaseBriefVersions';
@@ -59,6 +60,7 @@ export function ResearchCaseDetail() {
       {result.data.linked_business && <p>Linked entity: {result.data.linked_business.name}. Source-reported alternatives remain in the brief.</p>}
       {result.data.candidate_match_id && <p><Link to={`/candidates/${result.data.candidate_match_id}`}>Open linked review candidate</Link></p>}
       <CaseNarratives cases={[result.data]}/>
+      <CaseDecisions key={`decision-${result.data.id}`} caseId={result.data.id}/>
       <CaseFollowups key={`followup-${result.data.id}`} caseId={result.data.id}/>
       <CaseBriefVersions key={`brief-${result.data.id}`} caseId={result.data.id}/>
       <CaseInvestigation key={result.data.id} caseId={result.data.id}/>
