@@ -85,6 +85,10 @@ def preview(db, case_id, evidence_id, settings):
         'max_output_tokens':limits['max_output_tokens'],'store':False,
         'text':{'format':{'type':'json_schema','name':'dealsage_cited_extraction',
                         'schema':provider_safe_schema(SCHEMA),'strict':True}}}
+    if limits['provider']=='openai':
+        # Reasoning shares the output ceiling; freeze a small effort for literal
+        # extraction so the provider default cannot consume the whole budget.
+        request['reasoning']={'effort':'minimal'}
     # A UTF-8 byte ceiling conservatively bounds input tokens including schema.
     if len(json.dumps(request,ensure_ascii=False).encode())>limits['max_request_bytes']:
         raise ValueError('Retained packet exceeds the 24000-byte extraction ceiling')
