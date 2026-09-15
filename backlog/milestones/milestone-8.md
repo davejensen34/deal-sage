@@ -1,5 +1,9 @@
 # Milestone 8 — Reviewer Workbench and Opportunity Development
 
+## M8.6 live acquisition prepared for human review
+
+Issue #187 retains ten frozen version-1 briefs after the approved run: six searches, 19 document attempts, 13 extractions and $0.98 reserved. Nine model outputs completed; invalid/incomplete attempts remain. All ten leads derive from one Utah publisher, with semantic extraction errors and missing independent corroboration explicitly retained. Human judgments (0/10 at preparation) and five hands-on tasks remain open. Issues #189/#191 fixed observed excerpt and extraction failures through PRs #190/#192; all five CI jobs passed. [Acceptance results and instructions](../../docs/research/milestone8-acceptance-results.md). This is not milestone closure.
+
 Status: in_progress. The user approved activation September 15, 2026 after planning PR #155. GitHub milestone [13](https://github.com/davejensen34/deal-sage/milestone/13) tracks execution. Milestone 7 remains closed with its recorded quality limitations.
 
 ## Execution record

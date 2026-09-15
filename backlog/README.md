@@ -1,5 +1,7 @@
 # Product backlog
 
+Milestone 8 acceptance acquisition is prepared under #187: ten saved briefs, $0.98 reserved, actual human judgments and five workflow tasks pending. [Results and reviewer instructions](../docs/research/milestone8-acceptance-results.md). M8 remains active.
+
 This directory preserves roadmap sequencing, milestone outcomes, product risks, and work not yet ready for execution. GitHub Issues are the actionable engineering record; repository backlog files preserve the durable product context that should survive individual Issues and pull requests.
 
 Status vocabulary: `proposed`, `ready`, `in_progress`, `blocked`, `implemented`, `validated`, `deferred`.

@@ -1,6 +1,6 @@
 # Milestone 8 human acceptance protocol
 
-Status: prepared for approval; not executed. Issue #187 owns the final gate. Agent fixtures and prior Milestone 7 ratings are not this cohort.
+Status: approved September 15, 2026; live acquisition and ten saved review packets prepared. Actual human acceptance remains pending under Issue #187. See [the acquisition record and reviewer instructions](milestone8-acceptance-results.md). Agent fixtures and prior Milestone 7 ratings are not this cohort.
 
 ## Frozen selection and purpose
 
@@ -8,9 +8,9 @@ Purpose: useful public-business introduction research, not a claim a business is
 
 Retain all returned source links and their order. Group duplicate business/event leads without claiming independence. Select the first ten distinct business leads that have a retained permitted source and an inspectable recent event or announcement date within the window. Keep excluded/undated/no-match records and reasons in discovery order; do not substitute new leads after usefulness judgments. Fewer than ten eligible leads is an incomplete cohort, not a smaller successful denominator. No-match outcomes remain visible. Date eligibility is a source-supported assertion, never ownership proof.
 
-## Proposed bounded execution
+## Approved bounded execution
 
-Pending explicit user approval: maximum 12 search attempts across the six planned state/family queries (retries only within the frozen attempt allowance), 30 permitted document retrievals, 20 cited extraction attempts and an absolute $5 external-cost ceiling. Existing lower per-case, per-provider and pricing-validity limits remain binding. No silent envelope expansion, automated outbound contact, source restriction bypass or candidate promotion. Research uses separate evaluation data and never overwrites the retained operational corpus. Credential values must not appear in evidence, logs or commits.
+User approval: “approved for the acceptance gate.” Maximum 12 search attempts across the six planned state/family queries (retries only within the frozen attempt allowance), 30 permitted document retrievals, 20 cited extraction attempts and an absolute $5 external-cost ceiling. Existing lower per-case, per-provider and pricing-validity limits remain binding. No silent envelope expansion, automated outbound contact, source restriction bypass or candidate promotion. Research uses separate evaluation data and never overwrites the retained operational corpus. Credential values must not appear in evidence, logs or commits.
 
 Maintain a manifest of exact queries, run/case/source/evidence/version IDs and hashes, exclusions and attempts, recorded cost/usage, reservations and unknowns. Use conservative reservations against the envelope when actual cost is unavailable; do not report reservations as invoices. A source-access or extraction failure stays in the record; repair/retry only within the existing authorized bounds. Stop new calls when the envelope is exhausted.
 
