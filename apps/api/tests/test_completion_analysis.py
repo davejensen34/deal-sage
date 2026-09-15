@@ -57,3 +57,27 @@ async def test_stale_or_tampered_packet_never_spends(tmp_path):
     with pytest.raises(ValueError):
         await execute(budget, canonical_bytes(bundle), "M7-RECENT-1", client)
     assert client.calls == 0 and budget.read()["attempts"] == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('control', ['\x00', '\x1b', '\x7f', '\x85'])
+async def test_corrupted_model_names_are_not_persisted_or_silently_repaired(tmp_path, control):
+    class CorruptedClient(Client):
+        async def create(self, **request):
+            response = await super().create(**request)
+            payload = json.loads(response.output_text)
+            payload['unresolved_questions'] = ['Verify fictional O' + control + 'Brien']
+            response.output_text = json.dumps(payload)
+            return response
+    budget = ValidationBudget(tmp_path, PROTOCOL)
+    result = await execute(budget, canonical_bytes(prepare_snapshot(cohort())), 'M7-RECENT-1', CorruptedClient())
+    assert result['status'] == 'invalid'
+    assert result['diagnostic_codes'] == ['unsupported_text_control']
+    assert 'model_observation' not in result
+    assert 'Brien' not in (tmp_path/'result-001.json').read_text()
+    assert budget.read()['attempts'][0]['reserved_cents'] == 5
+
+
+def test_ordinary_punctuation_unicode_and_layout_are_preserved():
+    from scripts.milestone7_completion_analysis import has_text_controls
+    assert not has_text_controls({'summary': "O’Brien / O'Brien — café\nline\tcolumn\r\n", 'count': 1})

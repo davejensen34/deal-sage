@@ -1,6 +1,10 @@
 # Milestone 7 — Broader Transition Intelligence
 
-Status: in_progress. Approved September 11, 2026; GitHub milestone [12](https://github.com/davejensen34/deal-sage/milestone/12).
+Status: complete. Approved September 11, 2026; GitHub milestone [12](https://github.com/davejensen34/deal-sage/milestone/12).
+
+Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. No milestone is active. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. [Acceptance and quality outcome](../../docs/research/milestone7-closeout.md).
+
+### Historical checkpoints
 
 September 14 corrective-validation checkpoint: the user's $5 completion approval permits retries within one durable ledger. Twenty searches, 45 HTTP requests and six model attempts produced two recent review packets plus a date-verification lead, with zero promotions. Windows newline hashing, incomplete-search reference handling and relationship/fit contract guidance were corrected without changing historical results. All 471 backend/API tests, 24 frontend tests, TypeScript/build and desktop/narrow rendered checks passed. Estimated spend $0.34614475; $3.30 reserved, $1.70 remaining. New human review is 0/2 recorded, not a failed usefulness score; the previous 0/3 useful outcome remains. No Texas packet, registry corroboration, representative precision or financial attractiveness is claimed. [Source/attempt/hash record](../../docs/research/milestone7-completion-validation.md). Milestone closeout remains unfulfilled.
 

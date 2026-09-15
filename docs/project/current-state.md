@@ -2,7 +2,7 @@
 
 ## Milestone status
 
-Latest September 14 checkpoint: Issue #130 continued under the user's explicit $5 completion envelope, including corrective retries. Twenty searches, 45 HTTP requests and six analysis attempts produced two recent review packets plus one retained date-verification lead. Estimated spend is $0.34614475; $3.30 is reserved, leaving $1.70. Search truncation, Windows newline/hash drift and ambiguous model relationship labels were corrected while retaining every attempt. The latest observations preserve management changes without ownership support; no cases were promoted. The isolated real-source business-brief review is ready, with 0/2 human judgments recorded. The prior 0/3 useful outcome is unchanged. All 471 backend/API tests, 24 frontend tests, TypeScript/build and desktop/narrow rendered checks passed. Milestone 7 remains active; representative live quality, source sustainability and human value are not declared passed. See [the corrective validation record](../research/milestone7-completion-validation.md) for hashes, exclusions, remaining budget and local assets.
+Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. No milestone is active. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. See [the closeout record](../research/milestone7-closeout.md).
 
 ### Historical implementation and evaluation record
 
@@ -79,11 +79,17 @@ Candidate evidence summaries and case-linked model proposals are UI-exposed AI c
 
 ## Next
 
-Milestone 7 is active. Issue #130 remains open after the approved source preflight and observation-v3 execution. Human usefulness review is complete and negative (0/3 useful). Issue #144 recent-signal intake is implemented across application and frozen evaluation paths. Issue #145 business-focused briefs are implemented. The approved discovery attempt stopped after one response-validation failure with no retained candidates; safe future diagnostics are implemented. Next make a separately reviewed execution decision before any retry, then review actual publishers before retrieval and renewed human review; use `docs/research/milestone7-evaluation.md` for the retained judgment and remediation plan. All live approvals are exhausted; no further calls are authorized. Issue #92 remains a deferred OpenAI quality follow-up and does not authorize another paid run.
+No milestone is active. Await the user's next enhancement-definition instruction. Milestone 7 closes its approved implementation and evaluation scope with an explicit mixed outcome; calibrated recommendation quality and sustainable live source activation remain gated. Actual feedback on the retained review packages can still be imported without changing earlier results. The user's completion approval covered the corrective retries within the existing $5 ledger; historical exhausted one-shot approvals did not prohibit those calls. The completed run leaves $1.40 in reservation capacity, but no calls are scheduled. Issue #92 stays deferred.
 
 Repository documentation was reconciled in Issue #56 before beginning that version-two contract. `docs/README.md` now distinguishes living specifications from historical ADR, milestone, experiment, and validation records; the implementation and this file remain the final truth check when records disagree.
 
 ## Latest validation
+
+Milestone 7 closeout: 477 backend/API tests, 24 frontend tests, TypeScript and production build passed on Windows. The 64-case offline transition cohort passed; the additional real-source Texas review rendered at desktop and 390px width without horizontal overflow. All 79 completion-ledger attempts and five pinned historical artifact hashes verified. See the closeout record above for live outcomes and unmeasured quality gates.
+
+### Historical validation checkpoints
+
+The records below retain the status and approvals at each earlier checkpoint. They do not override the completed milestone status, current authorization history or final validation totals above.
 
 Issue #130 actual human review now records a failed value gate: 3/3 packets reviewed, 0/3 useful, all three not useful, no deferrals, and 240 seconds of self-reported review time (including a recorded zero). Time saved and promotion precision remain unavailable. The feedback identifies stale signals and review-heavy presentation rather than business insight. Source publication ages were 830/491/245 days at the frozen assessment date. Remediation is tracked in #144 (recent-signal intake before paid analysis) and #145 (business-focused lead briefs). No new live calls ran and Milestone 7 remains open.
 

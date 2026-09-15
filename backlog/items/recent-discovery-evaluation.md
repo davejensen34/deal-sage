@@ -1,5 +1,9 @@
 # Recent discovery evaluation
 
+Status: validated implementation and completed evaluation, with explicit unmet product-quality gates. Issue [#130](https://github.com/davejensen34/deal-sage/issues/130), Milestone 7. Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. No milestone is active. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. [Final record](../../docs/research/milestone7-closeout.md).
+
+## Historical execution checkpoints
+
 Issue [#130](https://github.com/davejensen34/deal-sage/issues/130), Milestone 7. Status: corrective validation completed through two recent review packets; awaiting actual human usefulness judgment and remaining quality decision. The approved $5 completion envelope includes retries: $3.30 reserved, $0.34614475 estimated spend, $1.70 remaining. No promotion or milestone closeout. [Current validation record](../../docs/research/milestone7-completion-validation.md).
 
 The earlier one-shot execution history below is preserved; its exhausted approval does not cancel the later explicit completion envelope.

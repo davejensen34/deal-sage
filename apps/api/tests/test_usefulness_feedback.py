@@ -37,10 +37,11 @@ def test_no_feedback_is_missing_not_negative(package):
     assert not result["milestone_complete"]
 
 
-def test_corrective_cohort_remains_separate_from_prior_feedback(package, monkeypatch):
+@pytest.mark.parametrize('package_constant', ['COMPLETION_PACKAGE_SHA256', 'TEXAS_PACKAGE_SHA256'])
+def test_corrective_cohort_remains_separate_from_prior_feedback(package, monkeypatch, package_constant):
     recent = canonical_bytes({"items": [{"slot": "NEW"}], "result_sha256": "c"*64, "bundle_sha256": "d"*64})
     digest = sha256(recent).hexdigest()
-    monkeypatch.setattr(module, "COMPLETION_PACKAGE_SHA256", digest)
+    monkeypatch.setattr(module, package_constant, digest)
     result = module.summarize_feedback(recent, [])
     assert result["package_sha256"] == digest
     assert result["packet_review_coverage"]["denominator"] == 1
