@@ -29,3 +29,7 @@ Live execution currently reuses the reviewed M7 `gpt-5-mini-2025-08-07` envelope
 Apply the normal migration workflow before deploying: Alembic revision `c158a0b1d832` follows `b144f0a9c721` and adds the three tables. Its downgrade refuses to discard any retained profile/run/attempt history. Follow [pilot recovery](../deployment/pilot-recovery.md) for a real database; the validation database is fictional and separate from the research corpus.
 
 Validation includes permission checks, immutable defaults, exact preview/idempotency, empty results, failed reservations/retries, concurrent claims, late-response recovery, record/time ceilings, pricing expiry/configuration drift, database reopen/retry and destructive-downgrade refusal. Browser checks cover preview, save, fictional execution, reload/history and unverified case clues at desktop and 390px. Live source access, evidence retrieval and investigation are the next 8.3 increment; M8 human quality gates remain open.
+
+## Reviewer follow-up reuse
+
+Issue #172 reuses the durable attempt engine for separately authorized [case follow-up searches](followup-search.md). Dedicated follow-up tables preserve the original one-discovery-run-per-case contract and frozen budgets. Finding links never resolves the follow-up question.

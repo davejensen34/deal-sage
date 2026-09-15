@@ -82,6 +82,7 @@ class SearchService:
         *,
         max_results: int = 10,
         accept_results=None,
+        authorize_query=None,
     ) -> list[SourceCandidate]:
         """Persist a query before I/O, then stage its results atomically.
 
@@ -104,7 +105,11 @@ class SearchService:
         used_queries = self.db.scalar(
             select(func.count(ResearchQuery.id)).where(ResearchQuery.case_id == case_id)
         ) or 0
-        if used_queries >= int(case.research_budget.get("max_queries", 0)):
+        # A durable follow-up may carry its own committed authorization. Original
+        # discovery budgets remain frozen; the callback must verify the active lease.
+        if authorize_query is not None:
+            authorize_query()
+        elif used_queries >= int(case.research_budget.get("max_queries", 0)):
             raise ValueError("Research case query budget is exhausted")
 
         query = ResearchQuery(

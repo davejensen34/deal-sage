@@ -69,6 +69,39 @@ class DiscoveryAttempt(TimestampMixin, Base):
     error_code: Mapped[str | None] = mapped_column(String(60))
 
 
+class FollowupRun(TimestampMixin, Base):
+    __tablename__ = "followup_runs"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    frontier_id: Mapped[int] = mapped_column(ForeignKey("research_frontier_items.id"), unique=True)
+    actor_key: Mapped[str] = mapped_column(String(64))
+    plan: Mapped[dict[str, Any]] = mapped_column(JSON)
+    plan_hash: Mapped[str] = mapped_column(String(64))
+    actor: Mapped[str] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(30), default="ready")
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    next_slot: Mapped[int] = mapped_column(Integer, default=0)
+    reserved_cents: Mapped[int] = mapped_column(Integer, default=0)
+    deadline_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class FollowupAttempt(TimestampMixin, Base):
+    __tablename__ = "followup_attempts"
+    __table_args__ = (UniqueConstraint("run_id", "request_key"),)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("followup_runs.id"), index=True)
+    request_key: Mapped[str] = mapped_column(String(36))
+    step_id: Mapped[int] = mapped_column(ForeignKey("research_steps.id"), unique=True)
+    slot: Mapped[int] = mapped_column(Integer)
+    actor: Mapped[str] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(30), default="running")
+    reserved_cents: Mapped[int] = mapped_column(Integer)
+    recovery_after: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    result_count: Mapped[int | None] = mapped_column(Integer)
+    error_code: Mapped[str | None] = mapped_column(String(60))
+
+
 class Business(TimestampMixin, Base):
     __tablename__ = "businesses"
     id: Mapped[int] = mapped_column(primary_key=True)
