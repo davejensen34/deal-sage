@@ -28,6 +28,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 
 - 8.5 workflow measures: [Issue #182](https://github.com/davejensen34/deal-sage/issues/182) adds optional version-linked usefulness/reason and self-reported review duration, latest-case coverage/decision/purpose measures and explicitly scoped attempt reservations in Overview. All 551 backend/API tests, 57 frontend tests and TypeScript/build pass; desktop/390px fictional feedback save/reload/history and overview were inspected. No migration or live calls. Full explicit-refresh validation and complete cost coverage remain within 8.5; 8.6 actual human quality gates remain open.
 
+- 8.5 refresh acceptance: [Issue #184](https://github.com/davejensen34/deal-sage/issues/184) validates monitored follow-up through source review/retrieval/extraction, saved-version comparison, explicit reviewer feedback and manual reschedule. Positive/empty integrated regressions preserve history, budgets and unanswered questions across reopen and repeated requests. All 553 backend/API tests, 57 frontend tests and TypeScript/build pass; the fictional UI journey and desktop/390px comparison/reload passed. No live calls or migration. In-policy fictional refresh integration is validated; old-case policy renewal, complete cost coverage and actual 8.6 human gates remain open.
+
 ## Outcome
 
 A reviewer can start bounded discovery, inspect recent business-transition evidence, ask a targeted follow-up, record a reasoned decision and create a useful opportunity-development handoff **inside DealSage**, without a coding agent or local JSON exchange.
