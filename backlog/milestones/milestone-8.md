@@ -24,6 +24,8 @@ Status: in_progress. The user approved activation September 15, 2026 after plann
 
 - 8.5 first slice: [Issue #178](https://github.com/davejensen34/deal-sage/issues/178) adds personal manual case monitoring with UTC review dates/questions, active/paused state, append-only reschedules and a paginated due queue in Watchlists. Unresolved cases require no promotion; no background calls or notifications start. All 544 backend/API tests, 52 frontend tests and build pass; desktop/390px save/queue/pause/history checks passed. Only the isolated demo received the additive migration. Explicit refresh/version comparisons and workflow measures remain within 8.5; 8.6 human quality gates remain open.
 
+- 8.5 saved comparisons: [Issue #180](https://github.com/davejensen34/deal-sage/issues/180) adds explicit before/after inspection of retained source, model, human and case-context records, preserving version metadata and hashes. All 547 backend/API tests, 54 frontend tests and TypeScript/build pass; desktop/390px fictional comparison, unchanged, stale-input clearing and missing-version checks passed. No migration or live calls. Review/usefulness/time/cost measures and full explicit-refresh workflow validation remain within 8.5; 8.6 actual human quality gates remain open.
+
 ## Outcome
 
 A reviewer can start bounded discovery, inspect recent business-transition evidence, ask a targeted follow-up, record a reasoned decision and create a useful opportunity-development handoff **inside DealSage**, without a coding agent or local JSON exchange.
