@@ -8,7 +8,7 @@ Priority order is research correctness and provenance; owner-discovery and ident
 
 ## Current product position
 
-- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is active following September 15 user approval, under GitHub milestone 13. Planning Issue #154/PR #155 established scope; Issue #156 delivers 8.1; Issue #158 delivers 8.2 discovery setup and durable bounded attempts. Issue #162 begins 8.3 with source-access review and retained evidence/claim inspection; Issue #164 adds bounded durable document retrieval; Issue #166 exposes read-only source-independence comparisons; extraction and insight updates remain next; decisions/handoffs, monitoring and actual human validation remain pending.
+- [Milestone 8 — Reviewer Workbench and Opportunity Development](milestones/milestone-8.md) is active following September 15 user approval, under GitHub milestone 13. Planning Issue #154/PR #155 established scope; Issue #156 delivers 8.1; Issue #158 delivers 8.2 discovery setup and durable bounded attempts. Issue #162 begins 8.3 with source-access review and retained evidence/claim inspection; Issue #164 adds bounded durable document retrieval; Issue #166 exposes read-only source-independence comparisons; Issue #168 adds durable cited extraction; frontier execution and versioned insight updates remain next; decisions/handoffs, monitoring and actual human validation remain pending.
 
 - Milestone 2.2 — Live Local Google Authentication is complete and validated.
 - Milestone 3 — Multi-State Data Acquisition and Curation is complete. Issue #32 validated the delivered bounded Utah BEL sample and closed the three-state acquisition milestone.

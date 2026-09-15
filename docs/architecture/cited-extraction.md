@@ -1,0 +1,33 @@
+# Durable cited extraction
+
+Issue #168 continues Milestone 8.3 with one retained excerpt per explicit operator authorization. This is extraction into an immutable model proposal, not a source claim, confidence assessment, analyst conclusion or whole-case brief update. Frontier execution and versioned case synthesis remain separate work.
+
+## Preview and execution
+
+Authenticated readers can request `GET /api/research/cases/{case_id}/investigation/evidence/{evidence_id}/extraction-preview`. The response freezes the exact excerpt, source content hash, evidence ID, publisher and publication timestamp, instructions, schema, provider request and limits. It includes no credentials, internal source provenance, storage key or unrelated source facts. The deterministic plan hash covers the entire payload. The full serialized request is limited to 24,000 UTF-8 bytes; empty or oversized excerpts are rejected rather than silently truncated.
+
+An identity with `execute_ai` permission submits its UUID and expected plan hash to `POST .../evidence/{evidence_id}/extract`. Case-row admission serialization checks the current open case, evidence, provider configuration and limits. The actor identity uses the provider/subject digest rather than a changeable display name. A reused key returns its original outcome only for the same actor, case, evidence and hash. A changed packet requires a new preview. Cross-case evidence and conflicting keys are rejected before provider execution.
+
+Each authorization freezes the plan and reserves capacity before I/O. The existing `ai_max_calls_per_case`, `ai_max_cost_cents_per_case`, `ai_max_output_tokens` and `ai_request_timeout_seconds` environment values remain upper bounds; timeout is additionally capped at 60 seconds. Previous model proposals count against admission, while linked proposals are not double-counted. Retained attempts count even when they fail or become unknown; their reserved cost is never refunded. If a returned estimate exceeds its reservation, the higher observed cost counts against later admission. This surface serializes its own calls; separate CLI evaluation protocols retain their own budgets and must not run concurrently against an active case.
+
+One optional provider is enabled: OpenAI with the existing pinned `gpt-5-mini-2025-08-07`. The SDK receives `max_retries=0`, no tools and `store=False`; no request can browse, retrieve or execute a follow-up. [Official model pricing](https://developers.openai.com/api/docs/models/gpt-5-mini) was checked September 15, 2026: $0.25 input / $2 output per million tokens. The frozen envelope expires September 22; expiration, a different model, disabled provider or absent credential blocks execution. A 24,000-byte request plus at most 4,000 output tokens yields a conservative 2-cent reservation under these rates. Reported usage is checked for integer consistency and limits. Missing usage stays unknown, with the reservation retained; cost is an estimate rather than an invoice. Live account/model availability was not validated by this increment.
+
+## Evidence and interpretation
+
+`case-extraction-v1` requires every proposed value to occur verbatim in an exact excerpt quotation. Field names include business identity/context, reported relationship, financial clues and separate event/announcement/planned-date fields. Source text is explicitly untrusted and cannot supply instructions. Observations retain `source_reported` or `tentative` as model labels; exact quotation validates only the citation, not semantic entailment or truth. Unknowns remain questions. A quoted executive role is not ownership, and a planned date is not a completed event. No model field changes authoritative evidence or scores.
+
+Extraction intentionally precedes freshness eligibility: an undated excerpt may contain the date needed for later assessment. It does not call `require_recent_signal`, accept the excerpt as recent, or change the existing downstream analysis gate or historical protocols. Existing source claims and frozen discovery budgets remain untouched.
+
+## Durable outcomes and recovery
+
+Alembic `e168a0b1d834` adds `extraction_attempts` after `d164a0b1d833`. The additive table stores authorizations, reservations, safe outcomes and model-proposal linkage. Downgrade refuses retained attempts. Deploy with the repository's migration-gated startup; only the isolated fictional database received this migration during local validation.
+
+Provider failures, incomplete/refused/invalid output and usage violations retain safe metadata without provider payloads or exception bodies. Cancellation leaves a running authorization. After timeout plus sixty seconds, an operator may `POST .../extractions/{id}/recover` to atomically retain an attributable unknown outcome without a call, replay or refund. A conditional SQL claim fences late responses; proposal insertion and terminal-attempt linkage commit together. Publication failure rolls back the proposal and retains a failed attempt. The existing proposal service gains opt-in deferred commit; default callers retain prior semantics.
+
+`GET .../investigation/extractions` exposes the bounded history, frozen excerpts and cited output. The UI previews costs and destination before execution, reuses the request key after a lost response, polls active outcomes and exposes explicit recovery. It labels model interpretation separately and renders source/provider text as text. A new attempt remains an explicit action within remaining capacity.
+
+## Validation
+
+The credential-free demo accepts only `example.test/fictional-discovery/` evidence and never treats a real URL as a fixture. Its exact named-business fixture returns a quoted fictional name and a tentative planned date; other demo excerpts return no observations with explicit unknowns. This demonstrates application behavior, not live extraction quality.
+
+Local validation: 516 backend/API tests and 41 frontend tests, TypeScript and production build (existing large-chunk warning). Regressions cover frozen packets, quotation/schema validation, provider failures, call/cost limits, usage overruns, cancellation, recovery fencing, atomic publication, migration/reopen/replay, permissions and cross-case isolation. Mock SDK assertions verify the exact request and disabled retries/tools/retention. Browser validation exercised the prior discovery/retrieval demo through extraction with no observations, plus a separate positive fictional excerpt with citations and unknown ownership/financials. Desktop/390px layout and persistence after reload were inspected. No live source/model calls or operational-corpus changes. The full 8.3 frontier and versioned-insight acceptance gate remains open.

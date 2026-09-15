@@ -14,6 +14,8 @@ Issue #164 subsequently adds [explicit durable document retrieval](retrieval-att
 
 ## Source independence inspection
 
+The subsequent [cited extraction increment](cited-extraction.md) (#168) adds explicit packet preview, bounded model execution, durable recovery and quoted model-proposal history to retained evidence. It does not promote model output into source claims or close the full 8.3 acceptance gate.
+
 Issue #166 adds authenticated `GET /api/research/cases/{case_id}/investigation/evidence/{evidence_id}/comparisons?page=1`. Each page compares the selected item against at most twenty other case-local evidence records, ordered by ID, including items beyond the visible evidence page. It reads the existing deterministic `evidence_relationship` classifier; it does not create `EvidenceRelationship` rows, audit judgments, scores or network requests. The endpoint rejects cross-case evidence IDs. Comparison details load only when the reviewer expands the control.
 
 The `evidence-pair-inspection-v1` presentation distinguishes identical hashes, shared syndication provenance, normalized publisher matches and no observed shared provenance. The last outcome is explicitly **not verified independent reporting**. Empty hashes/publisher names cannot establish duplication or independence; incomplete legacy imports display unknown when the selected rule lacks its required input. Valid identical hashes or shared story provenance can still establish dependence despite missing publisher names. Existing scoring rules and retained classifications remain unchanged.

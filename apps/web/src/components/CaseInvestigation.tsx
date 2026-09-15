@@ -4,6 +4,7 @@ import {api} from '../api/client';
 import {useIdentity} from './AuthGate';
 import './case-investigation.css';
 import {RetrieveSource,RetrievalHistory} from './CaseRetrieval';
+import {ExtractEvidence,ExtractionHistory} from './CaseExtraction';
 
 type Page<T>={items:T[];has_next:boolean};
 type Source={id:number;url:string;publisher:string;source_type:string;access:string;reason:string|null;reviewer:string|null;reviewed_at:string|null;blocking_observations:string[]};
@@ -62,6 +63,7 @@ function EvidenceItem({item,caseId}:{item:Evidence;caseId:number}) {
     <details><summary>Retained excerpt and provenance</summary><blockquote>{item.excerpt||'No excerpt retained.'}</blockquote>{item.excerpt_truncated&&<p>Excerpt display limited to 2,000 characters.</p>}<p>SHA-256: <code>{item.content_hash}</code><br/>Raw artifact: {item.artifact_id?`#${item.artifact_id}`:'Not linked; legacy or manually supplied evidence'}</p></details>
     <button aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Hide':'Inspect'} claims for evidence {item.id}</button>{expanded&&<Claims caseId={caseId} evidenceId={item.id}/>}
     <button aria-expanded={comparing} onClick={()=>setComparing(!comparing)}>{comparing?'Hide':'Compare'} source independence for evidence {item.id}</button>{comparing&&<Comparisons caseId={caseId} evidenceId={item.id}/>}
+    <ExtractEvidence caseId={caseId} evidenceId={item.id}/>
   </article>;
 }
 
@@ -91,5 +93,6 @@ export function CaseInvestigation({caseId}:{caseId:number}) {
       {!evidence.data?.items.length&&<p>No source documents retained yet. An operator can retrieve an access-approved source using the bounded controls above. Extraction and analysis follow separately.</p>}{evidence.data?.items.map(e=><EvidenceItem key={e.id} item={e} caseId={caseId}/>)}<Pages label="evidence" page={evidencePage} next={!!evidence.data?.has_next} setPage={setEvidencePage}/>
     </>}
     <RetrievalHistory caseId={caseId}/>
+    <ExtractionHistory caseId={caseId}/>
   </section>;
 }
