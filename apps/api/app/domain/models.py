@@ -15,6 +15,21 @@ class TimestampMixin:
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)
 
 
+class CaseMonitoring(TimestampMixin, Base):
+    """Append-only personal review dates; never an authorization for research."""
+
+    __tablename__ = 'case_monitoring'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey('research_cases.id'), index=True)
+    owner_key: Mapped[str] = mapped_column(String(64), index=True)
+    actor: Mapped[str] = mapped_column(String(160))
+    prior_id: Mapped[int | None] = mapped_column(ForeignKey('case_monitoring.id'), unique=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    due_on: Mapped[date] = mapped_column(Date, index=True)
+    state: Mapped[str] = mapped_column(String(20))
+    content: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+
 class RetrievalAttempt(TimestampMixin, Base):
     """One explicit document authorization and its durable outcome."""
     __tablename__ = "retrieval_attempts"

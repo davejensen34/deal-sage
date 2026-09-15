@@ -8,6 +8,7 @@ from app.api.routes import router
 from app.api.discovery import router as discovery_router
 from app.api.investigation import router as investigation_router
 from app.api.followups import router as followup_router
+from app.api.monitoring import router as monitoring_router
 from app.core.config import get_settings
 from app.core.database import SessionLocal
 from app.services.seed import seed_database
@@ -55,4 +56,5 @@ app.include_router(router)
 app.include_router(discovery_router)
 app.include_router(investigation_router)
 app.include_router(followup_router)
+app.include_router(monitoring_router)
 app.include_router(auth_router)
