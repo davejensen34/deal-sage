@@ -32,22 +32,33 @@ export function Discovery() {
   const [config,setConfig]=useState<Config|null>(null), [prepared,setPrepared]=useState<{plan:Plan;hash:string}|null>(null), [page,setPage]=useState(1);
   const key=useRef<string|null>(null);
   const value=config||defaults.data?.settings;
+  const requiredQueries=value ? value.states.length*value.signals.length : 0;
+  const selectionMissing=requiredQueries===0;
+  const capacityShort=!!value && value.max_queries<requiredQueries;
+  const scopeInvalid=selectionMissing||capacityShort;
   const history=useQuery({queryKey:['discovery-runs',page],queryFn:()=>api<{items:{id:number;case_id:number;objective:string;status:string}[];has_next:boolean}>(`/discovery/runs?page=${page}`)});
   const inspect=useMutation({mutationFn:()=>api<{plan:Plan;hash:string}>('/discovery/preview',{method:'POST',body:JSON.stringify(value)}),onSuccess:p=>{setPrepared(p);key.current=crypto.randomUUID()}});
   const create=useMutation({mutationFn:()=>api<Run>('/discovery/runs',{method:'POST',body:JSON.stringify({settings:value,profile_id:defaults.data?.profile_id,expected_hash:prepared!.hash,request_key:key.current})}),onSuccess:r=>{qc.invalidateQueries({queryKey:['reviewer-inbox']});navigate(`/discover/runs/${r.id}`)}});
   const save=useMutation({mutationFn:()=>api('/discovery/defaults',{method:'POST',body:JSON.stringify(value)}),onSuccess:()=>qc.invalidateQueries({queryKey:['discovery-defaults']})});
-  const change=(field:keyof Config,next:unknown)=>{setConfig({...value!,[field]:next});setPrepared(null);inspect.reset();create.reset()};
+  const change=(field:keyof Config,next:unknown)=>{setConfig({...value!,[field]:next});setPrepared(null);inspect.reset();create.reset();save.reset()};
   const errors=[inspect.error,create.error,save.error].filter(Boolean);
   return <div className="discovery-page"><div className="page-heading"><div><p className="eyebrow">Discover</p><h1>Find business transitions</h1><p>Define what you want to learn, review the scope, then save a bounded plan.</p></div></div>
-    {defaults.isError?<section role="alert" className="panel"><h2>Discovery defaults unavailable</h2><button onClick={()=>defaults.refetch()}>Try again</button></section>:!value?<p role="status">Loading saved defaults…</p>:<form className="panel discovery-form" onSubmit={e=>{e.preventDefault();inspect.mutate()}}>
+    {defaults.isError?<section role="alert" className="panel"><h2>Discovery defaults unavailable</h2><button onClick={()=>defaults.refetch()}>Try again</button></section>:!value?<p role="status">Loading saved defaults…</p>:<form className="panel discovery-form" onSubmit={e=>{e.preventDefault();if(!scopeInvalid)inspect.mutate()}}>
       <label>Starting point<select value={value.origin} disabled={!canPrepare} onChange={e=>change('origin',e.target.value)}><option value="signal_first">Find transition events</option><option value="business_first">Research a business</option><option value="hybrid">Explore a market / hybrid</option></select></label>
       <label>Research objective<input required minLength={10} maxLength={160} value={value.objective} onChange={e=>change('objective',e.target.value)}/></label>
       <label>Business name {value.origin==='business_first'?'(required)':'(optional)'}<input required={value.origin==='business_first'} maxLength={100} value={value.business_name} onChange={e=>change('business_name',e.target.value)}/></label>
       <fieldset><legend>States</legend>{['CO','UT','TX'].map(s=><label key={s}><input type="checkbox" checked={value.states.includes(s)} onChange={e=>change('states',e.target.checked?[...value.states,s]:value.states.filter(x=>x!==s))}/>{s}</label>)}</fieldset>
       <fieldset><legend>Transition families</legend>{families.map(s=><label key={s}><input type="checkbox" checked={value.signals.includes(s)} onChange={e=>change('signals',e.target.checked?[...value.signals,s]:value.signals.filter(x=>x!==s))}/>{words(s)}</label>)}</fieldset>
-      <div className="discovery-limits">{[['lookback_days','Lookback days',1,365],['max_records','Maximum source links',1,100],['max_queries','Total query attempts (including retries)',1,30],['max_cost_cents','Reservation ceiling (USD cents)',0,500],['max_elapsed_seconds','Elapsed-time ceiling (seconds)',60,3600]].map(([field,label,min,max])=><label key={field}>{label}<input type="number" required min={Number(min)} max={Number(max)} value={value[field as keyof Config] as number} onChange={e=>change(field as keyof Config,Number(e.target.value))}/></label>)}</div>
-      <p>Each selected state/family combination gets one query. Additional attempt capacity permits explicit retries. A source-link ceiling is not a promise of business matches.</p>
-      <div className="discovery-actions"><button className="primary" disabled={!canPrepare||inspect.isPending}>Preview plan</button><button type="button" disabled={!canOperate||save.isPending} onClick={()=>save.mutate()}>Save as workspace defaults</button></div>
+      <div className="discovery-limits">{[['lookback_days','Lookback days',1,365],['max_records','Maximum source links',1,100],['max_queries','Total query attempts (including retries)',1,30],['max_cost_cents','Reservation ceiling (USD cents)',0,500],['max_elapsed_seconds','Elapsed-time ceiling (seconds)',60,3600]].map(([field,label,min,max])=><label key={field}>{label}<input type="number" required min={Number(min)} max={Number(max)} aria-describedby={field==='max_queries'?'discovery-query-capacity':undefined} aria-invalid={field==='max_queries'&&capacityShort||undefined} value={value[field as keyof Config] as number} onChange={e=>change(field as keyof Config,Number(e.target.value))}/></label>)}</div>
+      <section aria-live="polite" aria-atomic="true" id="discovery-query-capacity">
+        <p><strong>{value.states.length} {value.states.length===1?'state':'states'} × {value.signals.length} transition {value.signals.length===1?'family':'families'} = {requiredQueries} planned {requiredQueries===1?'query':'queries'}.</strong></p>
+        {selectionMissing?<p>Select at least one state and one transition family to prepare a plan.</p>:capacityShort?<>
+          <p>Your selections need {requiredQueries} query attempts; the current limit is {value.max_queries}. Increase the attempt limit or select fewer states or families.</p>
+          <button type="button" disabled={!canPrepare} onClick={()=>change('max_queries',requiredQueries)}>Set attempt limit to {requiredQueries}</button>
+        </>:<p>{value.max_queries-requiredQueries} additional {value.max_queries-requiredQueries===1?'attempt':'attempts'} available for retries.</p>}
+        <p>Changing the attempt limit does not change your reservation ceiling or run a search. The preview shows provider costs; execution may stop earlier at your cost, time or source-link limit.</p>
+      </section>
+      <div className="discovery-actions"><button className="primary" disabled={!canPrepare||inspect.isPending||scopeInvalid}>Preview plan</button><button type="button" disabled={!canOperate||save.isPending||scopeInvalid} onClick={()=>{if(!scopeInvalid)save.mutate()}}>Save as workspace defaults</button></div>
       {save.isSuccess&&<p role="status">Saved a new defaults version. Existing runs are unchanged.</p>}
     </form>}
     {errors.map((e,i)=><p role="alert" key={i}>{e!.message}</p>)}
