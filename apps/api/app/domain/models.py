@@ -488,6 +488,21 @@ class ClaimContradiction(TimestampMixin, Base):
     )
 
 
+class CaseBriefVersion(TimestampMixin, Base):
+    """Immutable reviewer-requested snapshot; never a new research judgment."""
+    __tablename__ = "case_brief_versions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("research_cases.id"), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    actor: Mapped[str] = mapped_column(String(160))
+    actor_key: Mapped[str] = mapped_column(String(64))
+    content_hash: Mapped[str] = mapped_column(String(64))
+    content: Mapped[dict[str, Any]] = mapped_column(JSON)
+    changes: Mapped[dict[str, Any]] = mapped_column(JSON)
+    __table_args__ = (UniqueConstraint("case_id", "version", name="uq_case_brief_version"),)
+
+
 class ExtractionAttempt(TimestampMixin, Base):
     """One frozen model authorization, retained even after an unknown outcome."""
     __tablename__ = "extraction_attempts"

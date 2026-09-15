@@ -17,8 +17,50 @@ from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
 from app.research import extraction_attempts
+from app.research import brief_versions
+from app.domain.models import CaseBriefVersion
 
 router = APIRouter(prefix="/api/research/cases", dependencies=[Depends(current_identity)])
+
+
+class SaveBriefVersion(BaseModel):
+    request_key: UUID
+    expected_hash: str = Field(pattern="^[0-9a-f]{64}$")
+    expected_version: int = Field(ge=0)
+
+
+@router.get("/{case_id}/brief-preview")
+def brief_preview(case_id: int, db: Session = Depends(get_db)):
+    try:
+        return brief_versions.preview(db,case_id)
+    except ValueError as exc:
+        raise HTTPException(409,str(exc)) from exc
+
+
+@router.get("/{case_id}/brief-versions")
+def brief_history(case_id: int, page: int = Query(1,ge=1), db: Session = Depends(get_db)):
+    require_case(db,case_id)
+    rows=db.scalars(select(CaseBriefVersion).where(CaseBriefVersion.case_id==case_id)
+        .order_by(CaseBriefVersion.version.desc()).offset((page-1)*10).limit(11)).all()
+    return {"items":[brief_versions.view(row,False) for row in rows[:10]],"has_next":len(rows)>10}
+
+
+@router.get("/{case_id}/brief-versions/{version}")
+def brief_version(case_id: int, version: int, db: Session = Depends(get_db)):
+    row=db.scalar(select(CaseBriefVersion).where(CaseBriefVersion.case_id==case_id,CaseBriefVersion.version==version))
+    if row is None: raise HTTPException(404,"Brief version not found in this case")
+    return brief_versions.view(row)
+
+
+@router.post("/{case_id}/brief-versions")
+def save_brief_version(case_id: int, payload: SaveBriefVersion, db: Session = Depends(get_db),
+                      identity: Identity = Depends(require_permission("review"))):
+    try:
+        return brief_versions.save(db,case_id,request_key=payload.request_key,expected_hash=payload.expected_hash,
+            expected_version=payload.expected_version,actor=identity.display_name,
+            actor_key=extraction_attempts.digest([identity.provider,identity.subject]),user_id=identity.user_id)
+    except ValueError as exc:
+        db.rollback();raise HTTPException(409,str(exc)) from exc
 
 
 class ExecuteExtraction(BaseModel):
