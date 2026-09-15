@@ -40,3 +40,26 @@ it('retries a lost transport response with the same attempt key and revision',as
   expect(bodies[0]).toBe(bodies[1]);
   expect(JSON.parse(bodies[0]).expected_revision).toBe(0);
 });
+
+it('explains the reported two-state six-family scope and adjusts attempts only on request',async()=>{
+  const selected={...config,origin:'hybrid',states:['CO','TX'],signals:['possible_death','retirement','succession','ownership_change','founder_exit','restructuring'],lookback_days:30,max_records:50};
+  const fetcher=vi.fn(async(url:string)=>url.endsWith('/defaults')?response({profile_id:null,settings:selected}):url.endsWith('/preview')?response({plan:{...plan,settings:{...selected,max_queries:12}},hash:'b'.repeat(64)}):response({items:[],has_next:false}));
+  vi.stubGlobal('fetch',fetcher);show();
+  expect(await screen.findByText('2 states × 6 transition families = 12 planned queries.')).toBeVisible();
+  expect(screen.getByRole('button',{name:'Preview plan'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'Save as workspace defaults'})).toBeDisabled();
+  expect(screen.getByLabelText('Total query attempts (including retries)')).toHaveValue(3);
+  fireEvent.click(screen.getByRole('button',{name:'Set attempt limit to 12'}));
+  expect(screen.getByLabelText('Total query attempts (including retries)')).toHaveValue(12);
+  expect(screen.getByLabelText('Reservation ceiling (USD cents)')).toHaveValue(100);
+  expect(screen.getByLabelText('Maximum source links')).toHaveValue(50);
+  expect(screen.getByRole('button',{name:'Preview plan'})).toBeEnabled();
+  expect(fetcher.mock.calls.some(([url])=>url.endsWith('/preview'))).toBe(false);
+  fireEvent.click(screen.getByRole('button',{name:'Preview plan'}));
+  await screen.findByRole('heading',{name:'Bounded discovery plan'});
+  fireEvent.click(screen.getByLabelText('CO'));
+  fireEvent.click(screen.getByLabelText('TX'));
+  expect(screen.getByText('Select at least one state and one transition family to prepare a plan.')).toBeVisible();
+  expect(screen.getByRole('button',{name:'Preview plan'})).toBeDisabled();
+  expect(screen.queryByRole('button',{name:'Save research plan'})).toBeNull();
+});
