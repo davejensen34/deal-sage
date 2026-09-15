@@ -3,6 +3,7 @@ import {useMutation,useQuery,useQueryClient} from '@tanstack/react-query';
 import {api} from '../api/client';
 import {useIdentity} from './AuthGate';
 import {BusinessBrief,type LeadBrief} from './BusinessBrief';
+import {BriefComparison} from './BriefComparison';
 
 type Changes=Record<string,{added:number[];removed:number[];changed:number[]}>;
 type Content={case_status:string;source_brief:LeadBrief;sources:{id:number;publisher:string;canonical_url:string;relevant_excerpt:string;content_hash:string;excerpt_truncated:boolean}[];
@@ -51,6 +52,7 @@ export function CaseBriefVersions({caseId}:{caseId:number}){
         <nav aria-label="Brief version pages"><button disabled={page===1} onClick={()=>setPage(page-1)}>Previous versions</button><span>Page {page}</span><button disabled={!history.data?.has_next} onClick={()=>setPage(page+1)}>Next versions</button></nav>
       </>}
       {selected!==null&&(detail.isLoading?<p>Loading saved version…</p>:detail.isError?<p role="alert">Saved version unavailable. <button onClick={()=>detail.refetch()}>Retry saved version</button></p>:detail.data&&<div><h3>Saved version {detail.data.version}</h3><p>Recorded by {detail.data.actor} · {new Date(detail.data.created_at).toLocaleString()}. Preview current inputs to check for newer information.</p><Delta changes={detail.data.changes}/><BriefContent content={detail.data.content}/></div>)}
+      <BriefComparison caseId={caseId}/>
     </>}
   </section>;
 }

@@ -17,7 +17,7 @@ from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
 from app.research import extraction_attempts
-from app.research import brief_versions
+from app.research import brief_versions, brief_comparisons
 from app.domain.models import CaseBriefVersion, CaseDecision, AuditEvent
 from app.research import case_decisions, development_briefs
 
@@ -28,6 +28,17 @@ class SaveBriefVersion(BaseModel):
     request_key: UUID
     expected_hash: str = Field(pattern="^[0-9a-f]{64}$")
     expected_version: int = Field(ge=0)
+
+
+@router.get('/{case_id}/brief-comparison')
+def compare_briefs(case_id: int, from_version: int = Query(ge=1), to_version: int = Query(ge=1),
+                   db: Session = Depends(get_db)):
+    try:
+        return brief_comparisons.compare(db, case_id, from_version, to_version)
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @router.get("/{case_id}/brief-preview")
