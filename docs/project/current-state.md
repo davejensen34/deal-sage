@@ -1,5 +1,9 @@
 # Current state
 
+## Milestone 8.6 acquisition complete; human review pending
+
+Issue #187 now has ten frozen, source-linked version-1 briefs in the isolated acceptance app. Six searches returned 30 links; 19 document attempts yielded 18 successes, and 13 extraction attempts yielded nine completed, three invalid and one incomplete outcome. Total reservations are $0.98 within $5. All ten selected leads derive from one Utah publisher; independent corroboration, representative coverage and human usefulness remain unvalidated. Mo’ Bettahs retains source evidence despite two invalid model attempts. Actual human feedback is 0/10 at preparation, and the five human tasks remain pending. See [the acceptance record and reviewer instructions](../research/milestone8-acceptance-results.md). M8 stays open.
+
 ## Milestone status
 
 Milestone 7 is complete as an implemented and evaluated research foundation, with the failed/unmeasured live quality outcomes explicitly retained. Milestone 8 is active following user approval on September 15, under GitHub milestone 13. The final completion run made 21 searches, 49 HTTP requests and nine model attempts; $3.60 was reserved and $0.3740345 estimated within the $5 ceiling. Three recent packets span Utah, Colorado and Texas, including a company-reported planned ownership transfer at The Goodman Corporation; Zayo remains a date-verification lead. No cases were promoted. The original human review remains 0/3 useful; newer review coverage is 0/2 and 0/1, with usefulness unmeasured. Representative precision, independent ownership/financial corroboration and sustainable unattended sources are not validated. All 477 backend/API tests, 24 frontend tests, TypeScript/build and rendered review checks passed. See [the closeout record](../research/milestone7-closeout.md).
@@ -8,7 +12,7 @@ Milestone 7 is complete as an implemented and evaluated research foundation, wit
 
 Issue #186 completes M8.5 engineering with explicit audited date-window renewal and a non-additive inventory of retained cost ledgers and unknowns. All 559 backend/API tests, 59 frontend tests and TypeScript/build pass; fictional desktop/390px renewal, keyboard submission, reload/history and cost rendering passed. No live calls or migration ran. M8.6 remains open under #187 for the separately approved ten-lead cohort, actual human workflow/usefulness judgments and product closeout; the prepared protocol is in docs/research/milestone8-human-acceptance.md. Missing invoice/infrastructure costs remain unknown, not zero.
 
-## Milestone 8.6 live acceptance underway
+## Milestone 8.6 initial acquisition and corrective fixes
 
 The user approved Issue #187's ten-lead/90-day evaluation on September 15, with up to 12 searches, 30 retrievals, 20 extractions and a $5 ceiling. Six frozen CO/UT/TX searches completed in an isolated OIDC-authenticated database: 30 unverified links and $0.72 reserved, with actual search spend unmeasured. Initial source inspection exposed raw HTML being retained as the readable excerpt. Issue #189 corrects that representation with bounded visible-text parsing and conservative access-marker handling. Acceptance acquisition and human judgments are not yet complete; these results do not close Milestone 8 or establish useful opportunities. Operational research data is untouched.
 
