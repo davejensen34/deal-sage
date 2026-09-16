@@ -1,5 +1,7 @@
 # Product roadmap
 
+M8 extraction interpretation (#203): batch observations now expose diagnostic ambiguities, duplicate/competing clues and prioritized corroboration gaps without discarding uncertain data or promoting it into facts. This supplies planning input for the remaining #194 search/reconciliation/recommendation stages. [Contract](../architecture/observation-assessment.md).
+
 M8 retained-evidence automation (#201): system-selected passages now execute as a durable bounded batch without per-passage human approval. Cancellation/checkpoint recovery preserves calls and cost history. This backend stage does not yet perform corroborating searches, semantic reconciliation or recommendation synthesis; those remain #194 work before #187 resumes. [Contract](../architecture/extraction-batches.md).
 
 M8 capture slice (#199): later retained document passages are available to bounded cited extraction, with source hashes, offsets and coverage limits. This removes the opening-excerpt restriction at the service/API level; automatic passage selection, corroboration and recommendation delivery are still pending under #194. [Contract](../architecture/source-passages.md).

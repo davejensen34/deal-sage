@@ -1,5 +1,7 @@
 # Product backlog
 
+M8 interpretation progress: #203 preserves extracted observations as research clues, flags known field-meaning errors and prioritizes corroboration gaps from the frozen profile (658 backend/API tests passing). No source-fact promotion or live calls. Actual corroborating research and recommendation delivery remain #194 work; #187 stays paused. [Contract](../docs/architecture/observation-assessment.md).
+
 M8 automation progress: #201 adds durable, system-selected retained-evidence extraction batches (622 backend/API tests passing). One authorization runs selected passages with checkpoints and bounded child reservations. New source discovery/corroboration, semantic reconciliation and recommendation delivery remain #194 work; #187 stays paused. [Contract](../docs/architecture/extraction-batches.md).
 
 M8 capture progress: #199 adds retained-source passages and cited extraction beyond the opening excerpt (606 backend/API tests passing). No live calls or corpus changes. Automated investigation and recommendation delivery remain #194 work. [Contract](../docs/architecture/source-passages.md).

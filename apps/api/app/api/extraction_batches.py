@@ -1,5 +1,6 @@
 """Case-local batch authorization and execution; no recurring worker."""
 from uuid import UUID
+from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
@@ -9,6 +10,7 @@ from app.auth.service import Identity, current_identity, require_permission
 from app.core.config import Settings, get_settings
 from app.core.database import get_db
 from app.research import extraction_batches as service
+from app.research import observation_assessment
 from app.research.extraction_attempts import digest
 
 router = APIRouter(prefix='/api/research/cases/{case_id}/extraction-batches', dependencies=[Depends(current_identity)])
@@ -54,6 +56,15 @@ async def execute(case_id: int, batch_id: int, db: Session = Depends(get_db), se
         return await service.execute(db, case_id, batch_id, settings, actor=identity.display_name, user_id=identity.user_id)
     except ValueError as exc:
         db.rollback(); raise HTTPException(409, str(exc)) from exc
+
+
+@router.get('/{batch_id}/assessment')
+def assessment(case_id: int, batch_id: int, assessment_date: date | None = None, db: Session = Depends(get_db)):
+    try:
+        return observation_assessment.assess(db, case_id, batch_id,
+            assessment_date=assessment_date or datetime.now(timezone.utc).date())
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
 
 
 @router.post('/{batch_id}/cancel')

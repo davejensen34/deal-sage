@@ -1,5 +1,9 @@
 # Current state
 
+## M8 remediation: extraction clues and corroboration gaps
+
+Issue #203 adds a read-only batch assessment with retained original observations, narrow field/unit/date/URL diagnostics, duplicate and competing-clue references, and prioritized corroboration questions from the frozen target profile. Ambiguous observations remain clues; none become authoritative fit evidence or human decisions. All 658 backend/API tests pass. No UI change, migration, live call or corpus write. This is planning input, not completed identity reconciliation, search execution or recommendation readiness; #194 remains active and #187 paused. [Contract](../architecture/observation-assessment.md).
+
 ## M8 remediation: automated retained-evidence extraction
 
 Issue #201 adds a durable backend batch that selects passages using frozen target-profile/context cues and executes them under one bounded authorization. Child reservations, checkpoints, cancellation and recovery preserve failed/unknown outcomes without duplicate calls. All 622 backend/API tests pass, including multi-session late-response fencing and migration/reopen. No UI change, live calls or operational-corpus migration. This is the retained-evidence stage only; semantic reconciliation, new corroborating searches and recommendations remain #194 work. #187 stays paused. [Contract and deployment](../architecture/extraction-batches.md).
