@@ -1,5 +1,9 @@
 # Milestone 8 — Reviewer Workbench and Opportunity Development
 
+## Amended implementation progress
+
+Issue #197 delivers the first #194 foundation: frozen purpose-specific target profiles, explicit required/preferred fit criteria and case-local cited fit assessment. All 591 backend/API tests pass. Existing discovery APIs retain profiles; legacy hashes/replay remain compatible. No live calls, UI changes or migration. Recommendation readiness and automated investigation are not delivered by this increment; #187 remains paused. [Contract and boundaries](../../docs/architecture/target-fit.md).
+
 ## Required remediation before acceptance
 
 User feedback on September 15 rejects readiness of the thin acceptance packets. Pause #187’s human exercise until #194 connects bounded system-led discovery, capture, corroboration, reconciliation, target-fit assessment and recommendation-first handoff. Preserve the original cohort/results; no individual ratings are inferred. [Implementation inspection and plan](../../docs/product/milestone8-intelligence-remediation.md). M8 remains active; engineering controls alone do not complete its intelligence outcome. Conversational investigation is recorded under #195 for subsequent milestone planning.

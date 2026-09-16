@@ -1,5 +1,9 @@
 # Current state
 
+## M8 remediation: target-profile and fit foundation
+
+Issue #197 implements optional frozen purpose-specific target profiles in discovery APIs and a read-only deterministic fit service over typed, cited, case-local source claims. Required and preferred criteria distinguish unknown, mismatch and conflict; acquisition defaults to private-company fit without imposing that rule on marketing. Legacy plans omit the new field and retain replay behavior. All 591 backend/API tests pass; focused API/profile tests also pass. No UI change, migration, live call or operational data write. This is not recommendation readiness: normalization, identity/corroboration orchestration, saved assessments and recommendation presentation remain #194 work. Human acceptance stays paused. See [target-fit architecture](../architecture/target-fit.md).
+
 ## Milestone 8 remediation before human acceptance
 
 The user found the acceptance packets too light on insight and paused the ten-record review request on September 15. Issue #194 now owns system-led discovery, corroboration, reconciliation and purpose-specific recommended-for-review assessments before #187 resumes. The original ten packets and $0.98 reservation remain diagnostic history, not a passed gate or ten negative ratings. [Inspection and delivery plan](../product/milestone8-intelligence-remediation.md). Issue #195 records conversational investigation as the next milestone’s planning topic after M8; implementation is not active.
