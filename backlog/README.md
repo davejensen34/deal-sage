@@ -1,5 +1,7 @@
 # Product backlog
 
+M8 automation progress: #201 adds durable, system-selected retained-evidence extraction batches (622 backend/API tests passing). One authorization runs selected passages with checkpoints and bounded child reservations. New source discovery/corroboration, semantic reconciliation and recommendation delivery remain #194 work; #187 stays paused. [Contract](../docs/architecture/extraction-batches.md).
+
 M8 capture progress: #199 adds retained-source passages and cited extraction beyond the opening excerpt (606 backend/API tests passing). No live calls or corpus changes. Automated investigation and recommendation delivery remain #194 work. [Contract](../docs/architecture/source-passages.md).
 
 M8 amended progress: #197 adds frozen target profiles and deterministic target-fit assessment (591 backend/API tests passing). It is the foundation for #194, not a complete intelligence pipeline; #187 review remains paused. [Contract](../docs/architecture/target-fit.md).

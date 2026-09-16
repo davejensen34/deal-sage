@@ -564,6 +564,24 @@ class CaseBriefVersion(TimestampMixin, Base):
     __table_args__ = (UniqueConstraint("case_id", "version", name="uq_case_brief_version"),)
 
 
+class ExtractionBatch(TimestampMixin, Base):
+    """Frozen system-selected work; child attempts own all spend reservations."""
+    __tablename__ = 'extraction_batches'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey('research_cases.id'), index=True)
+    request_key: Mapped[str] = mapped_column(String(36), unique=True)
+    actor: Mapped[str] = mapped_column(String(160))
+    actor_key: Mapped[str] = mapped_column(String(100))
+    plan: Mapped[dict[str, Any]] = mapped_column(JSON)
+    plan_hash: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(30), default='ready')
+    next_index: Mapped[int] = mapped_column(Integer, default=0)
+    lease_key: Mapped[str | None] = mapped_column(String(36))
+    recovery_after: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    deadline: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    stop_reason: Mapped[str | None] = mapped_column(String(60))
+
+
 class ExtractionAttempt(TimestampMixin, Base):
     """One frozen model authorization, retained even after an unknown outcome."""
     __tablename__ = "extraction_attempts"
