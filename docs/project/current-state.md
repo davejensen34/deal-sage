@@ -1,5 +1,9 @@
 # Current state
 
+## M8 remediation: automated retained-evidence extraction
+
+Issue #201 adds a durable backend batch that selects passages using frozen target-profile/context cues and executes them under one bounded authorization. Child reservations, checkpoints, cancellation and recovery preserve failed/unknown outcomes without duplicate calls. All 622 backend/API tests pass, including multi-session late-response fencing and migration/reopen. No UI change, live calls or operational-corpus migration. This is the retained-evidence stage only; semantic reconciliation, new corroborating searches and recommendations remain #194 work. #187 stays paused. [Contract and deployment](../architecture/extraction-batches.md).
+
 ## M8 remediation: later source context available to extraction
 
 Issue #199 adds hash-verified, bounded passage reads over retained artifacts and optional passage selection in extraction preview/execution. Later business context can now produce cited model proposals without another source fetch or rewriting the opening excerpt. All 606 backend/API tests pass. Legacy packets/replay and spending limits remain intact; no UI change, migration, live call or corpus write. Automatic selection/orchestration, semantic normalization and recommendation readiness remain #194 work; #187 is still paused. See [source-passage contract](../architecture/source-passages.md).

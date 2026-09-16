@@ -1,5 +1,7 @@
 # Product roadmap
 
+M8 retained-evidence automation (#201): system-selected passages now execute as a durable bounded batch without per-passage human approval. Cancellation/checkpoint recovery preserves calls and cost history. This backend stage does not yet perform corroborating searches, semantic reconciliation or recommendation synthesis; those remain #194 work before #187 resumes. [Contract](../architecture/extraction-batches.md).
+
 M8 capture slice (#199): later retained document passages are available to bounded cited extraction, with source hashes, offsets and coverage limits. This removes the opening-excerpt restriction at the service/API level; automatic passage selection, corroboration and recommendation delivery are still pending under #194. [Contract](../architecture/source-passages.md).
 
 M8 remediation first slice (#197): purpose-specific target profiles are frozen in discovery plans, with explicit required/preferred criteria and deterministic cited fit assessment. Automated normalization/corroboration and recommendation readiness remain #194 work. No new live evaluation or UI handoff is claimed. [Contract](../architecture/target-fit.md).

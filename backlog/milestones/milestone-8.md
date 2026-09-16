@@ -2,6 +2,8 @@
 
 ## Amended implementation progress
 
+Issue #201 adds system-selected, durable extraction batches over retained evidence. One frozen profile/allowance drives serial passage execution, with cancellation and fenced recovery; child reservations remain the only spend ledger. All 622 backend/API tests pass. The additive migration ran only in temporary test databases; no UI change, live calls or corpus update. [Contract](../../docs/architecture/extraction-batches.md). Further source investigation, semantic reconciliation and recommendations remain #194; #187 is paused.
+
 Issue #199 makes later retained source context available through hash-verified passage inspection and selected-passage extraction. All 606 backend/API tests pass. No source refetch, corpus rewriting, UI change or spending-limit expansion. [Contract](../../docs/architecture/source-passages.md). Automated passage selection and discovery-to-recommendation orchestration remain #194 work; this increment does not resume #187.
 
 Issue #197 delivers the first #194 foundation: frozen purpose-specific target profiles, explicit required/preferred fit criteria and case-local cited fit assessment. All 591 backend/API tests pass. Existing discovery APIs retain profiles; legacy hashes/replay remain compatible. No live calls, UI changes or migration. Recommendation readiness and automated investigation are not delivered by this increment; #187 remains paused. [Contract and boundaries](../../docs/architecture/target-fit.md).
