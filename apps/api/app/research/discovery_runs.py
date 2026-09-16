@@ -6,7 +6,7 @@ import json
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, model_serializer
 from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 
@@ -15,6 +15,7 @@ from app.research.cases import DEFAULT_RESEARCH_BUDGET
 from app.research.search import FixtureSearchProvider, SearchResult, SearchService
 from app.research.search_openai import search_request
 from app.research.signal_freshness import dated_query
+from app.research.target_fit import TargetProfile
 
 VERSION = "discovery-run-v1"
 STATES = {"CO": "Colorado", "UT": "Utah", "TX": "Texas"}
@@ -36,6 +37,15 @@ class DiscoverySettings(BaseModel):
     max_queries: int = Field(default=3, ge=1, le=30)
     max_cost_cents: int = Field(default=100, ge=0, le=500)
     max_elapsed_seconds: int = Field(default=900, ge=60, le=3600)
+    target_profile: TargetProfile | None = None
+
+    @model_serializer(mode='wrap')
+    def serialize(self, handler):
+        result=handler(self)
+        # Omission preserves legacy frozen-plan hashes and creation-key replay.
+        if self.target_profile is None:
+            result.pop('target_profile',None)
+        return result
 
     @model_validator(mode="after")
     def coherent(self):

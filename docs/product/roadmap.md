@@ -1,5 +1,7 @@
 # Product roadmap
 
+M8 remediation first slice (#197): purpose-specific target profiles are frozen in discovery plans, with explicit required/preferred criteria and deterministic cited fit assessment. Automated normalization/corroboration and recommendation readiness remain #194 work. No new live evaluation or UI handoff is claimed. [Contract](../architecture/target-fit.md).
+
 Milestone 8 now requires #194 intelligence remediation before #187 acceptance resumes: system-led discovery, capture, corroboration and reconciliation must produce purpose-specific recommendations before reviewer handoff. The prior thin cohort is preserved as diagnostic evidence. [Inspection and delivery plan](milestone8-intelligence-remediation.md). Conversational investigation is the requested next-milestone planning topic under #195, after resolving M8; implementation is not activated.
 
 Milestone 8 live acceptance acquisition is complete under #187; ten source-linked briefs await actual human usefulness/time and workflow review. All selected leads derive from one Utah publisher, so geographic coverage and independent corroboration are not established. [Acceptance results](../research/milestone8-acceptance-results.md). M8 remains active; no next milestone is approved.

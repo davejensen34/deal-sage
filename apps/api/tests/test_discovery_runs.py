@@ -153,7 +153,8 @@ def test_api_permissions_and_saved_plan_round_trip(client, override_db_session):
     role = "viewer"
     app.dependency_overrides[current_identity] = lambda: Identity(None, "demo", "test", None, "Test reviewer", role=role)
     try:
-        config = DiscoverySettings().model_dump()
+        config = DiscoverySettings(target_profile={'purpose':'marketing_introduction',
+            'employees':{'minimum':10,'required':False}}).model_dump()
         assert client.post("/api/discovery/preview", json=config).status_code == 403
         role = "analyst"
         prepared = client.post("/api/discovery/preview", json=config).json()
@@ -171,6 +172,9 @@ def test_api_permissions_and_saved_plan_round_trip(client, override_db_session):
         assert result.json()["deadline_at"].endswith(("Z", "+00:00"))
         assert result.json()["attempts"][0]["recovery_after"].endswith(("Z", "+00:00"))
         assert client.get(f'/api/discovery/runs/{run["id"]}').json()["plan"]["settings"]["max_records"] == 25
+        assert client.get('/api/discovery/defaults').json()['settings']['target_profile']==config['target_profile']
+        retained=client.get(f'/api/discovery/runs/{run["id"]}').json()['plan']['settings']['target_profile']
+        assert retained==config['target_profile']
         assert client.get("/api/discovery/runs/999999").status_code == 404
     finally:
         app.dependency_overrides.pop(get_settings, None)
@@ -199,3 +203,22 @@ def test_migration_preserves_run_history_and_refuses_destructive_downgrade(tmp_p
     with pytest.raises(RuntimeError, match="Cannot discard"):
         command.downgrade(alembic_config(url), "b144f0a9c721")
     engine.dispose()
+
+
+def test_optional_target_profile_freezes_without_changing_legacy_payload(db):
+    legacy=DiscoverySettings()
+    assert 'target_profile' not in legacy.model_dump()
+    assert 'target_profile' not in legacy.model_dump_json()
+    raw={'purpose':'marketing_introduction','employees':{'minimum':10,'required':False}}
+    config=DiscoverySettings(target_profile=raw)
+    key=uuid4();run=make(db,config,key=key)
+    assert run.plan['settings']['target_profile']['purpose']=='marketing_introduction'
+    assert make(db,config,key=key).id==run.id
+    changed=DiscoverySettings(target_profile={**raw,'purpose':'acquisition_exploration'})
+    assert preview(config,settings())['hash']!=preview(changed,settings())['hash']
+    with pytest.raises(ValueError,match='different request'):
+        make(db,changed,key=key)
+    stale=preview(config,settings())['hash']
+    with pytest.raises(ValueError,match='preview'):
+        create_run(db,changed,settings(),request_key=uuid4(),expected_hash=stale,actor='Test reviewer')
+    assert run.plan['settings']['target_profile']['purpose']=='marketing_introduction'
