@@ -1,5 +1,7 @@
 # Product backlog
 
+M8 capture progress: #199 adds retained-source passages and cited extraction beyond the opening excerpt (606 backend/API tests passing). No live calls or corpus changes. Automated investigation and recommendation delivery remain #194 work. [Contract](../docs/architecture/source-passages.md).
+
 M8 amended progress: #197 adds frozen target profiles and deterministic target-fit assessment (591 backend/API tests passing). It is the foundation for #194, not a complete intelligence pipeline; #187 review remains paused. [Contract](../docs/architecture/target-fit.md).
 
 Current priority: #194 corrects M8 discovery-to-recommendation delivery before #187 human acceptance resumes. The user rejected the readiness of the thin packets, not supplied ten individual judgments. [Remediation plan](../docs/product/milestone8-intelligence-remediation.md). #195 captures next-milestone conversational-investigation planning; it is not active implementation.

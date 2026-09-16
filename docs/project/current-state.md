@@ -1,5 +1,9 @@
 # Current state
 
+## M8 remediation: later source context available to extraction
+
+Issue #199 adds hash-verified, bounded passage reads over retained artifacts and optional passage selection in extraction preview/execution. Later business context can now produce cited model proposals without another source fetch or rewriting the opening excerpt. All 606 backend/API tests pass. Legacy packets/replay and spending limits remain intact; no UI change, migration, live call or corpus write. Automatic selection/orchestration, semantic normalization and recommendation readiness remain #194 work; #187 is still paused. See [source-passage contract](../architecture/source-passages.md).
+
 ## M8 remediation: target-profile and fit foundation
 
 Issue #197 implements optional frozen purpose-specific target profiles in discovery APIs and a read-only deterministic fit service over typed, cited, case-local source claims. Required and preferred criteria distinguish unknown, mismatch and conflict; acquisition defaults to private-company fit without imposing that rule on marketing. Legacy plans omit the new field and retain replay behavior. All 591 backend/API tests pass; focused API/profile tests also pass. No UI change, migration, live call or operational data write. This is not recommendation readiness: normalization, identity/corroboration orchestration, saved assessments and recommendation presentation remain #194 work. Human acceptance stays paused. See [target-fit architecture](../architecture/target-fit.md).

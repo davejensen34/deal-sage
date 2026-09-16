@@ -17,6 +17,8 @@ from app.research.retrieval import BLOCKING_ACCESS_FLAGS
 from app.research.search import SearchService
 from app.research.identity_resolution import evidence_relationship, normalize_identity
 from app.research import extraction_attempts
+from app.research import source_passages
+from app.storage.local import LocalEvidenceStorage
 from app.research import brief_versions, brief_comparisons
 from app.domain.models import CaseBriefVersion, CaseDecision, AuditEvent
 from app.research import case_decisions, development_briefs
@@ -78,12 +80,24 @@ def save_brief_version(case_id: int, payload: SaveBriefVersion, db: Session = De
 class ExecuteExtraction(BaseModel):
     request_key: UUID
     expected_hash: str = Field(pattern="^[0-9a-f]{64}$")
+    passage_index: int | None = Field(default=None, ge=0, strict=True)
+
+
+@router.get("/{case_id}/investigation/evidence/{evidence_id}/passages")
+def evidence_passages(case_id: int, evidence_id: int, page: int = Query(1, ge=1),
+                      db: Session = Depends(get_db), settings: Settings = Depends(get_settings)):
+    try:
+        return source_passages.list_passages(db, case_id, evidence_id,
+            LocalEvidenceStorage(settings.evidence_storage_path), page)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
 
 
 @router.get("/{case_id}/investigation/evidence/{evidence_id}/extraction-preview")
-def extraction_preview(case_id: int, evidence_id: int, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)):
+def extraction_preview(case_id: int, evidence_id: int, db: Session = Depends(get_db), settings: Settings = Depends(get_settings),
+                       passage_index: int | None = Query(None, ge=0)):
     try:
-        return extraction_attempts.preview(db, case_id, evidence_id, settings)
+        return extraction_attempts.preview(db, case_id, evidence_id, settings, passage_index=passage_index)
     except ValueError as exc:
         raise HTTPException(409, str(exc)) from exc
 
@@ -104,7 +118,7 @@ async def extract(case_id: int, evidence_id: int, payload: ExecuteExtraction,
         return await extraction_attempts.execute(db, case_id, evidence_id, settings,
             request_key=payload.request_key, expected_hash=payload.expected_hash,
             actor=identity.display_name, actor_key=extraction_attempts.digest([identity.provider,identity.subject]),
-            user_id=identity.user_id)
+            user_id=identity.user_id, passage_index=payload.passage_index)
     except ValueError as exc:
         db.rollback()
         raise HTTPException(409, str(exc)) from exc
