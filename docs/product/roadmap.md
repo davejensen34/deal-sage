@@ -1,5 +1,7 @@
 # Product roadmap
 
+M8 capture slice (#199): later retained document passages are available to bounded cited extraction, with source hashes, offsets and coverage limits. This removes the opening-excerpt restriction at the service/API level; automatic passage selection, corroboration and recommendation delivery are still pending under #194. [Contract](../architecture/source-passages.md).
+
 M8 remediation first slice (#197): purpose-specific target profiles are frozen in discovery plans, with explicit required/preferred criteria and deterministic cited fit assessment. Automated normalization/corroboration and recommendation readiness remain #194 work. No new live evaluation or UI handoff is claimed. [Contract](../architecture/target-fit.md).
 
 Milestone 8 now requires #194 intelligence remediation before #187 acceptance resumes: system-led discovery, capture, corroboration and reconciliation must produce purpose-specific recommendations before reviewer handoff. The prior thin cohort is preserved as diagnostic evidence. [Inspection and delivery plan](milestone8-intelligence-remediation.md). Conversational investigation is the requested next-milestone planning topic under #195, after resolving M8; implementation is not activated.

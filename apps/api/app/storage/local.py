@@ -28,5 +28,14 @@ class LocalEvidenceStorage(EvidenceStorage):
     def read(self, key: str) -> bytes:
         return self._path(key).read_bytes()
 
+    def read_bounded(self, key: str, max_bytes: int) -> bytes:
+        if max_bytes < 1:
+            raise ValueError("Evidence byte limit must be positive")
+        with self._path(key).open('rb') as source:
+            content = source.read(max_bytes + 1)
+        if len(content) > max_bytes:
+            raise ValueError("Evidence exceeds the byte limit")
+        return content
+
     def delete(self, key: str) -> None:
         self._path(key).unlink(missing_ok=True)

@@ -2,6 +2,8 @@
 
 ## Amended implementation progress
 
+Issue #199 makes later retained source context available through hash-verified passage inspection and selected-passage extraction. All 606 backend/API tests pass. No source refetch, corpus rewriting, UI change or spending-limit expansion. [Contract](../../docs/architecture/source-passages.md). Automated passage selection and discovery-to-recommendation orchestration remain #194 work; this increment does not resume #187.
+
 Issue #197 delivers the first #194 foundation: frozen purpose-specific target profiles, explicit required/preferred fit criteria and case-local cited fit assessment. All 591 backend/API tests pass. Existing discovery APIs retain profiles; legacy hashes/replay remain compatible. No live calls, UI changes or migration. Recommendation readiness and automated investigation are not delivered by this increment; #187 remains paused. [Contract and boundaries](../../docs/architecture/target-fit.md).
 
 ## Required remediation before acceptance

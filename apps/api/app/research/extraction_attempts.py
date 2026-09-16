@@ -18,6 +18,8 @@ from app.domain.models import AuditEvent, CaseEvidence, ExtractionAttempt, Model
 from app.research.discovery_runs import utc
 from app.research.ingestion import assert_safe_source_content
 from app.research.model_proposals import ModelProposalService
+from app.research.source_passages import select_passage
+from app.storage.local import LocalEvidenceStorage
 
 VERSION = 'case-extraction-v1'
 FIXTURE_EXCERPT = 'Fictional Acme makes widgets. A retirement is planned for 2027.'
@@ -63,14 +65,14 @@ def policy(settings, today=None):
         'reserved_cents':0 if fixture else 2,'automatic_retries':0,'pricing':PRICING,'store':False}
 
 
-def preview(db, case_id, evidence_id, settings):
+def preview(db, case_id, evidence_id, settings, *, passage_index=None, storage=None):
     case=db.get(ResearchCase,case_id)
     item=db.get(CaseEvidence,evidence_id)
     if case is None or item is None or item.case_id!=case_id:
         raise ValueError('Evidence not found in this case')
     if case.status!='open':
         raise ValueError('Case is stopped; extraction is unavailable')
-    if not item.relevant_excerpt or not item.relevant_excerpt.strip():
+    if passage_index is None and (not item.relevant_excerpt or not item.relevant_excerpt.strip()):
         raise ValueError('Retained excerpt is empty; retain source text before extraction')
     limits=policy(settings)
     # Fixtures are not a fallback for real evidence, even when credentials are absent.
@@ -80,6 +82,11 @@ def preview(db, case_id, evidence_id, settings):
             raise ValueError('Demo extraction requires explicit fictional discovery evidence')
     packet={'evidence_id':item.id,'content_hash':item.content_hash,'excerpt':item.relevant_excerpt,
             'publisher':item.publisher,'published_at':utc(item.published_at).isoformat() if item.published_at else None}
+    if passage_index is not None:
+        metadata, passage = select_passage(db, case_id, evidence_id,
+            storage or LocalEvidenceStorage(settings.evidence_storage_path), passage_index)
+        packet['excerpt'] = passage.pop('excerpt')
+        packet['source_passage'] = {**metadata, **passage}
     assert_safe_source_content(packet)
     request={'model':limits['model'],'instructions':INSTRUCTIONS,'input':json.dumps(packet,ensure_ascii=False,sort_keys=True),
         'max_output_tokens':limits['max_output_tokens'],'store':False,
@@ -139,18 +146,20 @@ async def call_provider(plan, settings):
     return output,measured
 
 
-async def execute(db, case_id, evidence_id, settings, *, request_key, expected_hash, actor, actor_key, user_id=None, provider=None):
+async def execute(db, case_id, evidence_id, settings, *, request_key, expected_hash, actor, actor_key, user_id=None, provider=None,
+                  passage_index=None, storage=None):
     key=str(UUID(str(request_key)))
     locked=db.execute(update(ResearchCase).where(ResearchCase.id==case_id).values(updated_at=ResearchCase.updated_at))
     if locked.rowcount!=1:
         db.rollback(); raise ValueError('Research case not found')
     prior=db.scalar(select(ExtractionAttempt).where(ExtractionAttempt.request_key==key))
     if prior:
-        if (prior.case_id,prior.evidence_id,prior.actor_key,prior.plan_hash)!=(case_id,evidence_id,actor_key,expected_hash):
+        prior_index = prior.plan['packet'].get('source_passage', {}).get('index')
+        if (prior.case_id,prior.evidence_id,prior.actor_key,prior.plan_hash,prior_index)!=(case_id,evidence_id,actor_key,expected_hash,passage_index):
             db.rollback(); raise ValueError('Request key belongs to another extraction')
         result=attempt_view(db,prior);db.commit();return result
     db.expire_all()
-    prepared=preview(db,case_id,evidence_id,settings)
+    prepared=preview(db,case_id,evidence_id,settings,passage_index=passage_index,storage=storage)
     plan=prepared['plan'];limits=plan['policy']
     if prepared['plan_hash']!=expected_hash or not limits['ready']:
         db.rollback();raise ValueError('Evidence, limits or provider changed/unavailable; preview again')
